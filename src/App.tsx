@@ -8,6 +8,10 @@ function App() {
 
   return (
     <>
+      <div class="text-center">
+        <h1 class="text-4xl font-bold">Hello, Solid.js with Tailwind CSS!</h1>
+        <p class="mt-4">これはTypeScript、Vite、Tailwind CSSを使用したシンプルなSolid.jsアプリです。</p>
+      </div>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} class="logo" alt="Vite logo" />
