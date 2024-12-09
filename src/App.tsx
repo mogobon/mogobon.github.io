@@ -6,6 +6,7 @@ declare function particlesJS(id: string, options: unknown): void;
 function App() {
   const [timeline] = createSignal([
     { date: '2024-11-20', event: 'ホームページの見た目を整えました' },
+    { date: '2024-12-09', event: 'AHC040の日記を書きました' },
   ])
   const [particlesInitialized, setParticlesInitialized] = createSignal(false);
   let particleInterval: number | null = null;
