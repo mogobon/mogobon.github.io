@@ -80,10 +80,19 @@ function App() {
           <ul>
             <li><a href="https://atcoder.jp/users/mogobon" target="_blank">Atcoder Profile</a></li>
             <li><a href="https://twitter.com/Mogobon" target="_blank">X (Twitter)</a></li>
-            <li><a href="https://youtube.com/@mogobon6633" target="_blank">YouTube Channel</a></li>
+            <li><a href="https://youtube.com/@mogobon6633" target="_blank">YouTube</a></li>
           </ul>
         </section>
-
+        <section class="atcoder考察">
+          <h2 class="text-2xl font-semibold">AtCoderの考察</h2>
+          <ul>
+            <li>
+              <a href="/rireki.html" target="_blank" rel="noopener noreferrer">
+                AHC040
+              </a>
+            </li>
+          </ul>
+        </section>
         
 
        
