@@ -33,11 +33,18 @@ jobs:
         run: npm run build
       - name: Verify build output
         run: ls -la dist/ # Verify the dist/ directory exists
+      - name: Debug dist directory
+        run: |
+          echo "Contents of dist directory:"
+          ls -la dist/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
           path: dist/
+      - name: Debug artifact upload
+        run: |
+          echo "Artifact upload completed."
 
   deploy:
     environment:
@@ -50,6 +57,10 @@ jobs:
         with:
           name: github-pages
           path: dist/
+      - name: Debug artifact download
+        run: |
+          echo "Contents of downloaded artifact:"
+          ls -la dist/
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
