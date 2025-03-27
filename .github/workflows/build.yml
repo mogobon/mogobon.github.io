@@ -35,6 +35,8 @@ jobs:
         run: pnpm install
       - name: Build project
         run: pnpm build
+      - name: Verify build output
+        run: ls -la dist/ # dist/ ディレクトリが生成されているか確認
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
