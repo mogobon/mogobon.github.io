@@ -365,10 +365,10 @@ code {
           : 'default'
     });
   </script>
-<h1 id="%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB">サンプル</h1>
-<p><img src="img/スクリーンショット 2024-12-04 14.22.16.png" alt="サンプル"></p>
+<h1 id="%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB">サンプルプログラムの順位</h1>
+<p><img src="AtCoder/AHC/ahc040/img/スクリーンショット 2024-12-04 14.22.16.png" alt="サンプルプログラムの順位"></p>
 <h1 id="%E9%A0%86%E4%BD%8D%E8%A1%A8">順位表</h1>
-<p><img src="img/スクリーンショット 2024-12-04 14.22.25.png" alt="順位"></p>
+<p><img src="AtCoder/AHC/ahc040/img/スクリーンショット 2024-12-04 14.22.25.png" alt="順位"></p>
 <h1 id="visualizer">visualizer</h1>
 <p>30件のデータは
 末尾53990</p>
@@ -408,8 +408,8 @@ code {
 </div></code></pre>
 <!-- ![gif](img/vis.gif) -->
 <!-- ![png](img/vis.png) -->
-<p><img src="img/greedy0_sc.png" alt="greedy">
-<img src="img/sample_sc.png" alt="sample"></p>
+<p><img src="AtCoder/AHC/ahc040/img/greedy0_sc.png" alt="greedy">
+<img src="AtCoder/AHC/ahc040/img/sample_sc.png" alt="sample"></p>
 <h1 id="%E6%B3%A8%E6%84%8F">注意</h1>
 <ul>
 <li>「提出」の得点は低い方が良い点数となる
@@ -431,11 +431,11 @@ code {
 <li>まずはランダム(サンプルプログラム)の改善</li>
 <li>ランダムにためしまくっていいやつを採択する</li>
 </ul>
-<h2 id="%E3%82%B9%E3%82%B3%E3%82%A2%E3%82%92%E8%87%AA%E5%AE%B6%E3%81%A7%E8%A8%88%E7%AE%97%E3%81%97%E3%81%9F%E3%81%84">スコアを自家で計算したい</h2>
+<h2 id="%E3%82%B9%E3%82%B3%E3%82%A2%E3%82%92%E8%87%AA%E5%AE%B6%E3%81%A7%E8%A8%88%E7%AE%97%E3%81%97%E3%81%9F%E3%81%84">予測スコアを自前で計算したい</h2>
 <ul>
 <li>
 <p>これに苦戦
-<img src="img/sousarei.png" alt="はばと高さをどう計算する？"></p>
+<img src="AtCoder/AHC/ahc040/img/sousarei.png" alt="はばと高さをどう計算する？"></p>
 </li>
 <li>
 <p>(U,0),(U,1),(U,2)だけに注目する</p>
@@ -462,8 +462,9 @@ code {
 <p>横リスト[0,1]</p>
 </li>
 <li>
-<p>縦リスト[0,2],[1,3]だけど、連結してなくても、回転なし、回転あり、回転なしがくっついて、幅が増えているケースもある(<code>sample.sc.png</code>)</p>
+<p>縦リスト[0,2],[1,3]だけど、連結してなくても、回転なし、回転あり、回転なしがくっついて、幅が増えているケースもある</p>
 </li>
+<!-- (<code>sample.sc.png</code>) -->
 <li>
 <p>結論: やっぱり、コストを前計算するのは難しい！！</p>
 </li>
@@ -551,8 +552,8 @@ code {
 <p>上記を実装したが, 順位はちょっと下がった.</p>
 <p>結局サンプルプログラムが一番いいのだが,
 まぁ一直線に積み重ねるよりはマシ.</p>
-<p><img src="img/randkaizen.png" alt="randomkaizen">
-<img src="img/randkaizen_teisyutu.png" alt="提出"></p>
+<p><img src="AtCoder/AHC/ahc040/img/randkaizen.png" alt="randomkaizen">
+<img src="AtCoder/AHC/ahc040/img/randkaizen_teisyutu.png" alt="提出"></p>
 <h2 id="%E3%82%82%E3%81%A3%E3%81%A8%E5%8D%98%E7%B4%94%E3%81%AB%E3%81%99%E3%82%8B">もっと単純にする</h2>
 <ul>
 <li>
@@ -598,12 +599,22 @@ code {
 <li>どこかロジックが破綻している
 とみるべきな気がする</li>
 </ul>
-<p><img src="img/sampkaisubmit.png" alt="">
-<img src="img/sampkaizyuni.png" alt=""></p>
-<h2 id="5%E6%97%A5%E7%9B%AE">5日目</h2>
+<p><img src="AtCoder/AHC/ahc040/img/sampkaisubmit.png" alt="">
+<img src="AtCoder/AHC/ahc040/img/sampkaizyuni.png" alt=""></p>
+<h1 id="5%E6%97%A5%E7%9B%AE">5日目</h1>
 <p>サンプルについて以下のように書き換えるとスコアが上がった
 <code>rng = random.Random(123)</code></p>
-<p><img src="img/sampseed123.png" alt="順位"></p>
-
+<p><img src="AtCoder/AHC/ahc040/img/sampseed123.png" alt="順位"></p>
+<ul>
+<li><p>自分で試行錯誤した結果が乱択アルゴリズムに勝てず、悔しい結果となった</p>
+</li>
+<li>
+<p>ローカルでテスターを使ったり、ヒューリスティックな探索アルゴリズムを勉強して、今度は自分で考えたアルゴリズムが乱択アルゴリズムよりもよくなるように！
+</p>
+</li>
+<li>
+<p>こういう改善を繰り返して考えるプログラミングは好きなので勉強したい</p>
+</li>
+</ul>
 </body>
 </html>
