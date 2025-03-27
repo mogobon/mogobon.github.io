@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADT→ABC Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #282c34;
+      color: white;
+      margin: 0;
+      height: 100vh;
+      display: flex; /* フレックスボックスを使用 */
+      justify-content: center; /* 水平方向に中央揃え */
+      align-items: center; /* 垂直方向に中央揃え */
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    input, button {
+      font-size: 16px;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      word-break: break-word;
+    }
+    .home-link {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #61dafb;
+      text-decoration: none;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+      z-index: 2;
+    }
+    .home-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <a href="/" class="home-link">もごぼんのホームページへ</a>
+  <div class="container">
+    <h1>ADT→ABC Converter</h1>
+    <label for="adt-url">ADTのURLを入力してください:</label>
+    <input type="text" id="adt-url" placeholder="ここにURLを入力してください">
+    <button id="convert-button">変換</button>
+    <div class="result" id="result"></div>
+    <button id="copy-button">クリップボードにコピー</button>
+    <button id="open-browser-button">このURLをブラウザで開く</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // particles.js の設定
+    particlesJS("particles-js", {
+      particles: {
+        number: {
+          value: 50, // 粒子の数を減らす
+          density: {
+            enable: true,
+            value_area: 600 // 粒子の密度を調整
+          }
+        },
+        color: {
+          value: "#ffffff" // 粒子の色
+        },
+        shape: {
+          type: "circle" // 粒子の形状
+        },
+        opacity: {
+          value: 0.7, // 粒子の透明度
+          random: true
+        },
+        size: {
+          value: 2, // 粒子のサイズを小さく
+          random: true
+        },
+        line_linked: {
+          enable: true,
+          distance: 120, // 粒子間の線の距離を短く
+          color: "#ffffff",
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2, // 粒子の移動速度を遅く
+          direction: "none",
+          random: false,
+          straight: false,
+          out_mode: "out",
+          bounce: false,
+          attract: {
+            enable: false
+          }
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: {
+            enable: true,
+            mode: "repulse" // カーソルに反応して逃げる
+          },
+          onclick: {
+            enable: true,
+            mode: "push" // クリックで粒子を追加
+          },
+          resize: true
+        },
+        modes: {
+          repulse: {
+            distance: 50, // カーソルに反応する距離を短く
+            duration: 0.2 // 反応の持続時間を短く
+          },
+          push: {
+            particles_nb: 4 // クリックで追加される粒子の数
+          }
+        }
+      },
+      retina_detect: true
+    });
+
+    function convertUrl(adtUrl) {
+      const urlPattern = /^https?:\/\/.*\/tasks\/.*$/; // URLの基本的な形式を検証
+      if (!urlPattern.test(adtUrl)) {
+        throw new Error("無効なURL形式です。正しいURLを入力してください。");
+      }
+
+      const parts = adtUrl.split("/tasks/", 2);
+      if (parts.length < 2) return adtUrl;
+      const [prefix, taskPart] = parts;
+      const abcId = taskPart.split("_", 1)[0];
+      return `https://atcoder.jp/contests/${abcId}/tasks/${taskPart}`;
+    }
+
+    document.getElementById('convert-button').addEventListener('click', () => {
+      const input = document.getElementById('adt-url').value.trim();
+      const resultElement = document.getElementById('result');
+
+      try {
+        const result = convertUrl(input);
+        resultElement.textContent = result;
+        resultElement.style.color = "white"; // 正常時の文字色
+      } catch (error) {
+        resultElement.textContent = error.message;
+        resultElement.style.color = "red"; // エラー時の文字色
+      }
+    });
+
+    document.getElementById('copy-button').addEventListener('click', () => {
+      const result = document.getElementById('result').textContent;
+      if (result && !result.startsWith("無効なURL")) {
+        navigator.clipboard.writeText(result).then(() => {
+          alert('クリップボードにコピーしました！');
+        });
+      } else {
+        alert('コピーする有効なURLがありません。');
+      }
+    });
+
+    document.getElementById('open-browser-button').addEventListener('click', () => {
+      const result = document.getElementById('result').textContent;
+      if (result && !result.startsWith("無効なURL")) {
+        window.open(result, '_blank');
+      } else {
+        alert('開く有効なURLがありません。');
+      }
+    });
+  </script>
+</body>
+</html>

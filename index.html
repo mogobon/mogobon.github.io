@@ -11,5 +11,64 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
+    <script>
+      particlesJS("root", {
+        particles: {
+          number: {
+            value: 150, // 粒子の数
+            density: {
+              enable: true,
+              value_area: 800 // 粒子の密度
+            }
+          },
+          color: {
+            value: "#ffffff" // 粒子の色
+          },
+          shape: {
+            type: "circle" // 粒子の形状
+          },
+          opacity: {
+            value: 0.5, // 粒子の透明度
+            random: true
+          },
+          size: {
+            value: 3, // 粒子のサイズ
+            random: true
+          },
+          line_linked: {
+            enable: false // 粒子間の線を無効化
+          },
+          move: {
+            enable: false, // 粒子の通常時の移動を無効化
+            speed: 2, // 移動速度（カーソルが近づいたときのみ適用）
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: true,
+              mode: "repulse" // カーソルが近づいたときに逃げる
+            },
+            onclick: {
+              enable: false // クリック時の動作を無効化
+            },
+            resize: true
+          },
+          modes: {
+            repulse: {
+              distance: 100, // カーソルが近づいたときの反応距離
+              duration: 0.4 // 反応の持続時間
+            }
+          }
+        },
+        retina_detect: true
+      });
+    </script>
   </body>
 </html>
