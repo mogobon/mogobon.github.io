@@ -68,7 +68,7 @@
   <a href="/" class="home-link">もごぼんのホームページへ</a>
   <div class="container">
     <h1>ADT→ABC Converter</h1>
-    <label for="adt-url">ADTのURLを入力してください:</label>
+    <label for="adt-url">ADTの問題ページのURLを入力してください:</label>
     <input type="text" id="adt-url" placeholder="ここにURLを入力してください">
     <button id="convert-button">変換</button>
     <div class="result" id="result"></div>
@@ -151,7 +151,7 @@
     function convertUrl(adtUrl) {
       const urlPattern = /^https?:\/\/.*\/tasks\/.*$/; // URLの基本的な形式を検証
       if (!urlPattern.test(adtUrl)) {
-        throw new Error("無効なURL形式です。正しいURLを入力してください。");
+        throw new Error("無効なURL形式です。");
       }
 
       const parts = adtUrl.split("/tasks/", 2);
