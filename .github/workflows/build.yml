@@ -3,6 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: ["main"]
+
   workflow_dispatch:
 
 permissions:
@@ -18,29 +19,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v2
         with:
-          version: "8"
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+          version: "7.12.0"
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install
-      - name: Build project
-        run: pnpm build
-      - name: Verify build output
-        run: ls -la dist/ # Verify the dist/ directory exists
+        run: |
+          pnpm install
+      - name: Build
+        run: |
+          pnpm build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: github-pages
           path: dist/
 
   deploy:
@@ -49,11 +49,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: dist/
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
