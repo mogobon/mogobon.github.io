@@ -18,28 +18,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4  # v4に更新
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Setup Pages
-        uses: actions/configure-pages@v4  # v4に更新
+        uses: actions/configure-pages@v4
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3  # v3に更新
+        uses: pnpm/action-setup@v3
         with:
-          version: "8"  # 最新バージョンを指定
-      - name: Setup Node.js 18  # Node.js 18以上を推奨
-        uses: actions/setup-node@v4  # v4に更新
+          version: "8"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
-      - name: Build
+      - name: Build project
         run: pnpm build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4  # v4 に更新！
+        uses: actions/upload-artifact@v4  # ✅ 最新版を使用
         with:
-          name: github-pages
-          path: dist/
+          name: github-pages  # ✅ 名前を統一
+          path: dist/  # ✅ `dist/` を正しく指定
 
   deploy:
     environment:
@@ -49,10 +49,10 @@ jobs:
     needs: build
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v4  # v4 に更新！
+        uses: actions/download-artifact@v4  # ✅ 最新版を使用
         with:
-          name: github-pages
+          name: github-pages  # ✅ 名前を統一
           path: dist/
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2  # v2 に更新！
+        uses: actions/deploy-pages@v2
