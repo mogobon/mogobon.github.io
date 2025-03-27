@@ -40,6 +40,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: github-pages
     steps:
       # buildジョブでアップロードしたアーティファクトをダウンロード
       - name: Download artifact
