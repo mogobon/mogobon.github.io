@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>ADT→ABC Converter</title>
   <style>
     body {
@@ -14,7 +14,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
     .container {
       text-align: center;
@@ -158,6 +159,24 @@
       from { opacity: 1; transform: translateY(0); }
       to { opacity: 0; transform: translateY(20px); }
     }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      .container { padding: 15px; margin: 5px; }
+      .home-link { padding: 6px 10px; font-size: 12px; }
+      .notification {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        padding: 10px;
+        width: calc(100% - 40px);
+      }
+    }
+    @media (hover: none) {
+      button:hover {
+        transform: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    }
   </style>
 </head>
 <body>
@@ -196,11 +215,13 @@
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    // particles.js の設定（変更なし）
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    // particles.js の設定（変更あり）
     particlesJS("particles-js", {
       particles: {
         number: {
-          value: 50,
+          value: isMobile ? 30 : 50, // モバイルでは少なく
           density: {
             enable: true,
             value_area: 600
@@ -229,7 +250,7 @@
         },
         move: {
           enable: true,
-          speed: 2,
+          speed: isMobile ? 1 : 2, // モバイルでは遅く
           direction: "none",
           random: false,
           straight: false,
@@ -244,8 +265,7 @@
         detect_on: "canvas",
         events: {
           onhover: {
-            enable: true,
-            mode: "repulse"
+            enable: !isMobile // モバイルでは無効に
           },
           onclick: {
             enable: true,
