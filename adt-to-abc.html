@@ -11,9 +11,9 @@
       color: white;
       margin: 0;
       height: 100vh;
-      display: flex; /* フレックスボックスを使用 */
-      justify-content: center; /* 水平方向に中央揃え */
-      align-items: center; /* 垂直方向に中央揃え */
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
     }
     .container {
@@ -22,36 +22,63 @@
       width: 100%;
       position: relative;
       z-index: 1;
+      padding: 20px;
     }
     input, button {
       font-size: 16px;
       margin: 10px 0;
-      padding: 10px;
+      padding: 12px 15px;
       width: 100%;
       box-sizing: border-box;
+      border-radius: 8px;
+      border: none;
+      transition: all 0.3s;
+    }
+    input {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.5); /* 薄くする */
     }
     button {
       cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    button:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    button:active {
+      transform: translateY(0);
     }
     .result {
-      margin-top: 20px;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
       word-break: break-word;
     }
     .home-link {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 15px;
+      right: 15px;
       color: #61dafb;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 14px;
       background: rgba(255, 255, 255, 0.1);
-      padding: 5px 10px;
-      border-radius: 5px;
-      transition: background 0.3s;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.3s;
       z-index: 2;
     }
     .home-link:hover {
       background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
     }
     #particles-js {
       position: absolute;
@@ -61,6 +88,76 @@
       height: 100%;
       z-index: 0;
     }
+    .options {
+      margin: 15px 0;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      user-select: none; /* テキスト選択を防止 */
+      -webkit-user-select: none; /* Safari用 */
+      -moz-user-select: none; /* Firefox用 */
+      -ms-user-select: none; /* IE/Edge用 */
+    }
+    .options label:hover {
+      opacity: 0.8;
+    }
+    .options input {
+      width: auto;
+      margin-right: 10px;
+    }
+    .options input:focus {
+      outline: none;
+      box-shadow: none; /* 枠線を削除 */
+    }
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      animation: fadeIn 0.3s, fadeOut 0.3s 1.7s;
+    }
+    .usage {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      text-align: left;
+      user-select: none; /* テキスト選択を防止 */
+      -webkit-user-select: none; /* Chrome、Safari用 */
+      -moz-user-select: none; /* Firefox用 */
+      -ms-user-select: none; /* IE/Edge用 */
+    }
+    .usage h3 {
+      margin-top: 0;
+      color: #61dafb;
+    }
+    .usage ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .usage li {
+      margin: 8px 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
   </style>
 </head>
 <body>
@@ -68,50 +165,71 @@
   <a href="/" class="home-link">もごぼんのホームページへ</a>
   <div class="container">
     <h1>ADT→ABC Converter</h1>
+    
+    <div class="usage">
+      <h3>使い方</h3>
+      <ol>
+        <li>入力フォームにADTの問題URLを入力します</li>
+        <li>Enterキーを押すと自動的に変換されます</li>
+      </ol>
+    </div>
+    
     <label for="adt-url">ADTの問題ページのURLを入力してください:</label>
-    <input type="text" id="adt-url" placeholder="ここにURLを入力してください">
-    <button id="convert-button">変換</button>
+    <input type="text" id="adt-url" placeholder="ここにURLを入力してください" autofocus>
+    
+    <div class="options">
+      <label>
+        <input type="checkbox" id="auto-copy"> 変換時に自動コピー
+      </label>
+      <label>
+        <input type="checkbox" id="auto-replace"> 入力フォームのURLを直接変換
+      </label>
+      <label>
+        <input type="checkbox" id="auto-open"> 変換後に自動的に新しいタブで開く
+      </label>
+    </div>
+    
     <div class="result" id="result"></div>
     <button id="copy-button">クリップボードにコピー</button>
-    <button id="open-browser-button">このURLをブラウザで開く</button>
+    <button id="open-browser-button">このURLを新しいタブで開く</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    // particles.js の設定
+    // particles.js の設定（変更なし）
     particlesJS("particles-js", {
       particles: {
         number: {
-          value: 50, // 粒子の数を減らす
+          value: 50,
           density: {
             enable: true,
-            value_area: 600 // 粒子の密度を調整
+            value_area: 600
           }
         },
         color: {
-          value: "#ffffff" // 粒子の色
+          value: "#ffffff"
         },
         shape: {
-          type: "circle" // 粒子の形状
+          type: "circle"
         },
         opacity: {
-          value: 0.7, // 粒子の透明度
+          value: 0.7,
           random: true
         },
         size: {
-          value: 2, // 粒子のサイズを小さく
+          value: 2,
           random: true
         },
         line_linked: {
           enable: true,
-          distance: 120, // 粒子間の線の距離を短く
+          distance: 120,
           color: "#ffffff",
           opacity: 0.4,
           width: 1
         },
         move: {
           enable: true,
-          speed: 2, // 粒子の移動速度を遅く
+          speed: 2,
           direction: "none",
           random: false,
           straight: false,
@@ -127,21 +245,21 @@
         events: {
           onhover: {
             enable: true,
-            mode: "repulse" // カーソルに反応して逃げる
+            mode: "repulse"
           },
           onclick: {
             enable: true,
-            mode: "push" // クリックで粒子を追加
+            mode: "push"
           },
           resize: true
         },
         modes: {
           repulse: {
-            distance: 50, // カーソルに反応する距離を短く
-            duration: 0.2 // 反応の持続時間を短く
+            distance: 50,
+            duration: 0.2
           },
           push: {
-            particles_nb: 4 // クリックで追加される粒子の数
+            particles_nb: 4
           }
         }
       },
@@ -149,7 +267,7 @@
     });
 
     function convertUrl(adtUrl) {
-      const urlPattern = /^https?:\/\/.*\/tasks\/.*$/; // URLの基本的な形式を検証
+      const urlPattern = /^https?:\/\/.*\/tasks\/.*$/;
       if (!urlPattern.test(adtUrl)) {
         throw new Error("無効なURL形式です。");
       }
@@ -161,28 +279,106 @@
       return `https://atcoder.jp/contests/${abcId}/tasks/${taskPart}`;
     }
 
-    document.getElementById('convert-button').addEventListener('click', () => {
-      const input = document.getElementById('adt-url').value.trim();
+    // 通知を表示する関数
+    function showNotification(message) {
+      const notif = document.createElement('div');
+      notif.className = 'notification';
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      
+      setTimeout(() => {
+        document.body.removeChild(notif);
+      }, 2000);
+    }
+
+    // 設定の保存
+    function saveSettings() {
+      const settings = {
+        autoCopy: document.getElementById('auto-copy').checked,
+        autoReplace: document.getElementById('auto-replace').checked,
+        autoOpen: document.getElementById('auto-open').checked
+      };
+      localStorage.setItem('adtConverterSettings', JSON.stringify(settings));
+    }
+
+    // 設定の読み込み
+    function loadSettings() {
+      const settingsJson = localStorage.getItem('adtConverterSettings');
+      if (settingsJson) {
+        const settings = JSON.parse(settingsJson);
+        document.getElementById('auto-copy').checked = settings.autoCopy || false;
+        document.getElementById('auto-replace').checked = settings.autoReplace || false;
+        document.getElementById('auto-open').checked = settings.autoOpen || false;
+      }
+    }
+
+    // 設定変更時に保存
+    document.getElementById('auto-copy').addEventListener('change', saveSettings);
+    document.getElementById('auto-replace').addEventListener('change', saveSettings);
+    document.getElementById('auto-open').addEventListener('change', saveSettings);
+
+    // ページロード時に設定を読み込む
+    document.addEventListener('DOMContentLoaded', loadSettings);
+
+    // 変換処理を関数化
+    function performConversion() {
+      const inputElement = document.getElementById('adt-url');
+      const input = inputElement.value.trim();
       const resultElement = document.getElementById('result');
+      const autoCopy = document.getElementById('auto-copy').checked;
+      const autoReplace = document.getElementById('auto-replace').checked;
+      const autoOpen = document.getElementById('auto-open').checked;
 
       try {
         const result = convertUrl(input);
+        
+        // 結果を表示
         resultElement.textContent = result;
-        resultElement.style.color = "white"; // 正常時の文字色
+        resultElement.style.color = "white";
+        
+        // 変換成功メッセージを表示
+        showNotification('変換しました！');
+        
+        // 入力フォームを直接変換するオプション
+        if (autoReplace) {
+          inputElement.value = result;
+        }
+        
+        // 自動コピーオプション
+        if (autoCopy) {
+          navigator.clipboard.writeText(result).then(() => {
+            showNotification('コピーしました！');
+          });
+        }
+        
+        // 自動で別タブで開くオプション
+        if (autoOpen) {
+          window.open(result, '_blank');
+          showNotification('新しいタブで開きました！');
+        }
       } catch (error) {
         resultElement.textContent = error.message;
-        resultElement.style.color = "red"; // エラー時の文字色
+        resultElement.style.color = "red";
+      }
+    }
+
+    // エンターキーでの変換
+    document.getElementById('adt-url').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        performConversion();
       }
     });
 
+    // コピーボタンと開くボタンのイベントリスナー
     document.getElementById('copy-button').addEventListener('click', () => {
       const result = document.getElementById('result').textContent;
       if (result && !result.startsWith("無効なURL")) {
         navigator.clipboard.writeText(result).then(() => {
-          alert('クリップボードにコピーしました！');
+          showNotification('コピーしました！');
         });
       } else {
-        alert('コピーする有効なURLがありません。');
+        showNotification('コピーする有効なURLがありません');
       }
     });
 
@@ -191,7 +387,7 @@
       if (result && !result.startsWith("無効なURL")) {
         window.open(result, '_blank');
       } else {
-        alert('開く有効なURLがありません。');
+        showNotification('開く有効なURLがありません');
       }
     });
   </script>
