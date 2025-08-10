@@ -60,3 +60,6 @@ jobs:
       # その後、actions/deploy-pages@v4でデプロイ
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+        # 明示的にdistフォルダを指定
+        with:
+          folder: dist
