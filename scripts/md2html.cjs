@@ -150,6 +150,12 @@ const notesHtml = `
       opacity: 1;
       background: #205493 !important; /* 濃い青色 */
     }
+
+    @media (max-width: 600px) {
+      .katex, .katex-display {
+        font-size: 1.15em !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -336,6 +342,12 @@ files.forEach(file => {
         #scrollTopBtn:hover {
           opacity: 1;
           background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
         }
     </style>
   </head>
