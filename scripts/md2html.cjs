@@ -153,7 +153,7 @@ const notesHtml = `
 
     @media (max-width: 600px) {
       .katex, .katex-display {
-        font-size: 1.15em !important;
+        font-size: 1.2em !important;
       }
     }
   </style>
