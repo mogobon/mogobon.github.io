@@ -160,6 +160,9 @@ const notesHtml = `
 </head>
 <body>
   <div class="note-list">
+    <div class="note-warning" style="background:#fffbe6;color:#b7791f;padding:1em 1.2em;border-radius:8px;margin-bottom:1.5em;font-size:0.98em;">
+      ※スマートフォン表示では一部レイアウト（コードの行番号や数式など）が崩れる場合があります。
+    </div>
     <h1>ノート一覧</h1>
     ${linksByTag}
     <a href="/" style="display:block;margin-top:2em;">トップページへ戻る</a>
