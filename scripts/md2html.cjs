@@ -23,14 +23,165 @@ const notesDir = path.join(__dirname, '../notes');
 const distDir = path.join(__dirname, '../dist');
 const files = fs.readdirSync(notesDir).filter(f => f.endsWith('.md'));
 
+
+
+function getTags(src) {
+  const tagMatch = src.match(/tags:\s*\[([^\]]+)\]/);
+  if (!tagMatch) return [];
+  return tagMatch[1].split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+}
+
+const notesInfo = files.map(f => {
+  const src = fs.readFileSync(path.join(notesDir, f), 'utf8');
+  // 最初の # 見出しをタイトルに
+  const match = src.match(/^#\s*(.+)/m);
+  const title = match ? match[1].trim() : f.replace('.md', '');
+  const tags = getTags(src);
+  return { file: f, title, tags };
+});
+
+const tagMap = {};
+notesInfo.forEach(note => {
+  if (note.tags.length === 0) {
+    if (!tagMap['タグなし']) tagMap['タグなし'] = [];
+    tagMap['タグなし'].push(note);
+  } else {
+    note.tags.forEach(tag => {
+      if (!tagMap[tag]) tagMap[tag] = [];
+      tagMap[tag].push(note);
+    });
+  }
+});
+
+
+let linksByTag = '';
+Object.keys(tagMap).forEach(tag => {
+  linksByTag += `<h2 style="font-size:1em;opacity:0.7;">${tag}</h2>\n<ul>\n`;
+  linksByTag += tagMap[tag].map(note =>
+    `<li><a href="${note.file.replace('.md', '.html')}" rel="noopener noreferrer">${note.title}</a></li>`
+  ).join('\n');
+  linksByTag += `\n</ul>\n`;
+});
+
+
+const notesHtml = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ノート一覧</title>
+  <style>
+    body { font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif; background: #f7f8fa; color: #222; }
+    .note-list { max-width: 600px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 4px 24px #0001; }
+    h1 { color: #2b6cb0; }
+    h2 { color: #3182ce; margin-top: 2em; }
+    ul { padding-left: 1.2em; }
+    a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+    a:hover { color: #2c5282; }
+
+    .note-tags {
+      margin-bottom: 0.5em;
+      font-size: 0.78em;
+      opacity: 0.6;
+      text-align: left;
+    }
+    .note-tags .tag {
+      background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+      color: #fff;
+      border-radius: 6px;
+      padding: 0.15em 0.7em;
+      margin-right: 0.3em;
+      font-size: 0.78em;
+      display: inline-block;
+      vertical-align: middle;
+      box-shadow: 0 2px 8px #2193b022;
+      letter-spacing: 0.03em;
+      border: none;
+    }
+    .note-tags-hr {
+      border: none;
+      border-top: 1px solid #bcd;
+      margin: 0.7em 0 1.2em 0;
+    }
+
+    #backToNotesBtn {
+      position: fixed;
+      top: 1.2em;
+      left: 1.2em;
+      z-index: 1000;
+      padding: 0.6em 1.2em;
+      border-radius: 32px;
+      background: #7ed957; /* 黄緑色 */
+      color: #fff;
+      font-size: 1em;
+      font-weight: 500;
+      border: none;
+      box-shadow: 0 2px 8px #2193b022;
+      cursor: pointer;
+      opacity: 0.92;
+      transition: opacity 0.2s, background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #backToNotesBtn:hover {
+      opacity: 1;
+      background: #5bbf2b; /* 濃い黄緑色 */
+    }
+
+    #scrollTopBtn {
+      /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+      background: #3182ce !important; /* 青色 */
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 2px 8px #0002;
+      font-size: 1.1em;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s, background 0.2s;
+      display: inline-block;
+      position: fixed;
+      right: 2.2em;
+      bottom: 2.2em;
+      z-index: 999;
+      padding: 0.7em 1.2em;
+      border-radius: 50px;
+    }
+    #scrollTopBtn:hover {
+      opacity: 1;
+      background: #205493 !important; /* 濃い青色 */
+    }
+  </style>
+</head>
+<body>
+  <div class="note-list">
+    <h1>ノート一覧</h1>
+    ${linksByTag}
+    <a href="/" style="display:block;margin-top:2em;">トップページへ戻る</a>
+  </div>
+</body>
+</html>
+`;
+
 files.forEach(file => {
   const src = fs.readFileSync(path.join(notesDir, file), 'utf8');
-  // 1行目の見出しをタイトルに
-  const firstLine = src.split('\n')[0];
-  const match = firstLine.match(/^#\s*(.+)/);
-  const title = match ? match[1] : file.replace('.md', '');
+  // タグ行・---行を除外して本文だけ抽出
+  const body = src
+    .split('\n')
+    .filter(line => !/^tags:\s*\[.*\]/.test(line) && !/^---\s*$/.test(line))
+    .join('\n');
 
-  const rendered = md.render(src).replace(/<pre class="language-/g, '<pre class="line-numbers language-');
+  const match = body.match(/^#\s*(.+)/m);
+  const title = match ? match[1].trim() : file.replace('.md', '');
+
+  const tags = getTags(src);
+  const tagsHtml = tags.length
+    ? `<div class="note-tags"><span class="tag">${tags.join('</span><span class="tag">')}</span></div>`
+    : '';
+  const backLink = `<div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>`;
+
+  const rendered = md.render(body).replace(/<pre class="language-/g, '<pre class="line-numbers language-');
+
+  const backLinkBtn = `<a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>`;
 
   const html = `
   <!DOCTYPE html>
@@ -130,25 +281,66 @@ files.forEach(file => {
           max-height: 32em; /* 1行1.28em×25行=32em程度で調整 */
           overflow-y: auto;
         }
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
     </style>
   </head>
   <body>
-    <div id="scrollTopBtn" style="
-  position: fixed;
-  right: 2.2em;
-  bottom: 2.2em;
-  z-index: 999;
-  padding: 0.7em 1.2em;
-  border-radius: 50px;
-  background: #3182ce;
-  color: #fff;
-  text-decoration: none;
-  box-shadow: 0 2px 8px #0002;
-  font-size: 1.1em;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  ">
+    <div id="scrollTopBtn">
   ↑ トップへ戻る
 </div>
 <script>
@@ -157,12 +349,11 @@ files.forEach(file => {
     return false;
   };
 </script>
-    <div class="note">
-      ${rendered}
-      <div style="margin-top:2em;">
-        <a href="/notes.html">ノート一覧に戻る</a>
-      </div>
-    </div>
+  ${backLinkBtn}
+  <div class="note">
+    ${rendered}
+    ${backLink}
+  </div>
 
     <!-- Prism.js & 言語 & line-numbers -->
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
@@ -183,8 +374,6 @@ files.forEach(file => {
             delimiters: [
             {left: "$$", right: "$$", display: true},
             {left: "$", right: "$", display: false},
-            {left: "\\(", right: "\\)", display: false},
-            {left: "\\[", right: "\\]", display: true}
             ],
             throwOnError: false
         });
@@ -198,39 +387,17 @@ files.forEach(file => {
 
 
 
-const links = files.map(f => {
-  const src = fs.readFileSync(path.join(notesDir, f), 'utf8');
-  const firstLine = src.split('\n')[0];
-  const match = firstLine.match(/^#\s*(.+)/);
-  const title = match ? match[1] : f.replace('.md', '');
-  return `<li><a href="${f.replace('.md', '.html')}" rel="noopener noreferrer">${title}</a></li>`;
-}).join('\n');
-
-const notesHtml = `
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>ノート一覧</title>
-  <style>
-    body { font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif; background: #f7f8fa; color: #222; }
-    .note-list { max-width: 600px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 4px 24px #0001; }
-    h1 { color: #2b6cb0; }
-    ul { padding-left: 1.2em; }
-    a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
-    a:hover { color: #2c5282; }
-  </style>
-</head>
-<body>
-  <div class="note-list">
-    <h1>ノート一覧</h1>
-    <ul>
-      ${links}
-    </ul>
-    <a href="/" style="display:block;margin-top:2em;">トップページへ戻る</a>
-  </div>
-</body>
-</html>
-`;
+// const links = files.map(f => {
+//   const src = fs.readFileSync(path.join(notesDir, f), 'utf8');
+//   const firstLine = src.split('\n')[0];
+//   const match = firstLine.match(/^#\s*(.+)/);
+//   const title = match ? match[1] : f.replace('.md', '');
+//   return `<li><a href="${f.replace('.md', '.html')}" rel="noopener noreferrer">${title}</a></li>`;
+// }).join('\n');
 
 fs.writeFileSync(path.join(distDir, 'notes.html'), notesHtml);
+
+
+
+
+
