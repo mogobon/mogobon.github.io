@@ -247,9 +247,9 @@ files.forEach(file => {
         .line-numbers-rows > span:before { color: #999; }
         
         /* KaTeX 改善版 */
-        .katex {
+        /*.katex {
         font-size: 1.1em;
-        }
+        }*/
         
         /* ディスプレイ数式の修正 */
         .katex-display {
