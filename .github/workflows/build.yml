@@ -44,6 +44,11 @@ jobs:
           path: dist/
           if-no-files-found: error
 
+      - name: Convert kyopro-note.md to HTML
+        run: |
+          pnpm add markdown-it markdown-it-katex prismjs markdown-it-prism prism-themes
+          node scripts/md2html.cjs
+
   deploy:
     runs-on: ubuntu-latest
     needs: build

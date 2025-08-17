@@ -210,6 +210,11 @@ function App() {
                 ADT→ABC Converter
               </a>
             </li>
+            <li>
+              <a href="/kyopro-note.html" target="_blank" rel="noopener noreferrer">
+                競プロノート
+              </a>
+            </li>
           </ul>
         </section>
 
