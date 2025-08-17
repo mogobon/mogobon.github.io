@@ -3,7 +3,7 @@
   <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>二分探索</title>
+    <title>論理</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">
@@ -166,46 +166,187 @@
 </script>
   <a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>
   <div class="note">
-    <h1>二分探索</h1>
+    <h1>論理</h1>
+<h2>論理のことば:</h2>
 <ul>
-<li>ある長さ$N$の数列$A=\lbrace A_0,A_1,\cdots,A_{N-1}\rbrace$を考えます。</li>
-<li>各添字$i$に対して真理値を返す判定関数$f(i)$を定義します。
+<li>論理結合子
 <ul>
-<li>これは「$i$を決めると対応する値$A_i$が定まり、その値に基づいて$f(i)$の真偽が決まる」という意味です。</li>
+<li>かつ</li>
+<li>または</li>
+<li>ならば</li>
+<li>〜でない</li>
 </ul>
 </li>
-<li>もし$f(i)$がある添字$i^{\ast}$を境に一様に切り替わるなら、このような数列は<strong>単調性を持つ</strong>と言います。
+<li>限定子
 <ul>
-<li>（例えば$i&lt;i^{\ast}$では常に偽、$i\geq i^{\ast}$では常に真）</li>
+<li>すべての$x$に対して〜</li>
+<li>ある$x$が存在して〜</li>
 </ul>
 </li>
-<li>単調性を持つ場合、境界$i^{\ast}$は二分探索を用いて時間計算量$O(\log N)$で求めることができます。</li>
 </ul>
-<h3>例</h3>
+<h2>文の範囲</h2>
 <ul>
-<li>長さ$N$の数列$A=\lbrace A_0,A_1,\cdots,A_{N-1}\rbrace$ が単調増加列のとき、$A_{i} \geq k$ となる最小の $i$ を、時間計算量${O(\log N)}$で求めることができます。</li>
-</ul>
-<pre class="line-numbers language-python"><code class="language-python">ok<span class="token punctuation">,</span>ng <span class="token operator">=</span> n<span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span>
-<span class="token keyword">while</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>ok<span class="token operator">-</span>ng<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">:</span>
-    mid <span class="token operator">=</span> <span class="token punctuation">(</span>ok<span class="token operator">+</span>ng<span class="token punctuation">)</span> <span class="token operator">>></span> <span class="token number">1</span>
-    <span class="token keyword">if</span> f<span class="token punctuation">(</span>mid<span class="token punctuation">)</span> <span class="token operator">>=</span> k<span class="token punctuation">:</span>
-        ok <span class="token operator">=</span> mid
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        ng <span class="token operator">=</span> mid
-</code></pre>
-<p>次は同じものです。</p>
+<li>
+<p>文の正しさを表す2つの値（真理値）がある。</p>
 <ul>
-<li>$A_i\geq k$となる最小の${i}$</li>
-<li>$A_i&lt; k$となる要素の個数</li>
-<li><code>bisect_left(A, k)</code></li>
+<li>真: 「正しい」ことを表す値</li>
+<li>偽: 「正しくない」ことを表す値</li>
 </ul>
-<p>同様にして、次は同じものです。</p>
+</li>
+</ul>
+<p>対象となる文の範囲は次に定義される述語である。</p>
+<p>※ <strong>変数</strong>$x_1,\dots,x_n, (n = 0,1,2,…)$の動く範囲が定まっていると仮定している。</p>
+<aside>
+<p><strong>$x_1,\dots,x_n$についての述語 $(n = 0,1,2,…)$</strong></p>
+<ol>
+<li><strong>$x_1,\dots,x_n$についての文</strong>である</li>
+<li>$x_1,\dots,x_n$を具体的な「もの」で置き換えると<strong>真理値が判定できる</strong></li>
+</ol>
+</aside>
 <ul>
-<li>$A_i &gt; k$となる最小の$i$</li>
-<li>$A_i \leq k$となる要素の個数</li>
-<li><code>bisect_right(A, k)</code></li>
+<li>
+<p>特に, $n = 0$ の時, <strong>0変数の述語を命題</strong>という。</p>
+</li>
+<li>
+<p>すなわち、（変数を適当なものに置き換えずに）命題は真理値が判定できる文である。</p>
+</li>
+<li>
+<p>「述語」は「条件」と言い換えて良い。</p>
+</li>
 </ul>
+<p>例:</p>
+<p>$n,k$は正の整数とする。</p>
+<ul>
+<li>
+<p>$n = 2k$</p>
+<ol>
+<li>$x_1,x_2$ = $n,k$として, $n,k$についての文である</li>
+<li>$n,k$ に適当な正の整数で置き換えると真理値が判定できる
+<ol>
+<li>$4 = 2\times2$: 真</li>
+<li>$4 = 2\times3$: 偽</li>
+</ol>
+</li>
+</ol>
+<p>→ $n = 2k$ は $n, k$ についての述語である。</p>
+<p>逆に, $x_1 = n$ として$n$についての文とし、文が$n$についての述語であるかを確かめてみる。</p>
+<ol start="3">
+<li>$n$ に適当な正の整数を入れてみると…
+<ol>
+<li>$4 = 2k$: 不定($k$の値に依存する)</li>
+<li>$5 = 2k$: 不定($k$の値に依存する)</li>
+</ol>
+</li>
+</ol>
+<p>→ $n = 2k$ は $n$についての述語ではない</p>
+</li>
+<li>
+<p>ある$k$ が存在して $n = 2k$である</p>
+<ol>
+<li>$x_1 = n$として$n$の文である</li>
+<li>$n$を適当な正の整数で置き換えると真理値が判定できる
+<ol>
+<li>ある $k$ が存在して $4 = 2k$である: 真($k = 2$が存在するから)</li>
+<li>ある $k$ が存在して $5 = 2k$である: 偽($2$倍して$5$になる$k$は存在しないから)</li>
+</ol>
+</li>
+</ol>
+<p>逆に, $x_1,x_2 = n,k$として$n,k$についての文としてみる。</p>
+<p>文が$n,k$についての述語かどうかを確かめてみる。</p>
+<ol>
+<li>$n,k$ に適当な正の整数を入れてみると…
+<ol>
+<li>ある $5$ が存在して $6 = 2\times5$である:
+<ul>
+<li>「ある$k$が存在して」がもつ自由度(性)を$k=2$だけに限定してしまっている。</li>
+<li>元の文と異なる文になってしまった。</li>
+</ul>
+</li>
+<li>ある $2$ が存在して $4 = 2\times2$である:
+<ul>
+<li>「ある$k$が存在して$P(n,k)$」の主張を無視している</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>→ 述語の変数は何か？は適切に考える必要がある</p>
+<p>→ $n,k$ についての述語ではない。</p>
+</li>
+<li>
+<p>$n$ は, $k$を用いて$2k$と表現できる</p>
+<ol>
+<li>$x_1 = n$として$n$についての文である</li>
+<li>$n$を適当な正の値を入れると真理値が定まる
+<ol>
+<li>$6$は$k$を用いて$2k$と表現できる: 真($2$倍して$6$になる値$k=3$が存在)</li>
+</ol>
+</li>
+</ol>
+<p>→上の文と同値</p>
+</li>
+</ul>
+<p>約束</p>
+<ul>
+<li>以降$P,Q,R$は述語とする</li>
+<li>$P$が$x$についての述語のとき、$P(x)$と書く</li>
+</ul>
+<p>述語の例:</p>
+<ul>
+<li>$x = 0$
+<ul>
+<li>$x$についての文</li>
+<li>$x$を適当な数に置き換えると真理値が定まる</li>
+<li>→ $x$についての述語だから$P(x)$と表せる</li>
+<li>$P(x) = 「x = 0」$</li>
+</ul>
+</li>
+<li>$x &gt; 1$
+<ul>
+<li>同上</li>
+<li>$P(x) = 「x &gt; 1」$</li>
+</ul>
+</li>
+<li>$x = y$
+<ul>
+<li>$x$を定めても$y$の値によっては真にも偽にもなり得る（真理値が定まらない）</li>
+<li>$P(x)$とは表せない</li>
+<li>$x,y$についての文である</li>
+<li>$x, y$を適当な値で置き換えると真理値が定まる</li>
+<li>$P(x,y) = 「x = y」$</li>
+</ul>
+</li>
+<li>$1 = 2$
+<ul>
+<li>$0$変数の文である</li>
+<li>真理値が定まる</li>
+<li>$P = 「1 = 2」$</li>
+<li>$P$は0変数の述語（命題）である</li>
+</ul>
+</li>
+</ul>
+<!--## 競プロとの絡み
 
+「$A$以上$B$以下の整数のうち、$100$の約数であるものは**存在しますか？**」
+
+$x \in [A, B]$について、以下の判定問題を解き、Trueであるものを探索することと同じです。
+
+探索中にTrueである整数$x$が、見つかったとき、Yesを返します。
+
+「ある$k$が存在して$100 = xk$である」
+「$x$は、ある$k$を用いて$100 = xk$と表現できる」
+
+「$x|100$（である）」
+
+「$100$を$x$で割ったあまりは$0$である」
+
+「`100\%x = 0`」
+
+探索に`True`である整数$x$が、見つからなかったとき、`No`を返します。
+
+https://x.gd/MdbCe
+
+-->
     <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
   </div>
 
