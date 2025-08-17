@@ -33,7 +33,8 @@ function App() {
   const [timeline] = createSignal([
     { date: '2024-12-09', event: 'AHC040の日記を書きました' },
     { date: '2024-11-20', event: 'ホームページの見た目を整えました' },
-    { date: '2025-03-28', event: 'ADT→ABC Converterをおきました' }
+    { date: '2025-03-28', event: 'ADT→ABC Converterをおきました' },
+    { date: '2025-08-17', event: '競プロノート一覧をおきました' },
   ]);
   
   const [particlesInitialized, setParticlesInitialized] = createSignal(false);
@@ -211,8 +212,8 @@ function App() {
               </a>
             </li>
             <li>
-              <a href="/kyopro-note.html" target="_blank" rel="noopener noreferrer">
-                競プロノート
+              <a href="/notes.html" target="_blank" rel="noopener noreferrer">
+                競プロノート一覧
               </a>
             </li>
           </ul>
