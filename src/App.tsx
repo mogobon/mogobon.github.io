@@ -212,7 +212,7 @@ function App() {
               </a>
             </li>
             <li>
-              <a href="/notes.html" target="_blank" rel="noopener noreferrer">
+              <a href="/notes.html" rel="noopener noreferrer">
                 競プロノート一覧
               </a>
             </li>

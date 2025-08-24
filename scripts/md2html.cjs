@@ -9,11 +9,32 @@ require('prismjs/components/prism-python');
 require('prismjs/components/prism-javascript');
 require('prismjs/plugins/line-numbers/prism-line-numbers');
 
+function markdownItProtectMath(md) {
+  md.inline.ruler.before('emphasis', 'math_protect', function(state, silent) {
+    const start = state.pos;
+    if (state.src[start] !== '$') return false;
+    let match = state.src.slice(start).match(/^\${2}([\s\S]+?)\${2}/);
+    if (!match) return false;
+    if (!silent) {
+      const token = state.push('math_block', '', 0);
+      token.content = match[1];
+    }
+    state.pos += match[0].length;
+    return true;
+  });
+
+  md.renderer.rules.math_block = function(tokens, idx) {
+    return `<div>$$${tokens[idx].content}$$</div>`;
+  };
+}
+
+// MarkdownItインスタンス生成
 const md = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
 })
+  .use(markdownItProtectMath)
   .use(markdownItPrism, {
     plugins: ['line-numbers'],
     preAttributes: { class: 'line-numbers' }
@@ -58,7 +79,7 @@ let linksByTag = '';
 Object.keys(tagMap).forEach(tag => {
   linksByTag += `<h2 style="font-size:1em;opacity:0.7;">${tag}</h2>\n<ul>\n`;
   linksByTag += tagMap[tag].map(note =>
-    `<li><a href="${note.file.replace('.md', '.html')}" rel="noopener noreferrer">${note.title}</a></li>`
+    `<li><a href="${note.file.replace('.md', '.html')}">${note.title}</a></li>`
   ).join('\n');
   linksByTag += `\n</ul>\n`;
 });
@@ -287,7 +308,7 @@ files.forEach(file => {
 
         /* コードブロックが25行以上の場合スクロール */
         pre.line-numbers {
-          max-height: 32em; /* 1行1.28em×25行=32em程度で調整 */
+          max-height: 64em; /* 1行1.28em×50行=64em程度で調整 */
           overflow-y: auto;
         }
 
@@ -371,6 +392,33 @@ files.forEach(file => {
   </div>
 
     <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
@@ -378,7 +426,23 @@ files.forEach(file => {
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <script>
-        Prism.highlightAll();
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
     </script>
     <!-- KaTeX本体とauto-render拡張 -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
