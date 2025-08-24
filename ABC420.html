@@ -1,0 +1,415 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>ABC420振り返り</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+         /*padding-top: 0.2em;*/
+          padding-bottom: 0.1065em;
+        }
+        
+        .line-numbers-rows > span:before { color: #999; }
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+        /* コードブロックが25行以上の場合スクロール */
+        pre.line-numbers {
+          max-height: 64em; /* 1行1.28em×50行=64em程度で調整 */
+          overflow-y: auto;
+        }
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div>
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  <a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>
+  <div class="note">
+    <h1>ABC420振り返り</h1>
+<h2>コンテスト結果</h2>
+<ul>
+<li>ooo(2)–</li>
+<li>レート差分: 565(-9)</li>
+</ul>
+<h2>A問題</h2>
+<h3>問題概要</h3>
+<p>$X$月後の$Y$ヶ月後を求めよ。$(1\leq X,Y\leq12)$</p>
+<ul>
+<li><a href="https://atcoder.jp/contests/abc420/tasks/abc420_a">問題リンク</a></li>
+</ul>
+<h3>考えたこと</h3>
+<ul>
+<li><code>l = [1,2,...,12]</code>を用意する。</li>
+<li>$X$月は<code>l[X-1]</code>である。</li>
+<li>現在の値から<code>+Y</code>だけすればいい。</li>
+<li>ただし周期性があるので、要素の個数で割った時のあまりにする。</li>
+<li>求める答えは、<code>l[(X-1+Y)%12]</code></li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+x<span class="token punctuation">,</span>y <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">[</span><span class="token punctuation">(</span>x<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">+</span> y<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<p><a href="https://atcoder.jp/contests/abc420/submissions/68735026">コンテスト時の提出コード</a></p>
+<h2>B問題</h2>
+<ul>
+<li><a href="https://atcoder.jp/contests/abc420/tasks/abc420_b">問題リンク</a></li>
+</ul>
+<h3>考えたこと</h3>
+<ul>
+<li>誤読により行ごとに総和をとっていた。</li>
+<li>二次元配列<code>a</code>に対して<code>zip(*a)</code>で転置を取れる。</li>
+<li>これにより、横持ちデータを縦持ちデータに書き換える。</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">n<span class="token punctuation">,</span>m<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    a <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    a <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    s<span class="token punctuation">.</span>append<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token operator">*</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+p <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>n
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> t <span class="token operator">>=</span> <span class="token punctuation">(</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span> p<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+=</span><span class="token number">1</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span> p<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+=</span><span class="token number">1</span>
+
+mx <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+mxidx <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> p<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> mx<span class="token punctuation">:</span>mxidx<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token operator">*</span>mxidx<span class="token punctuation">)</span>
+</code></pre>
+<p><a href="https://atcoder.jp/contests/abc420/submissions/68744858">コンテスト時の提出コード</a></p>
+<h2>C問題</h2>
+<ul>
+<li><a href="https://atcoder.jp/contests/abc420/tasks/abc420_c">問題リンク</a></li>
+</ul>
+<h3>考えたこと</h3>
+<ul>
+<li>$X_i,Y_i$だけ影響するので、そこだけ考えればいいということはすぐに思いつく。</li>
+<li>そこからの処理で<strong>複雑な場合分け</strong>を書いてしまい大失敗。
+<ul>
+<li><strong>定番の沼</strong></li>
+</ul>
+</li>
+<li>2ペナした後、全ての方針を捨てて、１から考え直した。</li>
+<li>式変形にして差分を陽に書き出した。</li>
+</ul>
+<h3>式変形</h3>
+<ul>
+<li>書き換える前の配列: $A,\ B$</li>
+<li>書き変わった後の配列: $A^{\prime},\ B^{\prime}$</li>
+<li>「(新しいの式) - (現在の式) = (差分)」とする。</li>
+<li>（差分）が簡単に計算できれば、(新しいの式)を次のようにして、導出できる。</li>
+<li>「(新しいの式) = (現在の式) + (差分)」</li>
+</ul>
+<p>（差分）は次のように表せる。</p>
+<p><div>$$
+\begin{aligned}
+ &\sum_{j=1}^{N}\min(A^{\prime}_j,B^{\prime}_j) - \sum_{j=1}^{N}\min(A_j,B_j) \\
+=& \left(
+    \min(A^{\prime}_i,B^{\prime}_i)
+    + \sum_{\substack{j=1 \\ j\neq i}}^{N}\min(A_j,B_j)
+\right)- \left(
+    \min(A_i,B_i)
+    + \sum_{\substack{j=1 \\ j\neq i}}^{N}\min(A_j,B_j)
+\right) \\
+=& \min(A^{\prime}_i,B^{\prime}_i)- \min(A_i,B_i)
+\end{aligned}
+$$</div></p>
+<ul>
+<li>最終行は、更新前の$A_i,B_i$を保存しておけば、簡単に計算できる。</li>
+<li>更新後の$A^{\prime}_i,B^{\prime}_i$はクエリで与えられる。</li>
+<li>よって、各クエリでこの（差分）は$O(1)$で計算できる。</li>
+</ul>
+<pre class="line-numbers language-python"><code class="language-python">n<span class="token punctuation">,</span>q<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+a<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+b<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+sm <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> b<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">:</span> sm <span class="token operator">+=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span> sm <span class="token operator">+=</span> b<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    op<span class="token punctuation">,</span>idx<span class="token punctuation">,</span>x <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    idx <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span>
+    v <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    olda<span class="token punctuation">,</span>oldb <span class="token operator">=</span> a<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">,</span>b<span class="token punctuation">[</span>idx<span class="token punctuation">]</span>
+    <span class="token keyword">if</span> op <span class="token operator">==</span> <span class="token string">"A"</span><span class="token punctuation">:</span> a<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> v
+    <span class="token keyword">else</span><span class="token punctuation">:</span> b<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> v
+
+    t1 <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">,</span> b<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    t2 <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>olda<span class="token punctuation">,</span>oldb<span class="token punctuation">)</span>
+    res <span class="token operator">=</span> t1 <span class="token operator">-</span> t2
+    sm <span class="token operator">+=</span> res
+    <span class="token keyword">print</span><span class="token punctuation">(</span>sm<span class="token punctuation">)</span>
+</code></pre>
+<p><a href="https://atcoder.jp/contests/abc420/submissions/68766081">コンテスト時の提出コード</a></p>
+<h2>反省</h2>
+<ul>
+<li>前回から悪化している点
+<ul>
+<li>焦りすぎた。</li>
+<li>若干体調管理もできていなくて、頭痛薬をぶち込んだがあんまり治らず、それゆえに余計焦ったのもある。</li>
+<li>前のめりになりすぎた。</li>
+<li>D問題は「再帰全探索」だと思い込んでしまった。
+<ul>
+<li>∵ 「数時間前に解いた問題に引っ張られがち」の悪癖による。</li>
+</ul>
+</li>
+<li>BFSの考察が生えなかったのは自分の中での知識不足な気がする。
+<ul>
+<li>次のように考えればBFSが出たかもしれない。
+<ol>
+<li>「操作回数の最小値」</li>
+<li>「移動回数の最小値」</li>
+<li>「移動距離の最小化」</li>
+<li>「最短距離」</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>今回良かった点
+<ul>
+<li>C問題で場合分けの方針を全部捨てたこと
+<ul>
+<li>もっと早く捨てたらなお良かった。50分強（+ペナ2）かかってるし。</li>
+</ul>
+</li>
+<li><code>zip(*二次元配列)</code>を転置した<code>[(a_{*0}),(a_{*1}),...,(a_{*n})]</code>を適用できた。
+<ul>
+<li>役にたつかはわからない。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
