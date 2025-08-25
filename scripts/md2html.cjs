@@ -7,7 +7,7 @@ require('prismjs/components/prism-c');
 require('prismjs/components/prism-cpp');
 require('prismjs/components/prism-python');
 require('prismjs/components/prism-javascript');
-require('prismjs/plugins/line-numbers/prism-line-numbers');
+// require('prismjs/plugins/line-numbers/prism-line-numbers');
 
 function markdownItProtectMath(md) {
   md.inline.ruler.before('emphasis', 'math_protect', function(state, silent) {
@@ -36,8 +36,8 @@ const md = new MarkdownIt({
 })
   .use(markdownItProtectMath)
   .use(markdownItPrism, {
-    plugins: ['line-numbers'],
-    preAttributes: { class: 'line-numbers' }
+    // plugins: ['line-numbers'],
+    // preAttributes: { class: 'line-numbers' }
   });
 
 const notesDir = path.join(__dirname, '../notes');
@@ -209,7 +209,8 @@ files.forEach(file => {
     : '';
   const backLink = `<div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>`;
 
-  const rendered = md.render(body).replace(/<pre class="language-/g, '<pre class="line-numbers language-');
+//   const rendered = md.render(body).replace(/<pre class="language-/g, '<pre class="line-numbers language-');
+  const rendered = md.render(body);
 
   const backLinkBtn = `<a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>`;
 
@@ -221,7 +222,7 @@ files.forEach(file => {
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
     <style>
         body {
         background: #f7f8fa;
@@ -254,10 +255,10 @@ files.forEach(file => {
         font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
         font-size: 94%;
         }
-        pre.line-numbers > code {
+        <!--pre.line-numbers > code {
             padding-top: 0.1em; /* お好みで調整 */
             position: relative;
-        }
+        }-->
         code:not([class*="language-"]) {
           background: #f5f2f0;
           color: #c7254e;
@@ -268,13 +269,14 @@ files.forEach(file => {
         }
 
         /* 行番号 */
+        /*
         .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
         .line-numbers .line-numbers-rows > span {
-         /*padding-top: 0.2em;*/
+          padding-top: 0.2em;
           padding-bottom: 0.1065em;
-        }
-        
-        .line-numbers-rows > span:before { color: #999; }
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
         
         /* KaTeX 改善版 */
         /*.katex {
@@ -424,7 +426,7 @@ files.forEach(file => {
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
     <script>
       Prism.highlightAll();
       // コードブロックにコピーボタン追加
