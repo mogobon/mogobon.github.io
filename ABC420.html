@@ -6,7 +6,7 @@
     <title>ABC420振り返り</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
     <style>
         body {
         background: #f7f8fa;
@@ -39,10 +39,10 @@
         font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
         font-size: 94%;
         }
-        pre.line-numbers > code {
+        <!--pre.line-numbers > code {
             padding-top: 0.1em; /* お好みで調整 */
             position: relative;
-        }
+        }-->
         code:not([class*="language-"]) {
           background: #f5f2f0;
           color: #c7254e;
@@ -53,13 +53,14 @@
         }
 
         /* 行番号 */
+        /*
         .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
         .line-numbers .line-numbers-rows > span {
-         /*padding-top: 0.2em;*/
+          padding-top: 0.2em;
           padding-bottom: 0.1065em;
-        }
-        
-        .line-numbers-rows > span:before { color: #999; }
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
         
         /* KaTeX 改善版 */
         /*.katex {
@@ -192,11 +193,47 @@
 <li>ただし周期性があるので、要素の個数で割った時のあまりにする。</li>
 <li>求める答えは、<code>l[(X-1+Y)%12]</code></li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<pre class="language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
 x<span class="token punctuation">,</span>y <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">[</span><span class="token punctuation">(</span>x<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">+</span> y<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 </code></pre>
 <p><a href="https://atcoder.jp/contests/abc420/submissions/68735026">コンテスト時の提出コード</a></p>
+<ul>
+<li>（補足）</li>
+<li>対応する0-idxに<code>x-1</code>で<code>+y</code>し, 1-idxに戻すやりかたの方が簡潔。</li>
+<li>0-idxの数は、+1だけずらせば、それに対応する1-idxの数になる</li>
+<li>逆に 1-idxの数は、-1だけずらせば、それに対応する0-idxの数になる。</li>
+</ul>
+<ol>
+<li><code>x</code>
+<ul>
+<li>与えられる<code>x</code>は1-idxの数</li>
+</ul>
+</li>
+<li><code>x-1</code>
+<ul>
+<li>対応する0-idxの数にする</li>
+</ul>
+</li>
+<li><code>(x-1)+y</code>
+<ul>
+<li>相対的な位置関係は維持される</li>
+</ul>
+</li>
+<li><code>((x-1)+y)%12</code>
+<ul>
+<li>周期性より、<code>(x-1)+y</code>は、<code>mod</code>をとった、<code>((x-1)+y)%12</code>と同じ</li>
+</ul>
+</li>
+<li><code>((x-1)+y)%12 + 1</code>
+<ul>
+<li><code>+1</code>して対応する1-idxの数に戻る。</li>
+</ul>
+</li>
+</ol>
+<pre class="language-python"><code class="language-python">x<span class="token punctuation">,</span>y <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span>y<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">12</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+</code></pre>
 <h2>B問題</h2>
 <ul>
 <li><a href="https://atcoder.jp/contests/abc420/tasks/abc420_b">問題リンク</a></li>
@@ -207,7 +244,7 @@ x<span class="token punctuation">,</span>y <span class="token operator">=</span>
 <li>二次元配列<code>a</code>に対して<code>zip(*a)</code>で転置を取れる。</li>
 <li>これにより、横持ちデータを縦持ちデータに書き換える。</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python">n<span class="token punctuation">,</span>m<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-python"><code class="language-python">n<span class="token punctuation">,</span>m<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 s <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
 <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
     a <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -275,7 +312,7 @@ $$</div></p>
 <li>更新後の$A^{\prime}_i,B^{\prime}_i$はクエリで与えられる。</li>
 <li>よって、各クエリでこの（差分）は$O(1)$で計算できる。</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python">n<span class="token punctuation">,</span>q<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="language-python"><code class="language-python">n<span class="token punctuation">,</span>q<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 a<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 b<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 sm <span class="token operator">=</span> <span class="token number">0</span>
@@ -376,7 +413,7 @@ sm <span class="token operator">=</span> <span class="token number">0</span>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
     <script>
       Prism.highlightAll();
       // コードブロックにコピーボタン追加
