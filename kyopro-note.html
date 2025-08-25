@@ -35,6 +35,12 @@
         border-radius: 6px;
         margin: 1.5em 0;
         }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
         code[class*="language-"], pre[class*="language-"] {
         font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
         font-size: 94%;
@@ -92,11 +98,7 @@
         hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
         ul { padding-left: 1.2em; }
 
-        /* コードブロックが25行以上の場合スクロール */
-        pre.line-numbers {
-          max-height: 64em; /* 1行1.28em×50行=64em程度で調整 */
-          overflow-y: auto;
-        }
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
 
         aside {
           display: block;
