@@ -49,7 +49,11 @@ const files = fs.readdirSync(notesDir).filter(f => f.endsWith('.md'));
 function getTags(src) {
   const tagMatch = src.match(/tags:\s*\[([^\]]+)\]/);
   if (!tagMatch) return [];
-  return tagMatch[1].split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+  // カンマ区切り形式: tags: [tag1, tag2, tag3]
+  let arr = tagMatch[1].replace(/\\,/g, '<<COMMA>>').split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
+  // 置換を元に戻す
+  arr = arr.map(s => s.replace(/<<COMMA>>/g, ','));
+  return arr;
 }
 
 const notesInfo = files.map(f => {

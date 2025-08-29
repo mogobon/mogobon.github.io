@@ -1,4 +1,4 @@
-tags: [典型, クエリ処理, ∀i∀j型, 状態を圧縮して考える]
+tags: [典型, クエリ処理, ∀i∀j型, 状態を圧縮して考える, 写像更新]
 ---
 # 【ABC342C】Many Replacement
 [問題リンク](https://atcoder.jp/contests/abc342/tasks/abc342_c)
