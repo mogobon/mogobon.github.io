@@ -212,7 +212,7 @@ files.forEach(file => {
 //   const rendered = md.render(body).replace(/<pre class="language-/g, '<pre class="line-numbers language-');
   const rendered = md.render(body);
 
-  const backLinkBtn = `<a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>`;
+  // const backLinkBtn = `<a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>`;
 
   const html = `
   <!DOCTYPE html>
@@ -380,16 +380,16 @@ files.forEach(file => {
     </style>
   </head>
   <body>
-    <div id="scrollTopBtn">
+    <!-- <div id="scrollTopBtn">
   ↑ トップへ戻る
-</div>
+</div> -->
 <script>
   document.getElementById('scrollTopBtn').onclick = function() {
     window.scrollTo({top:0,behavior:'smooth'});
     return false;
   };
 </script>
-  ${backLinkBtn}
+  
   <div class="note">
     ${rendered}
     ${backLink}
