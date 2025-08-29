@@ -1,0 +1,519 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>精進記録</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>精進記録</h1>
+<h1>2025/08/26?</h1>
+<pre class="language-python"><code class="language-python">n<span class="token punctuation">,</span>w<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+l <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+l<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token operator">-</span>x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+weight <span class="token operator">=</span> <span class="token number">0</span>
+ans <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> weight <span class="token operator">+</span> l<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&lt;=</span> w<span class="token punctuation">:</span>
+        weight <span class="token operator">+=</span> l<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        ans <span class="token operator">+=</span> l<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>l<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        ans <span class="token operator">+=</span> l<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">(</span>w <span class="token operator">-</span> weight<span class="token punctuation">)</span>
+        weight <span class="token operator">+=</span> w <span class="token operator">-</span> weight
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+
+</code></pre>
+<h1>2025/08/26</h1>
+<pre class="language-python"><code class="language-python">n<span class="token punctuation">,</span>m<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+c<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+d2p<span class="token punctuation">,</span>p2d<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+K<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    k<span class="token punctuation">,</span><span class="token operator">*</span>a<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span><span class="token builtin">int</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    k <span class="token operator">+=</span> <span class="token number">1</span>
+    d2p<span class="token punctuation">.</span>append<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    K<span class="token punctuation">.</span>append<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+<span class="token comment"># print(d2p)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>K<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        p2d<span class="token punctuation">[</span>d2p<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token comment"># print(p2d)</span>
+
+ans <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">18</span> <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
+<span class="token keyword">for</span> tri <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">**</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 何かわからない（迷った時にcntが何かわからない）</span>
+    <span class="token comment"># 各動物が何回数えられるか</span>
+    cnt <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+    <span class="token comment"># nowtri = tri</span>
+    visits <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>n <span class="token comment"># 訪れた回数を管理(forの中でできる)</span>
+    <span class="token comment"># visits_cnt変数名わかりにくい</span>
+    
+    <span class="token comment"># 非常に見やすくない</span>
+    <span class="token comment"># for t in range(n):</span>
+    <span class="token comment">#     f = nowtri % 3</span>
+    <span class="token comment">#     visit_cnt[t] = f</span>
+    <span class="token comment">#     for j in range(len(p2d[t])):</span>
+    <span class="token comment">#         cnt[p2d[t][j]] += f</span>
+    <span class="token comment">#     nowtri //= 3</span>
+
+    <span class="token comment"># Oは変わらないので、処理を分割する（定数倍が通ると信じて）</span>
+    t <span class="token operator">=</span> tri
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        visits<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> t <span class="token operator">%</span> <span class="token number">3</span>
+        t <span class="token operator">//=</span> <span class="token number">3</span>
+
+    <span class="token comment"># visits -> cnt</span>
+    <span class="token keyword">for</span> zoo <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        v <span class="token operator">=</span> visits<span class="token punctuation">[</span>zoo<span class="token punctuation">]</span>
+        <span class="token keyword">for</span> animal <span class="token keyword">in</span> p2d<span class="token punctuation">[</span>zoo<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            cnt<span class="token punctuation">[</span>animal<span class="token punctuation">]</span> <span class="token operator">+=</span> v
+    
+    <span class="token comment"># 全ての動物が2回以上見られるか？</span>
+    ok <span class="token operator">=</span> <span class="token boolean">True</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> cnt<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
+            ok <span class="token operator">=</span> <span class="token boolean">False</span>
+            <span class="token keyword">break</span>
+    <span class="token keyword">if</span> ok<span class="token punctuation">:</span>
+        pay <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment"># pay += c[i] * f # 原因</span>
+            pay <span class="token operator">+=</span> c<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> visits<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        
+        ans <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> pay<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+
+
+<span class="token comment"># ans = 10**18 + 1</span>
+<span class="token comment"># from collections import defaultdict</span>
+<span class="token comment"># for tri in range(3**n):</span>
+<span class="token comment">#     cnt = defaultdict(int)</span>
+<span class="token comment">#     nowtri = tri</span>
+<span class="token comment">#     for t in range(n):</span>
+<span class="token comment">#         f = nowtri % 3</span>
+<span class="token comment">#         for j in range(len(p2d[t])):</span>
+<span class="token comment">#             cnt[p2d[t][j]] += f</span>
+<span class="token comment">#         nowtri //= 3</span>
+    <span class="token comment"># for-elseで書かない方が処理が複雑にならずに</span>
+    <span class="token comment"># 追いやすい時もある（複雑な時は特に）</span>
+    <span class="token comment"># for-elseはまとめた書き方なので。</span>
+<span class="token comment">#     for i in range(m):</span>
+<span class="token comment">#         if cnt[i] &lt; 2:</span>
+<span class="token comment">#             break</span>
+<span class="token comment">#     else:</span>
+<span class="token comment">#         pay = 0</span>
+<span class="token comment">#         for i in range(n):</span>
+<span class="token comment">#             pay += c[i] * f # 原因</span>
+
+<span class="token comment">#         ans = min(ans, pay)</span>
+<span class="token comment"># print(ans)</span>
+
+
+    
+
+</code></pre>
+<h1>2025/08/28</h1>
+<pre class="language-python"><code class="language-python"><span class="token comment"># cook your dish here</span>
+n<span class="token punctuation">,</span> x <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+a <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">from</span> bisect <span class="token keyword">import</span> bisect_left<span class="token punctuation">,</span> bisect_right
+
+<span class="token comment"># x &lt;= a[i]となる最小のi</span>
+a<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token punctuation">)</span>
+l <span class="token operator">=</span> bisect_left<span class="token punctuation">(</span>a<span class="token punctuation">,</span>x<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"YES"</span> <span class="token keyword">if</span> a<span class="token punctuation">[</span>l<span class="token punctuation">]</span><span class="token operator">==</span>x <span class="token keyword">else</span> <span class="token string">"NO"</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># print("YES"if x in a else "NO")</span>
+
+
+<span class="token comment"># found = False</span>
+<span class="token comment"># for i in range(n):</span>
+<span class="token comment">#     if x == a[i]: </span>
+<span class="token comment">#         found = True</span>
+<span class="token comment"># print("YES"if found else "NO")</span>
+</code></pre>
+<p><a href="https://www.codechef.com/practice/course/arrays/ARRAYS/problems/UWCOI20A?tab=Help"></a></p>
+<pre class="language-python"><code class="language-python"><span class="token comment"># cook your dish here</span>
+t <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    
+    
+    n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    a <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># mx = -1</span>
+    <span class="token comment"># for i in range(n):</span>
+    <span class="token comment">#     mx = max(mx, a[i])</span>
+    <span class="token comment"># print(mx)</span>
+        
+
+
+<span class="token comment">#     a.sort()</span>
+<span class="token comment">#     print(a[-1])</span>
+
+    <span class="token comment"># print(sorted(a)[-1])</span>
+</code></pre>
+<pre class="language-python"><code class="language-python">t <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">while</span> t <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+    n<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment"># a = list(map(int, input().split()))</span>
+    t <span class="token operator">-=</span> <span class="token number">1</span>
+    prices <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>price<span class="token operator">-</span>y<span class="token punctuation">)</span> <span class="token keyword">for</span> price <span class="token keyword">in</span> prices<span class="token punctuation">)</span> <span class="token operator">+</span> x<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"COUPON"</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"NO COUPON"</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># 時系列</span>
+    
+    <span class="token comment"># Your code goes here</span>
+    <span class="token comment"># MAX_P = max(a)</span>
+    <span class="token comment"># dp = [[n*MAX_P+1]*(n*MAX_P+1)for _ in range(n+1)]</span>
+    <span class="token comment"># dp[0][0] = 0</span>
+    <span class="token comment"># for i in range(1,n+1):</span>
+    <span class="token comment">#     for j in range(MAX_P+1):</span>
+    <span class="token comment">#         dp[i][j] = min(dp[i-1][j]+x)</span>
+    
+    <span class="token comment"># original = sum(a)</span>
+    <span class="token comment"># use_coupon = 0</span>
+    <span class="token comment"># for i in range(n): use_coupon += max(0, a[i]-y)</span>
+    <span class="token comment"># use_coupon += x</span>
+    <span class="token comment"># print("COUPON"if use_coupon &lt; original else "NO COUPON")</span>
+        
+    <span class="token comment"># INF = 10**18</span>
+    <span class="token comment"># dp = [INF]*(n+1)</span>
+    <span class="token comment"># dp[0] = 0</span>
+    <span class="token comment"># for i in range(1,n+1):</span>
+    <span class="token comment">#     dp[i] = dp[i-1] + a[i-1]</span>
+    <span class="token comment">#     dp[i] = min(dp[i], dp[i-1] + max(a[i-1]-y,0) + x)</span>
+    
+    <span class="token comment"># print("COUPON"if original > dp[n] else"NO COUPON")</span>
+</code></pre>
+<pre class="language-python"><code class="language-python"><span class="token comment"># AC</span>
+<span class="token comment"># from heapq import heapify,heappop,heappush</span>
+<span class="token comment"># que=[]</span>
+<span class="token comment"># for x in a: que.append(-x)</span>
+<span class="token comment"># heapify(que)</span>
+<span class="token comment"># cnt = 0</span>
+<span class="token comment"># for t in range(m):</span>
+<span class="token comment">#     p = heappop(que)</span>
+<span class="token comment">#     p = -p</span>
+<span class="token comment">#     p //= 2</span>
+<span class="token comment">#     p = -p</span>
+<span class="token comment">#     p = heappush(que, p)</span>
+<span class="token comment"># ans =sum(-v for v in que)</span>
+<span class="token comment"># print(ans)</span>
+
+<span class="token comment"># WA</span>
+<span class="token comment"># for t in range(m):</span>
+<span class="token comment">#     if cnt >= m: break</span>
+<span class="token comment">#     p = heappop(que)</span>
+<span class="token comment">#     p = -p # せいにする</span>
+<span class="token comment">#     q = p</span>
+<span class="token comment">#     temp = 0</span>
+<span class="token comment">#     while q // 2 > 0:</span>
+<span class="token comment">#         q //= 2</span>
+<span class="token comment">#         temp += 1</span>
+<span class="token comment">#     p = -p # 負にする</span>
+<span class="token comment">#     cnt += temp</span>
+<span class="token comment">#     heappush(que, p//(2 ** cnt))</span>
+
+<span class="token comment"># ans = sum(-v for v in que)</span>
+<span class="token comment"># print(ans)</span>
+</code></pre>
+<pre class="language-python"><code class="language-python"><span class="token triple-quoted-string string">"""https://atcoder.jp/contests/abc330/tasks/abc330_d"""</span>
+n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+cntR<span class="token punctuation">,</span>cntC<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>n<span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>n
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"o"</span><span class="token punctuation">:</span>
+            cntR<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">+=</span><span class="token number">1</span>
+            cntC<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+=</span><span class="token number">1</span>
+
+ans<span class="token operator">=</span><span class="token number">0</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"o"</span><span class="token punctuation">:</span>
+            ans<span class="token operator">+=</span><span class="token punctuation">(</span>cntR<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token punctuation">(</span>cntC<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+
+
+
+<span class="token comment"># before</span>
+<span class="token comment"># from collections import defaultdict</span>
+<span class="token comment"># dd = defaultdict(list)</span>
+<span class="token comment"># cnt = defaultdict(int)</span>
+
+<span class="token comment"># n = int(input())</span>
+<span class="token comment"># s = [input()for _ in range(n)]</span>
+
+<span class="token comment"># for i in range(n):</span>
+<span class="token comment">#     for j in range(n):</span>
+<span class="token comment">#         if s[i][j]=="x": continue</span>
+
+<span class="token comment">#         dd[i].append((i,j))</span>
+
+<span class="token comment"># for j in range(n):</span>
+<span class="token comment">#     for i in range(n):</span>
+<span class="token comment">#         if s[i][j]=="x": continue</span>
+
+<span class="token comment">#         cnt[j] += 1</span>
+
+<span class="token comment"># ans = 0</span>
+<span class="token comment"># for j1 in range(n):</span>
+<span class="token comment">#     for j2 in range(j1+1, n):</span>
+
+<span class="token comment">#         ans += cnt[j1] + cnt[j2] - 2</span>
+
+<span class="token comment"># print(ans)</span>
+</code></pre>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    

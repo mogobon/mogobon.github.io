@@ -3,7 +3,7 @@
   <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>典型</title>
+    <title>【ABC342C】Many Replacement</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
@@ -164,20 +164,127 @@
     </style>
   </head>
   <body>
-    <div id="scrollTopBtn">
+    <!-- <div id="scrollTopBtn">
   ↑ トップへ戻る
-</div>
+</div> -->
 <script>
   document.getElementById('scrollTopBtn').onclick = function() {
     window.scrollTo({top:0,behavior:'smooth'});
     return false;
   };
 </script>
-  <a id="backToNotesBtn" href="/notes.html">ノート一覧へ戻る</a>
+  
   <div class="note">
-    <h1>典型</h1>
-<p>Under construction 👷</p>
+    <h1>【ABC342C】Many Replacement</h1>
+<p><a href="https://atcoder.jp/contests/abc342/tasks/abc342_c">問題リンク</a></p>
+<h2>ナイーブな解法</h2>
+<ul>
+<li>
+<p>クエリを逐一<strong>文字列</strong>に反映すると、$O(NQ)$で間に合わない。</p>
+</li>
+<li>
+<p>$i=1,2,\cdots,Q$について、</p>
+<ul>
+<li>$j=1,2,\cdots, N$について、
+<div>$$
+S_j=
+\begin{cases}
+d_i\quad (S_j=c_i)\\
+S_j\quad (\text{otherwise})
+\end{cases}
+$$</div></li>
+</ul>
+</li>
+</ul>
+<details>
+<summary>解説</summary>
+<h2>ポイント</h2>
+<ul>
+<li>
+<p>アルファベットは 26 種類しかない</p>
+</li>
+<li>
+<p>各クエリで「最終的な対応先」を更新すればよい</p>
+<ul>
+<li>アルファベットごとに状態を更新</li>
+</ul>
+</li>
+<li>
+<p>変換表<code>p</code>を持つ</p>
+</li>
+<li>
+<p>クエリ <code>(c,d)</code> を読むときに <code>p[x]==c</code> のものを全部 <code>d</code> に更新</p>
+</li>
+</ul>
+<h2>定式化</h2>
+<ul>
+<li>
+<p>$p_x=x, \quad (x\in \Sigma=\lbrace\texttt{a},\texttt{b},\cdots, \texttt{z}\rbrace)$</p>
+</li>
+<li>
+<p>$i=1,2,\cdots,Q$について、</p>
+<ul>
+<li>各クエリ$(c_i,d_i)$に対して、
+<div>$$
+\forall x\in\Sigma,\ p_x=
+\begin{cases}
+d_i \quad &(p_x=c_i)\\
+p_x \quad &(\text{otherwise})\\
+\end{cases}
+$$</div></li>
+</ul>
+</li>
+<li>
+<p>$(p_{S_1},p_{S_2},\cdots,p_{S_N})$が答え</p>
+</li>
+</ul>
+<h2>計算量</h2>
+<ul>
+<li>各クエリで26種類だけ状態を更新する: $O(26Q)$</li>
+<li>最後に文字列を一回走査する: $O(N)$</li>
+<li>$O(N+26Q)$</li>
+</ul>
+<h2>実装例</h2>
+<pre class="language-python"><code class="language-python">n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+q <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+abc <span class="token operator">=</span> <span class="token string">'abcdefghijklmnopqrstuvwxyz'</span>
+p <span class="token operator">=</span> <span class="token punctuation">{</span>i<span class="token punctuation">:</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> abc<span class="token punctuation">}</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    c<span class="token punctuation">,</span> d <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> x <span class="token keyword">in</span> abc<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> p<span class="token punctuation">[</span>x<span class="token punctuation">]</span> <span class="token operator">==</span> c<span class="token punctuation">:</span>
+            p<span class="token punctuation">[</span>x<span class="token punctuation">]</span> <span class="token operator">=</span> d <span class="token comment"># 更新</span>
 
+ans <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> x <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+    ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span>p<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>ans<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<!--
+## その他（ボツ）
+
+### 定式化（みにくいのでボツ）
+
+$$
+S^{(0)}=S,\quad S^{(i)}=f_{i}(S^{(i-1)})
+$$
+
+として $S^{(Q)}$を求めよ.
+
+ただし, 
+
+$$  
+f_i(S) =
+\begin{cases}
+d_i\quad &(S_j=c_i) \\
+S_j\quad &(\text{otherwise})
+\end{cases}
+,\forall j\in \lbrace0,1,\cdots,n-1\rbrace
+$$
+-->
+</details>
     <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
   </div>
 
