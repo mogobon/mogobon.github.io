@@ -177,7 +177,7 @@
   <div class="note">
     <h1>【ABC417C】 Distance Indicators</h1>
 <p><a href="https://atcoder.jp/contests/abc417/tasks/abc417_c" target="_blank">問題リンク</a></p>
-<h1>ナイーブな解法</h1>
+<h2>ナイーブな解法</h2>
 <p>$O(N^2)$になって間に合わない</p>
 <p><div>$$
 \sum_{j=1}^{N}\sum_{i=1}^{j-1}P(i,j)
@@ -186,7 +186,7 @@ $$</div>
 <div>$$
 P(i,j)=
 \begin{cases}
-\mathrm{T}\quad &(i+A_i=j-A_j) \\
+\mathrm{T}\quad &(j-i=A_i+A_j) \\
 \mathrm{F}\quad &(\text{otherwise})
 \end{cases}
 $$</div></p>
