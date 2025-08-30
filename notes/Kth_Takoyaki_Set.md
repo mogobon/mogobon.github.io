@@ -8,16 +8,6 @@ tags:[ABC, ダイクストラ,優先度付きキュー,グラフ探索]
 
 * 各要素を何個使うか？についてDFSで列挙していく。
 * これだと$O(N^K)$かかってしまい、間に合わない。
-* しかも、状態が重複する。
-```bash
-start: path=[0,0], cnt=0
- ├ i=0 -> path=[1,0], cnt=1
- │   ├ i=0 -> path=[2,0], cnt=2 -> ans に [2,0]
- │   └ i=1 -> path=[1,1], cnt=2 -> ans に [1,1]
- └ i=1 -> path=[0,1], cnt=1
-     ├ i=0 -> path=[1,1], cnt=2 -> ans に [1,1]
-     └ i=1 -> path=[0,2], cnt=2 -> ans に [0,2]
-```
 
 ```python
 cnt = 0
@@ -37,6 +27,18 @@ def dfs(path,cnt):
 dfs([0]*n,0)
 ...
 ```
+
+* しかも、状態が重複する。
+```bash
+start: path=[0,0], cnt=0
+ ├ i=0 -> path=[1,0], cnt=1
+ │   ├ i=0 -> path=[2,0], cnt=2 -> ans に [2,0]
+ │   └ i=1 -> path=[1,1], cnt=2 -> ans に [1,1]
+ └ i=1 -> path=[0,1], cnt=1
+     ├ i=0 -> path=[1,1], cnt=2 -> ans に [1,1]
+     └ i=1 -> path=[0,2], cnt=2 -> ans に [0,2]
+```
+
 
 <details>
 <summary>解説</summary>
@@ -78,4 +80,10 @@ for i in range(k+1):
             heappush(open, p+v)
 print(p)
 ```
+
+## 計算量
+
+* $O(NK\log{NK})$
+  * $\log$の性質を用いて、$O(NK(\log{N}+\log{K}))$とも書ける。
+
 </details>
