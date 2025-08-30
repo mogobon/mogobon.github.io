@@ -1,4 +1,4 @@
-tags: [固定して考える, (i\, j)数え上げ型, 変数分離]
+tags: [ABC, 固定して考える, (i\, j)数え上げ型, 変数分離]
 ---
 # 【ABC417C】 Distance Indicators 
 
