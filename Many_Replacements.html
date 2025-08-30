@@ -176,7 +176,7 @@
   
   <div class="note">
     <h1>【ABC342C】Many Replacement</h1>
-<p><a href="https://atcoder.jp/contests/abc342/tasks/abc342_c">問題リンク</a></p>
+<p><a href="https://atcoder.jp/contests/abc342/tasks/abc342_c" target="_blank">問題リンク</a></p>
 <h2>ナイーブな解法</h2>
 <ul>
 <li>
@@ -185,9 +185,8 @@
 <li>
 <p>$i=1,2,\cdots,Q$について、</p>
 <ul>
-<li>$j=1,2,\cdots, N$について、
-<div>$$
-S_j=
+<li><div>$$
+\forall j\in [N],\ S_j\leftarrow
 \begin{cases}
 d_i\quad (S_j=c_i)\\
 S_j\quad (\text{otherwise})
@@ -200,33 +199,41 @@ $$</div></li>
 <summary>解説</summary>
 <h2>ポイント</h2>
 <ul>
+<li>アルファベットは 26 種類しかない</li>
+</ul>
+<pre class="language-bash"><code class="language-bash"><span class="token punctuation">[</span>a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>初期状態<span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">[</span>a<span class="token punctuation">]</span>,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ1: a a<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ2: x b<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>a,b,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,b,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ3: c b<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>a,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ4: b b<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>a,b,b,d,e,f,g,h,i,j,<span class="token punctuation">[</span>b<span class="token punctuation">]</span>,l,m,n,o,p,q,r,s,t,u,v,w,b,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ5: k b<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>a,<span class="token punctuation">[</span>a<span class="token punctuation">]</span>,<span class="token punctuation">[</span>a<span class="token punctuation">]</span>,d,e,f,g,h,i,j,<span class="token punctuation">[</span>a<span class="token punctuation">]</span>,l,m,n,o,p,q,r,s,t,u,v,w,<span class="token punctuation">[</span>a<span class="token punctuation">]</span>,y,z<span class="token punctuation">]</span> <span class="token punctuation">(</span>クエリ6: b a<span class="token punctuation">)</span>
+</code></pre>
+<ul>
 <li>
-<p>アルファベットは 26 種類しかない</p>
+<p>クエリごとに、26文字走査して、置き換えていくのは間に合う</p>
+</li>
+<li>
+<p>各文字に対するmappingがわかっておけば、$O(N)$で変換できる</p>
 </li>
 <li>
 <p>各クエリで「最終的な対応先」を更新すればよい</p>
 <ul>
-<li>アルファベットごとに状態を更新</li>
+<li>クエリごとに、アルファベットごとに状態を更新して、最終状態を求める</li>
 </ul>
-</li>
-<li>
-<p>変換表<code>p</code>を持つ</p>
-</li>
-<li>
-<p>クエリ <code>(c,d)</code> を読むときに <code>p[x]==c</code> のものを全部 <code>d</code> に更新</p>
 </li>
 </ul>
 <h2>定式化</h2>
 <ul>
 <li>
-<p>$p_x=x, \quad (x\in \Sigma=\lbrace\texttt{a},\texttt{b},\cdots, \texttt{z}\rbrace)$</p>
+<p>$\forall x,\ p_x\leftarrow x \quad (x\in \Sigma=\lbrace\texttt{a},\texttt{b},\cdots, \texttt{z}\rbrace)$</p>
 </li>
 <li>
 <p>$i=1,2,\cdots,Q$について、</p>
 <ul>
 <li>各クエリ$(c_i,d_i)$に対して、
 <div>$$
-\forall x\in\Sigma,\ p_x=
+\forall x\in\Sigma,\ p_x\leftarrow
 \begin{cases}
 d_i \quad &(p_x=c_i)\\
 p_x \quad &(\text{otherwise})\\
@@ -245,6 +252,14 @@ $$</div></li>
 <li>$O(N+26Q)$</li>
 </ul>
 <h2>実装例</h2>
+<ul>
+<li>
+<p>変換表<code>p</code>を持つ</p>
+</li>
+<li>
+<p>クエリ <code>(c,d)</code> を読むときに <code>p[x]==c</code> のものを全部 <code>d</code> に更新</p>
+</li>
+</ul>
 <pre class="language-python"><code class="language-python">n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 s <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 q <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
