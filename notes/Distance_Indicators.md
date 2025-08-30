@@ -2,6 +2,8 @@ tags: [固定して考える, (i\, j)数え上げ型, 変数分離]
 ---
 # 【ABC417C】 Distance Indicators 
 
+<a href="https://atcoder.jp/contests/abc417/tasks/abc417_c" target="_blank">問題リンク</a>
+
 # ナイーブな解法
 
 $O(N^2)$になって間に合わない
