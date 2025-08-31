@@ -1,4 +1,4 @@
-
+tags:[ABC, BFS,グラフ探索,頂点倍加BFS]
 # 【ABC420】Toggle Maze
 
 <a href="https://atcoder.jp/contests/abc420/tasks/abc420_d" target="_blank">問題リンク</a>
