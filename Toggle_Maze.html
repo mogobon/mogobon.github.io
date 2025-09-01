@@ -177,44 +177,21 @@
   <div class="note">
     <h1>【ABC420】Toggle Maze</h1>
 <p><a href="https://atcoder.jp/contests/abc420/tasks/abc420_d" target="_blank">問題リンク</a></p>
-<p>状態空間問題$P(S,A,s_0,T)$は</p>
 <ul>
-<li>
-<p>初期状態 $s_0\in S$</p>
-</li>
-<li>
-<p>ゴール集合$T\subseteq S$（今回、一つの状態のみのシングルトン）</p>
-</li>
-<li>
-<p>$a\in A:S\rightarrow S$</p>
-</li>
-<li>
-<p>$A=\lbrace up, down, left, right\rbrace$</p>
-</li>
-<li>
-<p>空いたドア<code>o</code></p>
-</li>
-<li>
-<p>閉じたドア<code>x</code></p>
-</li>
-<li>
-<p>スイッチマス<code>?</code></p>
+<li>グリッドが与えられる。各マスの意味は次の通り。</li>
+<li><code>.</code> ：空きマス。</li>
+<li><code>#</code> ：障害物マス。</li>
+<li><code>S</code> ：スタートマス。</li>
+<li><code>G</code> ：ゴールマス。</li>
+<li><code>o</code> ：開いたドアのマス。</li>
+<li><code>x</code> ：閉じたドアのマス。</li>
+<li><code>?</code> ：スイッチマス。
 <ul>
 <li>スイッチマスに移動する度に全ての開いたドアのマスは閉じたドアのマスに、閉じたドアのマスは開いたドアのマスに変わります。</li>
 </ul>
 </li>
-<li>
-<p>解$\pi$</p>
-</li>
-<li>
-<p>解$\pi=(a_1,a_2,\cdots,a_n)$は行動 $a\in A$の列である</p>
-</li>
-<li>
-<p>初期状態$s_0$からゴール状態$t$</p>
-</li>
-<li>
-<p>最適解を求めよ.</p>
-</li>
+<li>$1$回の操作で上下左右の隣接マスに動ける。</li>
+<li>スタートマスにいる状態からゴールマスにいる状態にするよう操作できるか判定し、可能ならスタートからゴールまでの最短経路を求めてください。</li>
 </ul>
 <h2>ナイーブな解法</h2>
 <ul>
@@ -243,6 +220,93 @@
 </li>
 <li>
 <p>ゴールに早く到達した時点で答えが確定する。</p>
+</li>
+</ul>
+<h2>定式化</h2>
+<ul>
+<li>
+<p>問題文で与えられるグリッドを$G$と書く。</p>
+</li>
+<li>
+<p>グリッドの$i$行$j$列目のマスを$G_{ij}$と書く。</p>
+</li>
+<li>
+<p>状態空間問題$P(S,A,s_0,T)$を以下のように定める。</p>
+</li>
+<li>
+<p>状態集合:</p>
+<ul>
+<li><div>$$
+S=\lbrace(i,j,p)|0\leq i \lt H,0\leq j \lt W,p\in\lbrace0,1\rbrace\rbrace
+$$</div></li>
+</ul>
+</li>
+<li>
+<p>初期状態 $s_0\in S$</p>
+<ul>
+<li>$s_0=(s_x,s_y,0)$</li>
+</ul>
+</li>
+<li>
+<p>ゴール集合$T\subseteq S$</p>
+<ul>
+<li>$T=\lbrace(g_x,g_y,0),(g_x,g_y,1)\rbrace$</li>
+</ul>
+</li>
+<li>
+<p>行動集合 $A:S\to S$</p>
+<ul>
+<li>$A=\lbrace up, down, left, right\rbrace$</li>
+</ul>
+</li>
+<li>
+<p>遷移$a\in A$</p>
+<ul>
+<li>$(i,j,p)\overset{a}{\to}(i^{\prime},j^{\prime},p^{\prime})$</li>
+<li>$i^{\prime}=i+d_i,i^{\prime}=i+d_j\quad \left((d_i,d_j)\in\lbrace(0,1),(0,-1),(1,0),(-1,0)\rbrace\right)$</li>
+<li>$G_{i^{\prime}j^{\prime}}\neq \verb|#|$</li>
+<li>$[G_{i^{\prime}j^{\prime}}= \verb|o| \land p=0] \lor [G_{i^{\prime}j^{\prime}}= \verb|x| \land p=1]$</li>
+<li><div>$$
+p^{\prime}=
+\begin{cases}
+p \oplus 1\quad &(G_{i^{\prime}j^{\prime} }=\texttt{?})\\
+p \oplus 0 = p\quad &(\text{otherwise})\\
+\end{cases}
+$$</div></li>
+</ul>
+</li>
+<li>
+<p>解$\pi$（経路）:</p>
+<ul>
+<li>$\pi=(a_1,a_2,\dots,a_n)$</li>
+<li>$s_0 \xrightarrow{a_1} s_1 \xrightarrow{a_2} \cdots \xrightarrow{a_k} s_k\in T$</li>
+</ul>
+</li>
+<li>
+<p>コスト関数：</p>
+<ul>
+<li><div>$$
+\mathrm{cost}(\pi)=\sum_{i=1}^{k} w(a_i), \quad w(a_i)=1
+$$</div></li>
+<li>（解のコスト）=（解の行動回数）
+<ul>
+<li><strong>ユニットコスト状態空間問題</strong>と呼ばれる。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>答え:</p>
+<ul>
+<li>解が存在するなら、最適解 $\pi^\star$ のコストを求めよ。
+<div>$$
+\mathrm{cost}(\pi^{\star})
+$$</div>
+<div>$$
+\pi^\star = \argmin_{\pi: s_n\in T} \mathrm{cost}(\pi)
+$$</div></li>
+<li>解が存在しないなら$-1$とせよ。</li>
+</ul>
 </li>
 </ul>
 <h2>計算量</h2>
@@ -303,7 +367,16 @@ dis<span class="token punctuation">[</span>sx<span class="token punctuation">]</
 </ul>
 </li>
 </ul>
+<h3>参考文献</h3>
+<ul>
+<li>定式化の章を書くにあたって参考にした書籍
+<ul>
+<li>「ヒューリスティック探索 合理的なAIをつくるためのアルゴリズム」,陣内佑 著, 講談社, 2025年4月22日.</li>
+</ul>
+</li>
+</ul>
 </details>
+
     <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
   </div>
 
