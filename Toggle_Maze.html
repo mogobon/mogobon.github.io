@@ -177,6 +177,45 @@
   <div class="note">
     <h1>【ABC420】Toggle Maze</h1>
 <p><a href="https://atcoder.jp/contests/abc420/tasks/abc420_d" target="_blank">問題リンク</a></p>
+<p>状態空間問題$P(S,A,s_0,T)$は</p>
+<ul>
+<li>
+<p>初期状態 $s_0\in S$</p>
+</li>
+<li>
+<p>ゴール集合$T\subseteq S$（今回、一つの状態のみのシングルトン）</p>
+</li>
+<li>
+<p>$a\in A:S\rightarrow S$</p>
+</li>
+<li>
+<p>$A=\lbrace up, down, left, right\rbrace$</p>
+</li>
+<li>
+<p>空いたドア<code>o</code></p>
+</li>
+<li>
+<p>閉じたドア<code>x</code></p>
+</li>
+<li>
+<p>スイッチマス<code>?</code></p>
+<ul>
+<li>スイッチマスに移動する度に全ての開いたドアのマスは閉じたドアのマスに、閉じたドアのマスは開いたドアのマスに変わります。</li>
+</ul>
+</li>
+<li>
+<p>解$\pi$</p>
+</li>
+<li>
+<p>解$\pi=(a_1,a_2,\cdots,a_n)$は行動 $a\in A$の列である</p>
+</li>
+<li>
+<p>初期状態$s_0$からゴール状態$t$</p>
+</li>
+<li>
+<p>最適解を求めよ.</p>
+</li>
+</ul>
 <h2>ナイーブな解法</h2>
 <ul>
 <li><code>?</code>の処理がわからないで全て試す。</li>

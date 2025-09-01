@@ -177,9 +177,25 @@
   <div class="note">
     <h1>【ABC297E】 Kth Takoyaki Set</h1>
 <p><a href="https://atcoder.jp/contests/abc297/tasks/abc297_e" target="_blank">問題リンク</a></p>
+<p><div>$$
+\left\{\, 
+\sum_{i=1}^{N} A_i x_i 
+\;\Biggm|\;
+x_i \in \mathbb{Z}_{\ge 0},\ 
+\sum_{i=1}^{N} x_i \ge 1
+\right\}.
+$$</div></p>
+<p>の要素のうち、小さい方から$K$番目の要素を求めよ。</p>
+<p><div>$$
+\begin{align*}
+&1\leq N \leq 10\\
+&1\leq K \leq 2\times 10^5\\
+&1\leq A_{i} \leq 10^{9}\\
+\end{align*}
+$$</div></p>
 <h2>ナイーブな解法</h2>
 <ul>
-<li>各要素を何個使うか？についてDFSで列挙していく。</li>
+<li>深さ$K$の$N$分木についてDFSで列挙していく。</li>
 <li>これだと$O(N^K)$かかってしまい、間に合わない。</li>
 </ul>
 <pre class="language-python"><code class="language-python">cnt <span class="token operator">=</span> <span class="token number">0</span>
@@ -218,8 +234,9 @@ dfs<span class="token punctuation">(</span><span class="token punctuation">[</sp
 <li>（無限グリッド上の）ダイクストラ(パスの長さは$K$)</li>
 <li>遷移先が重複するので<strong>重複検出</strong>する</li>
 </ul>
-<h2>定式化</h2>
-<p><div>$$
+<!-- ## 定式化
+
+$$
 \text{ans} = 
 \text{the $K$-th smallest element of }
 \left\{\, 
@@ -228,7 +245,7 @@ dfs<span class="token punctuation">(</span><span class="token punctuation">[</sp
 x_i \in \mathbb{Z}_{\ge 0},\ 
 \sum_{i=1}^{N} x_i \ge 1
 \right\}.
-$$</div></p>
+$$ -->
 <h2>実装例</h2>
 <pre class="language-python"><code class="language-python">n<span class="token punctuation">,</span>k<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 a<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
