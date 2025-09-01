@@ -4,9 +4,28 @@ tags:[ABC, ダイクストラ,優先度付きキュー,グラフ探索]
 
 <a href="https://atcoder.jp/contests/abc297/tasks/abc297_e" target="_blank">問題リンク</a>
 
+$$
+\left\{\, 
+\sum_{i=1}^{N} A_i x_i 
+\;\Biggm|\;
+x_i \in \mathbb{Z}_{\ge 0},\ 
+\sum_{i=1}^{N} x_i \ge 1
+\right\}.
+$$
+
+の要素のうち、小さい方から$K$番目の要素を求めよ。
+
+$$
+\begin{align*}
+&1\leq N \leq 10\\
+&1\leq K \leq 2\times 10^5\\
+&1\leq A_{i} \leq 10^{9}\\
+\end{align*}
+$$
+
 ## ナイーブな解法
 
-* 各要素を何個使うか？についてDFSで列挙していく。
+* 深さ$K$の$N$分木についてDFSで列挙していく。
 * これだと$O(N^K)$かかってしまい、間に合わない。
 
 ```python
@@ -49,7 +68,7 @@ start: path=[0,0], cnt=0
 * （無限グリッド上の）ダイクストラ(パスの長さは$K$)
 * 遷移先が重複するので**重複検出**する
 
-## 定式化
+<!-- ## 定式化
 
 $$
 \text{ans} = 
@@ -60,7 +79,7 @@ $$
 x_i \in \mathbb{Z}_{\ge 0},\ 
 \sum_{i=1}^{N} x_i \ge 1
 \right\}.
-$$
+$$ -->
 
 
 ## 実装例

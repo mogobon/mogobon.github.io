@@ -3,6 +3,22 @@ tags:[ABC, BFS,グラフ探索,頂点倍加BFS]
 
 <a href="https://atcoder.jp/contests/abc420/tasks/abc420_d" target="_blank">問題リンク</a>
 
+状態空間問題$P(S,A,s_0,T)$は
+
+* 初期状態 $s_0\in S$
+* ゴール集合$T\subseteq S$（今回、一つの状態のみのシングルトン）
+* $a\in A:S\rightarrow S$
+* $A=\lbrace up, down, left, right\rbrace$
+
+* 空いたドア`o`
+* 閉じたドア`x`
+* スイッチマス`?`
+  * スイッチマスに移動する度に全ての開いたドアのマスは閉じたドアのマスに、閉じたドアのマスは開いたドアのマスに変わります。
+
+* 解$\pi$
+* 解$\pi=(a_1,a_2,\cdots,a_n)$は行動 $a\in A$の列である
+* 初期状態$s_0$からゴール状態$t$
+* 最適解を求めよ.
 ## ナイーブな解法
 * `?`の処理がわからないで全て試す。
 * 再帰全探索すると$O(4^{HW})$で間に合わない。
