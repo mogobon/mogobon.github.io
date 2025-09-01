@@ -3,22 +3,20 @@ tags:[ABC, BFS,グラフ探索,頂点倍加BFS]
 
 <a href="https://atcoder.jp/contests/abc420/tasks/abc420_d" target="_blank">問題リンク</a>
 
-状態空間問題$P(S,A,s_0,T)$は
-
-* 初期状態 $s_0\in S$
-* ゴール集合$T\subseteq S$（今回、一つの状態のみのシングルトン）
-* $a\in A:S\rightarrow S$
-* $A=\lbrace up, down, left, right\rbrace$
-
-* 空いたドア`o`
-* 閉じたドア`x`
-* スイッチマス`?`
+* グリッドが与えられる。各マスの意味は次の通り。
+* `.` ：空きマス。
+* `#` ：障害物マス。
+* `S` ：スタートマス。
+* `G` ：ゴールマス。
+* `o` ：開いたドアのマス。
+* `x` ：閉じたドアのマス。
+* `?` ：スイッチマス。
   * スイッチマスに移動する度に全ての開いたドアのマスは閉じたドアのマスに、閉じたドアのマスは開いたドアのマスに変わります。
+* $1$回の操作で上下左右の隣接マスに動ける。
+* スタートマスにいる状態からゴールマスにいる状態にするよう操作できるか判定し、可能ならスタートからゴールまでの最短経路を求めてください。
 
-* 解$\pi$
-* 解$\pi=(a_1,a_2,\cdots,a_n)$は行動 $a\in A$の列である
-* 初期状態$s_0$からゴール状態$t$
-* 最適解を求めよ.
+
+
 ## ナイーブな解法
 * `?`の処理がわからないで全て試す。
 * 再帰全探索すると$O(4^{HW})$で間に合わない。
@@ -37,7 +35,65 @@ tags:[ABC, BFS,グラフ探索,頂点倍加BFS]
 
 * ゴールに早く到達した時点で答えが確定する。
 
+
+## 定式化
+
+
+* 問題文で与えられるグリッドを$G$と書く。
+* グリッドの$i$行$j$列目のマスを$G_{ij}$と書く。
+* 状態空間問題$P(S,A,s_0,T)$を以下のように定める。
+* 状態集合:
+  * $$
+    S=\lbrace(i,j,p)|0\leq i \lt H,0\leq j \lt W,p\in\lbrace0,1\rbrace\rbrace
+    $$
+
+* 初期状態 $s_0\in S$
+  * $s_0=(s_x,s_y,0)$
+* ゴール集合$T\subseteq S$
+  * $T=\lbrace(g_x,g_y,0),(g_x,g_y,1)\rbrace$
+* 行動集合 $A:S\to S$
+  * $A=\lbrace up, down, left, right\rbrace$
+* 遷移$a\in A$
+  * $(i,j,p)\overset{a}{\to}(i^{\prime},j^{\prime},p^{\prime})$
+  * $i^{\prime}=i+d_i,i^{\prime}=i+d_j\quad \left((d_i,d_j)\in\lbrace(0,1),(0,-1),(1,0),(-1,0)\rbrace\right)$
+  * $G_{i^{\prime}j^{\prime}}\neq \verb|#|$
+  * $[G_{i^{\prime}j^{\prime}}= \verb|o| \land p=0] \lor [G_{i^{\prime}j^{\prime}}= \verb|x| \land p=1]$
+  * $$
+    p^{\prime}=
+    \begin{cases}
+    p \oplus 1\quad &(G_{i^{\prime}j^{\prime} }=\texttt{?})\\
+    p \oplus 0 = p\quad &(\text{otherwise})\\
+    \end{cases}
+    $$
+
+
+* 解$\pi$（経路）:
+  * $\pi=(a_1,a_2,\dots,a_n)$ 
+  * $s_0 \xrightarrow{a_1} s_1 \xrightarrow{a_2} \cdots \xrightarrow{a_k} s_k\in T$
+    
+
+* コスト関数：
+  * $$
+    \mathrm{cost}(\pi)=\sum_{i=1}^{k} w(a_i), \quad w(a_i)=1
+    $$
+  * （解のコスト）=（解の行動回数）
+    * **ユニットコスト状態空間問題**と呼ばれる。
+
+* 答え:
+    
+  * 解が存在するなら、最適解 $\pi^\star$ のコストを求めよ。
+    $$
+    \mathrm{cost}(\pi^{\star})
+    $$
+    $$
+    \pi^\star = \argmin_{\pi: s_n\in T} \mathrm{cost}(\pi)
+    $$
+  * 解が存在しないなら$-1$とせよ。
+    
+
+
 ## 計算量
+
 
 $O(2HW)$
 
@@ -96,4 +152,11 @@ print(-1)
   * ボタンが押されていて、`o`である場合
   * ボタンが押されておらず、`x`である場合
 
+
+
+### 参考文献
+* 定式化の章を書くにあたって参考にした書籍
+  * 「ヒューリスティック探索 合理的なAIをつくるためのアルゴリズム」,陣内佑 著, 講談社, 2025年4月22日.
+
 </details>
+
