@@ -285,3 +285,335 @@ print(ans)
 
 # print(ans)
 ```
+
+
+```python
+DIR_4 = [[-1,0],[0,1],[1,0],[0,-1]]
+INF = 10**9
+
+h,w=map(int,input().split())
+s=[input()for _ in range(h)]
+dis=[[[INF]*2 for _ in range(w)]for _ in range(h)]
+
+for i in range(h):
+    for j in range(w):
+        if s[i][j]=="S":
+            sx,sy=i,j
+
+from collections import deque
+que = deque()
+que.append((sx,sy,0))
+dis[sx][sy][0] = 0
+# 状態定義(i,j,f)
+while que:
+    px,py,f = que.popleft()
+    for dx,dy in DIR_4:
+        nx = px + dx
+        ny = py + dy
+        if (0<=nx<h and 0<=ny<w):
+            ng = 0
+            if s[nx][ny] == "#": ng = 1
+            if not f and s[nx][ny]=="x": ng = 1
+            if f and s[nx][ny]=="o": ng = 1
+            if ng: continue # 到達不可能
+            
+            # 展開された状態に到達可能
+            
+            if s[nx][ny]=="G":
+                exit(print(dis[px][py][f] + 1))
+
+            nf = f
+            if s[nx][ny] == "?": nf = f^1 # フラグを反転させる
+            
+            if dis[nx][ny][nf] > dis[px][py][f] + 1:
+                dis[nx][ny][nf] = dis[px][py][f] + 1
+                que.append((nx,ny,nf))
+print(-1)
+```
+
+# 回文判定+一文字消しておk
+```python
+from collections import deque
+# 一回削って回文にできるか？
+# 外側から見ていって、不一致を探す
+# 不一致だったら、回文かどうかをみる
+# 左を削る場合と右を削る場合、どちらかで回文になればOK
+# どちらもダメだったらアウト
+
+# 欲しいもの：
+    # 回文判定機:
+        # 入力: 文字列
+        # 出力: 回文かどうか？
+    # 外側から見る
+    # 不一致だったら、回文判定機に、次を渡す
+        # 不一致の文字のうち左の文字を除いた文字列
+        # 不一致の文字のうち右の文字を除いた文字列
+    # 回文判定機がどちらかがTrueだったらOK
+    # どちらもFalseだったら、NO
+
+def is_palindrome(s, l, r):
+    """s[l:r]が回文かどうかを判定する"""
+    i = l
+    j = r
+    while i < j:
+        if s[i] != s[j]: return False
+        i += 1
+        j -= 1
+    return True
+    
+
+def valid_palindrome(s):
+    # 両側のポインタが半分まで進むのは、n//2より、l,rを用いる方が書きやすい
+    l = 0
+    r = len(s) - 1
+    while l < r:
+        # 不一致あり
+        if s[l] != s[r]:
+            # s[l+1:r]
+            p1 = is_palindrome(s, l+1, r)
+            # s[l:r-1]
+            p2 = is_palindrome(s, l, r-1)
+            if p1 or p2:
+                return True
+            else:
+                return False
+        l += 1
+        r -= 1
+    # 不一致なし
+    return True        
+            
+        
+
+if __name__ == "__main__":
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    n = int(data[0])
+    s = data[1]
+    print("true" if valid_palindrome(s) else "false")
+
+```
+
+```python
+# https://atcoder.jp/contests/abc334/tasks/abc334_b
+a,m,l,r=map(int,input().split())
+# # print((r-a)//m-(l-a-1)//m)
+from bisect import bisect_left,bisect_right
+g = range(a-2*(10**18)*(m),10**18+1,m)
+print(bisect_right(g, r)-bisect_left(g, l))
+
+```
+
+
+# 沼
+Debug
+
+https://atcoder.jp/contests/abc394/tasks/abc394_c
+```python
+# s = input()
+# n = len(s)
+# ans = []
+# # r = n-1
+# st = False
+# Wcnt = 0
+# for r in range(n-1,-1,-1):
+#     if s[r] == "A":
+#         st = True
+#     elif s[r] == "W":
+#         if st: Wcnt += 1
+#     else:
+#         if st: 
+#             ans.append("C")
+#             ans.append("A"*Wcnt)
+#             st = False
+#             Wcnt = 0
+#             ans.append(s[r])
+# if Wcnt > 0:
+#     ans.append("C"*Wcnt)
+#     ans.append("A")
+# if len(ans) == 0:
+#     ans.append(s)
+# print("".join(ans[::-1]))
+
+
+
+# while r > 0:
+#     # WWWAだけ見る
+#     if s[r] == "A":
+#         l = r
+#         while l-1 > 0 and s[l-1]=="W":
+
+
+
+# while l < n:
+#     if s[l] == "W":
+#         r = l
+#         while r+1 < n and s[r+1] == "W":
+#             r += 1
+#         if r+1 < n and s[r+1] == "A":
+#             ans.append("A"+"C"*(r-l))
+#         else:
+#             ans.append(s[l:r+1])
+#         l = r+1
+#     else:
+#         ans.append(s[l])
+#         l += 1
+# print("".join(ans))
+```
+
+# zipの使い方を調べたい
+
+* `zip`は`for`が使用されるまで展開されない遅延評価
+* `zip`は添え字を持たない(not subscriptable)
+* `zip`はアンパックできる
+* アンパック何者？←イマココ
+
+```python
+n = int(input())
+s = [list(input()) for _ in range(n)]
+t = [list(input()) for _ in range(n)]
+ans = 0
+for i in range(n):
+    for j in range(n):
+        ans += s[i][j]!=t[i][j]
+
+lv = 3
+while lv > 0:
+
+    s = zip(*s[::-1])
+
+    # print(s)
+    # print(t)
+    cnt = 4-lv
+    for i in range(n):
+        for j in range(n):
+            cnt += s[i][j]!=t[i][j]
+    ans = min(ans, cnt)
+    lv -= 1
+print(ans)
+```
+
+# Weak Takahashi
+* 間違い
+```python
+H,W=map(int,input().split())
+C=[input()for _ in range(H)]
+dp = [[0]*W for _ in range(H)]
+dp[0][0]=1
+for i in range(H):
+    for j in range(W):
+        if C[i][j]=="#": continue
+        if i-1 >= 0 and C[i-1][j]!="#": dp[i][j]+=dp[i-1][j]+1
+        if j-1 >= 0 and C[i][j-1]!="#": dp[i][j]+=dp[i][j-1]+1
+
+ans = 0
+for i in range(H):
+    for j in range(W):
+        print(dp[i][j],end=" ")
+    print()
+for row in dp:
+    ans = max(ans, max(row))
+print(ans)
+```
+
+
+# メモ化DFS
+
+Weak Takahashi
+
+<a href="https://atcoder.jp/contests/abc232/tasks/abc232_d" target="_blank">問題リンク</a>
+```python
+def dfs(i,j):
+    if C[i][j]=="#":
+        memo[i][j] = 0
+        return 0
+    if i==H-1 and j==W-1:
+        memo[i][j] = 1
+        return 1
+    if memo[i][j]:
+        return memo[i][j]
+    
+    best = 0
+    for dx,dy in ((0,1),(1,0)):
+        nx = i + dx
+        ny = j + dy
+        if 0 <= nx < H and 0 <= ny < W:
+            best = max(best, dfs(nx,ny))
+    
+    # return best + 1
+    memo[i][j] = best + 1
+    return memo[i][j]
+
+ans = dfs(0,0) # i,j,n
+
+print(ans)
+```
+
+# 遷移が右or下方向のみ⇒右下から左上へ二重ループ
+
+```python
+# 再帰
+# f(i,j): i,jから初めて高橋くんが通るマスの数
+# f(i,j)=max(f(i+1,j),f(i,j+1))+1
+# 初期化 f(i,j) = 1
+H,W=map(int,input().split())
+C=[input()for _ in range(H)]
+f = [[0]*(W+1) for _ in range(H+1)]
+for i in range(H-1,-1,-1):
+    for j in range(W-1,-1,-1):
+        if C[i][j]=="#": continue
+        f[i][j] = max(f[i+1][j],f[i][j+1])+1
+        # if i+1<H and f[i][j]<=f[i+1][j] and C[i+1][j]!="#": f[i][j] += f[i+1][j]
+        # if j+1<W and f[i][j]<=f[i][j+1] and C[i][j+1]!="#": f[i][j] += f[i][j+1]
+
+print(f[0][0])
+```
+
+## 番兵
+* 番兵は無害な値を置いておく。
+* 今回の場合、0
+
+## 遷移
+* 遷移元の計算結果(そのマスから進んで訪れるマスの個数)
+
+## 状態
+* 状態 = (自分自身のマス) + (遷移元の計算結果)
+* 常に, 1 + dfs(i+dx,j+dy)
+
+## 遷移の集約と状態の確定
+* 全ての遷移を`max`で集約して、計算結果が確定する
+* 次に注意する。
+* ⭕️ `max(全ての遷移) + 1`
+* ❌ `max(全ての遷移 + 1)`
+* これは次のように実装する
+* 2段階で行う。
+  1. 遷移させた計算結果を`max`で集約する。
+  2. 集約した値に常に`+1`すれば計算結果を確定させることができる。
+* 擬似コード
+* `best = 0`
+* `best = max(best, dfs(i+dx,j+dy)`
+* **メモ化**
+* `return 計算結果`
+  * 次のうちどちらでもACするがメモ化することが大事
+  * `return best + 1` 
+  * `return memo[i][j]` 
+
+# メモ化DFSの実装上の注意点
+
+## メモ化
+
+* 大事なシステム。これがないとTLEする
+* 今回、`return`するときは常に`memo`の値である
+* `memo`に記憶されていない場合
+  * **`memo`に記憶してから**返す。
+  * 遷移だけ書いて満足して`memo`に記憶するのを忘れがちなので注意。
+* `memo`に記憶してあるなら、`memo`を返す
+
+
+## 到達不可能な状態の処理
+* 普通のDFSと同様と思われるがどちらでも書き漏れがなければ良い
+* ✅遷移する前に枝刈りする
+  * 推奨。テキトーに書くと`dfs()`を呼び出すまでぐちゃぐちゃするが、ちゃんとそうならないように書けばそれほどではない。
+* ⚠️現在の状態で`return 0`しても良い？
+  * これはなんでうまく行くのかわかっていない。
