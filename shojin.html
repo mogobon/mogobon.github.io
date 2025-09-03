@@ -443,6 +443,335 @@ ans<span class="token operator">=</span><span class="token number">0</span>
 
 <span class="token comment"># print(ans)</span>
 </code></pre>
+<pre class="language-python"><code class="language-python">DIR_4 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+INF <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">9</span>
+
+h<span class="token punctuation">,</span>w<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s<span class="token operator">=</span><span class="token punctuation">[</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">]</span>
+dis<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span>INF<span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">2</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"S"</span><span class="token punctuation">:</span>
+            sx<span class="token punctuation">,</span>sy<span class="token operator">=</span>i<span class="token punctuation">,</span>j
+
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> deque
+que <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">)</span>
+que<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>sx<span class="token punctuation">,</span>sy<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+dis<span class="token punctuation">[</span>sx<span class="token punctuation">]</span><span class="token punctuation">[</span>sy<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token comment"># 状態定義(i,j,f)</span>
+<span class="token keyword">while</span> que<span class="token punctuation">:</span>
+    px<span class="token punctuation">,</span>py<span class="token punctuation">,</span>f <span class="token operator">=</span> que<span class="token punctuation">.</span>popleft<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> dx<span class="token punctuation">,</span>dy <span class="token keyword">in</span> DIR_4<span class="token punctuation">:</span>
+        nx <span class="token operator">=</span> px <span class="token operator">+</span> dx
+        ny <span class="token operator">=</span> py <span class="token operator">+</span> dy
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token operator">&lt;=</span>nx<span class="token operator">&lt;</span>h <span class="token keyword">and</span> <span class="token number">0</span><span class="token operator">&lt;=</span>ny<span class="token operator">&lt;</span>w<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            ng <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">if</span> s<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"#"</span><span class="token punctuation">:</span> ng <span class="token operator">=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> <span class="token keyword">not</span> f <span class="token keyword">and</span> s<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"x"</span><span class="token punctuation">:</span> ng <span class="token operator">=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> f <span class="token keyword">and</span> s<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"o"</span><span class="token punctuation">:</span> ng <span class="token operator">=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> ng<span class="token punctuation">:</span> <span class="token keyword">continue</span> <span class="token comment"># 到達不可能</span>
+            
+            <span class="token comment"># 展開された状態に到達可能</span>
+            
+            <span class="token keyword">if</span> s<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"G"</span><span class="token punctuation">:</span>
+                exit<span class="token punctuation">(</span><span class="token keyword">print</span><span class="token punctuation">(</span>dis<span class="token punctuation">[</span>px<span class="token punctuation">]</span><span class="token punctuation">[</span>py<span class="token punctuation">]</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+            nf <span class="token operator">=</span> f
+            <span class="token keyword">if</span> s<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"?"</span><span class="token punctuation">:</span> nf <span class="token operator">=</span> f<span class="token operator">^</span><span class="token number">1</span> <span class="token comment"># フラグを反転させる</span>
+            
+            <span class="token keyword">if</span> dis<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span><span class="token punctuation">[</span>nf<span class="token punctuation">]</span> <span class="token operator">></span> dis<span class="token punctuation">[</span>px<span class="token punctuation">]</span><span class="token punctuation">[</span>py<span class="token punctuation">]</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span>
+                dis<span class="token punctuation">[</span>nx<span class="token punctuation">]</span><span class="token punctuation">[</span>ny<span class="token punctuation">]</span><span class="token punctuation">[</span>nf<span class="token punctuation">]</span> <span class="token operator">=</span> dis<span class="token punctuation">[</span>px<span class="token punctuation">]</span><span class="token punctuation">[</span>py<span class="token punctuation">]</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span>
+                que<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>nx<span class="token punctuation">,</span>ny<span class="token punctuation">,</span>nf<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+</code></pre>
+<h1>回文判定+一文字消しておk</h1>
+<pre class="language-python"><code class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> deque
+<span class="token comment"># 一回削って回文にできるか？</span>
+<span class="token comment"># 外側から見ていって、不一致を探す</span>
+<span class="token comment"># 不一致だったら、回文かどうかをみる</span>
+<span class="token comment"># 左を削る場合と右を削る場合、どちらかで回文になればOK</span>
+<span class="token comment"># どちらもダメだったらアウト</span>
+
+<span class="token comment"># 欲しいもの：</span>
+    <span class="token comment"># 回文判定機:</span>
+        <span class="token comment"># 入力: 文字列</span>
+        <span class="token comment"># 出力: 回文かどうか？</span>
+    <span class="token comment"># 外側から見る</span>
+    <span class="token comment"># 不一致だったら、回文判定機に、次を渡す</span>
+        <span class="token comment"># 不一致の文字のうち左の文字を除いた文字列</span>
+        <span class="token comment"># 不一致の文字のうち右の文字を除いた文字列</span>
+    <span class="token comment"># 回文判定機がどちらかがTrueだったらOK</span>
+    <span class="token comment"># どちらもFalseだったら、NO</span>
+
+<span class="token keyword">def</span> <span class="token function">is_palindrome</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> l<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""s[l:r]が回文かどうかを判定する"""</span>
+    i <span class="token operator">=</span> l
+    j <span class="token operator">=</span> r
+    <span class="token keyword">while</span> i <span class="token operator">&lt;</span> j<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> s<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token boolean">False</span>
+        i <span class="token operator">+=</span> <span class="token number">1</span>
+        j <span class="token operator">-=</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> <span class="token boolean">True</span>
+    
+
+<span class="token keyword">def</span> <span class="token function">valid_palindrome</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 両側のポインタが半分まで進むのは、n//2より、l,rを用いる方が書きやすい</span>
+    l <span class="token operator">=</span> <span class="token number">0</span>
+    r <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">while</span> l <span class="token operator">&lt;</span> r<span class="token punctuation">:</span>
+        <span class="token comment"># 不一致あり</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">!=</span> s<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            <span class="token comment"># s[l+1:r]</span>
+            p1 <span class="token operator">=</span> is_palindrome<span class="token punctuation">(</span>s<span class="token punctuation">,</span> l<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> r<span class="token punctuation">)</span>
+            <span class="token comment"># s[l:r-1]</span>
+            p2 <span class="token operator">=</span> is_palindrome<span class="token punctuation">(</span>s<span class="token punctuation">,</span> l<span class="token punctuation">,</span> r<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> p1 <span class="token keyword">or</span> p2<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">True</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+        l <span class="token operator">+=</span> <span class="token number">1</span>
+        r <span class="token operator">-=</span> <span class="token number">1</span>
+    <span class="token comment"># 不一致なし</span>
+    <span class="token keyword">return</span> <span class="token boolean">True</span>        
+            
+        
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    <span class="token keyword">import</span> sys
+    <span class="token builtin">input</span> <span class="token operator">=</span> sys<span class="token punctuation">.</span>stdin<span class="token punctuation">.</span>read
+    data <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    
+    n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"true"</span> <span class="token keyword">if</span> valid_palindrome<span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string">"false"</span><span class="token punctuation">)</span>
+
+</code></pre>
+<pre class="language-python"><code class="language-python"><span class="token comment"># https://atcoder.jp/contests/abc334/tasks/abc334_b</span>
+a<span class="token punctuation">,</span>m<span class="token punctuation">,</span>l<span class="token punctuation">,</span>r<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># # print((r-a)//m-(l-a-1)//m)</span>
+<span class="token keyword">from</span> bisect <span class="token keyword">import</span> bisect_left<span class="token punctuation">,</span>bisect_right
+g <span class="token operator">=</span> <span class="token builtin">range</span><span class="token punctuation">(</span>a<span class="token operator">-</span><span class="token number">2</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token operator">**</span><span class="token number">18</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token operator">**</span><span class="token number">18</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>m<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bisect_right<span class="token punctuation">(</span>g<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token operator">-</span>bisect_left<span class="token punctuation">(</span>g<span class="token punctuation">,</span> l<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+</code></pre>
+<h1>沼</h1>
+<p>Debug</p>
+<p><a href="https://atcoder.jp/contests/abc394/tasks/abc394_c">https://atcoder.jp/contests/abc394/tasks/abc394_c</a></p>
+<pre class="language-python"><code class="language-python"><span class="token comment"># s = input()</span>
+<span class="token comment"># n = len(s)</span>
+<span class="token comment"># ans = []</span>
+<span class="token comment"># # r = n-1</span>
+<span class="token comment"># st = False</span>
+<span class="token comment"># Wcnt = 0</span>
+<span class="token comment"># for r in range(n-1,-1,-1):</span>
+<span class="token comment">#     if s[r] == "A":</span>
+<span class="token comment">#         st = True</span>
+<span class="token comment">#     elif s[r] == "W":</span>
+<span class="token comment">#         if st: Wcnt += 1</span>
+<span class="token comment">#     else:</span>
+<span class="token comment">#         if st: </span>
+<span class="token comment">#             ans.append("C")</span>
+<span class="token comment">#             ans.append("A"*Wcnt)</span>
+<span class="token comment">#             st = False</span>
+<span class="token comment">#             Wcnt = 0</span>
+<span class="token comment">#             ans.append(s[r])</span>
+<span class="token comment"># if Wcnt > 0:</span>
+<span class="token comment">#     ans.append("C"*Wcnt)</span>
+<span class="token comment">#     ans.append("A")</span>
+<span class="token comment"># if len(ans) == 0:</span>
+<span class="token comment">#     ans.append(s)</span>
+<span class="token comment"># print("".join(ans[::-1]))</span>
+
+
+
+<span class="token comment"># while r > 0:</span>
+<span class="token comment">#     # WWWAだけ見る</span>
+<span class="token comment">#     if s[r] == "A":</span>
+<span class="token comment">#         l = r</span>
+<span class="token comment">#         while l-1 > 0 and s[l-1]=="W":</span>
+
+
+
+<span class="token comment"># while l &lt; n:</span>
+<span class="token comment">#     if s[l] == "W":</span>
+<span class="token comment">#         r = l</span>
+<span class="token comment">#         while r+1 &lt; n and s[r+1] == "W":</span>
+<span class="token comment">#             r += 1</span>
+<span class="token comment">#         if r+1 &lt; n and s[r+1] == "A":</span>
+<span class="token comment">#             ans.append("A"+"C"*(r-l))</span>
+<span class="token comment">#         else:</span>
+<span class="token comment">#             ans.append(s[l:r+1])</span>
+<span class="token comment">#         l = r+1</span>
+<span class="token comment">#     else:</span>
+<span class="token comment">#         ans.append(s[l])</span>
+<span class="token comment">#         l += 1</span>
+<span class="token comment"># print("".join(ans))</span>
+</code></pre>
+<h1>zipの使い方を調べたい</h1>
+<ul>
+<li><code>zip</code>は<code>for</code>が使用されるまで展開されない遅延評価</li>
+<li><code>zip</code>は添え字を持たない(not subscriptable)</li>
+<li><code>zip</code>はアンパックできる</li>
+<li>アンパック何者？←イマココ</li>
+</ul>
+<pre class="language-python"><code class="language-python">n <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+t <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+ans <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ans <span class="token operator">+=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span>t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+
+lv <span class="token operator">=</span> <span class="token number">3</span>
+<span class="token keyword">while</span> lv <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+
+    s <span class="token operator">=</span> <span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token operator">*</span>s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># print(s)</span>
+    <span class="token comment"># print(t)</span>
+    cnt <span class="token operator">=</span> <span class="token number">4</span><span class="token operator">-</span>lv
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            cnt <span class="token operator">+=</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span>t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+    ans <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> cnt<span class="token punctuation">)</span>
+    lv <span class="token operator">-=</span> <span class="token number">1</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+</code></pre>
+<h1>Weak Takahashi</h1>
+<ul>
+<li>間違い</li>
+</ul>
+<pre class="language-python"><code class="language-python">H<span class="token punctuation">,</span>W<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+C<span class="token operator">=</span><span class="token punctuation">[</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">]</span>
+dp <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>W <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">]</span>
+dp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>W<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> C<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"#"</span><span class="token punctuation">:</span> <span class="token keyword">continue</span>
+        <span class="token keyword">if</span> i<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">>=</span> <span class="token number">0</span> <span class="token keyword">and</span> C<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">"#"</span><span class="token punctuation">:</span> dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+=</span>dp<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span>
+        <span class="token keyword">if</span> j<span class="token operator">-</span><span class="token number">1</span> <span class="token operator">>=</span> <span class="token number">0</span> <span class="token keyword">and</span> C<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">"#"</span><span class="token punctuation">:</span> dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">+=</span>dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span>
+
+ans <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>W<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span>end<span class="token operator">=</span><span class="token string">" "</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> row <span class="token keyword">in</span> dp<span class="token punctuation">:</span>
+    ans <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>ans<span class="token punctuation">,</span> <span class="token builtin">max</span><span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+</code></pre>
+<h1>メモ化DFS</h1>
+<p>Weak Takahashi</p>
+<p><a href="https://atcoder.jp/contests/abc232/tasks/abc232_d" target="_blank">問題リンク</a></p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">dfs</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span>j<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> C<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"#"</span><span class="token punctuation">:</span>
+        memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+    <span class="token keyword">if</span> i<span class="token operator">==</span>H<span class="token operator">-</span><span class="token number">1</span> <span class="token keyword">and</span> j<span class="token operator">==</span>W<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">:</span>
+        memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">1</span>
+    <span class="token keyword">if</span> memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+    
+    best <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> dx<span class="token punctuation">,</span>dy <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        nx <span class="token operator">=</span> i <span class="token operator">+</span> dx
+        ny <span class="token operator">=</span> j <span class="token operator">+</span> dy
+        <span class="token keyword">if</span> <span class="token number">0</span> <span class="token operator">&lt;=</span> nx <span class="token operator">&lt;</span> H <span class="token keyword">and</span> <span class="token number">0</span> <span class="token operator">&lt;=</span> ny <span class="token operator">&lt;</span> W<span class="token punctuation">:</span>
+            best <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>best<span class="token punctuation">,</span> dfs<span class="token punctuation">(</span>nx<span class="token punctuation">,</span>ny<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token comment"># return best + 1</span>
+    memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> best <span class="token operator">+</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> memo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+
+ans <span class="token operator">=</span> dfs<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment"># i,j,n</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+</code></pre>
+<h1>遷移が右or下方向のみ⇒右下から左上へ二重ループ</h1>
+<pre class="language-python"><code class="language-python"><span class="token comment"># 再帰</span>
+<span class="token comment"># f(i,j): i,jから初めて高橋くんが通るマスの数</span>
+<span class="token comment"># f(i,j)=max(f(i+1,j),f(i,j+1))+1</span>
+<span class="token comment"># 初期化 f(i,j) = 1</span>
+H<span class="token punctuation">,</span>W<span class="token operator">=</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+C<span class="token operator">=</span><span class="token punctuation">[</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">]</span>
+f <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">(</span>W<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>H<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>W<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> C<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"#"</span><span class="token punctuation">:</span> <span class="token keyword">continue</span>
+        f<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span>f<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span>
+        <span class="token comment"># if i+1&lt;H and f[i][j]&lt;=f[i+1][j] and C[i+1][j]!="#": f[i][j] += f[i+1][j]</span>
+        <span class="token comment"># if j+1&lt;W and f[i][j]&lt;=f[i][j+1] and C[i][j+1]!="#": f[i][j] += f[i][j+1]</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<h2>番兵</h2>
+<ul>
+<li>番兵は無害な値を置いておく。</li>
+<li>今回の場合、0</li>
+</ul>
+<h2>遷移</h2>
+<ul>
+<li>遷移元の計算結果(そのマスから進んで訪れるマスの個数)</li>
+</ul>
+<h2>状態</h2>
+<ul>
+<li>状態 = (自分自身のマス) + (遷移元の計算結果)</li>
+<li>常に, 1 + dfs(i+dx,j+dy)</li>
+</ul>
+<h2>遷移の集約と状態の確定</h2>
+<ul>
+<li>全ての遷移を<code>max</code>で集約して、計算結果が確定する</li>
+<li>次に注意する。</li>
+<li>⭕️ <code>max(全ての遷移) + 1</code></li>
+<li>❌ <code>max(全ての遷移 + 1)</code></li>
+<li>これは次のように実装する</li>
+<li>2段階で行う。
+<ol>
+<li>遷移させた計算結果を<code>max</code>で集約する。</li>
+<li>集約した値に常に<code>+1</code>すれば計算結果を確定させることができる。</li>
+</ol>
+</li>
+<li>擬似コード</li>
+<li><code>best = 0</code></li>
+<li><code>best = max(best, dfs(i+dx,j+dy)</code></li>
+<li><strong>メモ化</strong></li>
+<li><code>return 計算結果</code>
+<ul>
+<li>次のうちどちらでもACするがメモ化することが大事</li>
+<li><code>return best + 1</code></li>
+<li><code>return memo[i][j]</code></li>
+</ul>
+</li>
+</ul>
+<h1>メモ化DFSの実装上の注意点</h1>
+<h2>メモ化</h2>
+<ul>
+<li>大事なシステム。これがないとTLEする</li>
+<li>今回、<code>return</code>するときは常に<code>memo</code>の値である</li>
+<li><code>memo</code>に記憶されていない場合
+<ul>
+<li><strong><code>memo</code>に記憶してから</strong>返す。</li>
+<li>遷移だけ書いて満足して<code>memo</code>に記憶するのを忘れがちなので注意。</li>
+</ul>
+</li>
+<li><code>memo</code>に記憶してあるなら、<code>memo</code>を返す</li>
+</ul>
+<h2>到達不可能な状態の処理</h2>
+<ul>
+<li>普通のDFSと同様と思われるがどちらでも書き漏れがなければ良い</li>
+<li>✅遷移する前に枝刈りする
+<ul>
+<li>推奨。テキトーに書くと<code>dfs()</code>を呼び出すまでぐちゃぐちゃするが、ちゃんとそうならないように書けばそれほどではない。</li>
+</ul>
+</li>
+<li>⚠️現在の状態で<code>return 0</code>しても良い？
+<ul>
+<li>これはなんでうまく行くのかわかっていない。</li>
+</ul>
+</li>
+</ul>
 
     <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
   </div>
