@@ -1,0 +1,406 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>【ABC422C】Atcoder AAC Contest</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>【ABC422C】Atcoder AAC Contest</h1>
+<p>Under Construction 🚧👷</p>
+<!-- > 上界が答えになってくれたら嬉しいけど、達成できないなら、まぁ別の方法をかんがえるか...っていう当てずっぽ？
+
+そう、その感覚は自然だけど、もう一歩踏み込めるともっと強くなれます。
+
+「とりあえず上界を出して、ダメなら別の方法」というのは半分正しいのですが、
+実際には **「上界を出したら、それが達成可能かどうか検証する」** というステップが重要です。
+
+
+## 思考の流れを整理すると
+
+### ① 上界を出す
+
+これはとても良いスタート。
+たいていの場合、必要条件から導く上界は計算しやすく、候補として有力。
+
+### ② 達成可能かをチェックする
+
+* 上界の値 $X$ を「仮の答え」として置いて、
+  それを実際に構成できるかどうかを論理的に確認する。
+* 構成が見つかれば「必要条件 = 十分条件」なのでそれが答えになる。
+* 構成が見つからない／明らかに矛盾があるなら、
+  その上界は達成できないので、次に大きい可能な値を探す（貪欲・探索・DP など）。
+
+
+## 「当てずっぽう」との違い
+
+* 当てずっぽう：
+  「上界が答えになってそう」→ 実装して提出 → WA なら別のことを考える
+
+* 論理的な進め方：
+  「上界を計算」→ 「達成可能性を数学的に証明」→ それができなければ次の方法へ
+
+後者は提出前に答えの正しさを確認できるので、
+WA デバッグの時間が減る & 安心して提出できるようになります。
+
+
+## 実は競プロでよくあるパターン
+
+* 多くの問題は「必要条件の上界」がそのまま十分条件になっているケースが多い
+  （解説でも「最大値はこの式になることが示せる」と終わる）
+* だからまず上界を出すのはかなり有効
+* ただし、「達成可能かどうか」を自分で確認できるようになっておくと
+  偶然当たっただけではなく、ちゃんと確信を持って答えを導ける
+
+
+## まとめ
+
+✅ 上界を計算する → **候補として強い**
+✅ その上界が本当に達成可能かどうかを **構成的に確認** する
+❌ 達成可能かどうか考えずに「まぁこれっぽい」で提出 → 典型的に WA ループにハマる
+
+
+つまり「当てずっぽう」ではなく
+**「上界を候補にして、それが達成可能かを必ず確認する」**
+というのが正しい筋道です。
+
+
+練習として、次に「上界は計算できるけど達成可能性が一見怪しい」タイプの問題をやってみますか？
+（例えば「最大何個ペアを作れるか」問題など）
+そうすると「上界→構成確認」の感覚がより身につきます。
+
+
+> 競プロでは何が求められているか把握しすればそれでいい、と思ってたけどこれは間違いで、
+「何が求められているか把握する」と「何が求められているかを考える」は、雲泥の差だね。
+
+すごく良い疑問です。
+実はここからが「考える力」がさらに深まるステップです。
+
+
+|               | 把握する                     | 考える                                |
+| ------------- | ------------------------ | ---------------------------------- |
+| **やっていること**   | 問題文を読んで「何を出力すればいいか」を理解する | 出力すべきものを変数に置いて、条件・制約を数式化・抽象化する     |
+| **結果**        | 「○○の最大値を出すのね」ぐらいの理解      | 「○○の最大値をxと置くと、xにはこの制約がある…」と論理展開できる |
+| **落とし穴**      | 具体的な数字やケースに引っ張られやすい      | 一般的な条件を扱うので、場合分けが減り、普遍的な解法に近づける    |
+| **コンテストでの影響** | 実装方針が場当たり的になりやすい         | 実装前に正しさの根拠が作れるので安心して書ける            |
+
+
+## もし「上界が答えにならない」場合
+
+1. **まず事実確認**
+
+   * 上界を計算したら、それが達成できるかを構成的にチェックする。
+   * できなければ「必要条件は満たしてるのに達成できない例」がある、ということ。
+
+2. **何が足りないか分析**
+
+   * 必要条件が「ゆるすぎた」せいで、実際には成立しないケースがある。
+   * このとき、**より強い必要条件**を探す。
+
+3. **新しい条件を追加して再び考える**
+
+   * たとえば「A の個数だけじゃなくて、A と C の差分も条件に必要だった」など。
+   * 追加条件を導入して、再び「最大の x」を求める。
+
+4. **それでも複雑なら別アプローチ**
+
+   * 上界から直接求められないなら、
+     **探索・二分探索・DP・貪欲**などアルゴリズム的手法で解く。
+   * でも、上界を求めた経験は無駄にならない。
+     上界は二分探索の右端や DP の状態の上限として使える。
+
+
+## 例：今回の問題をちょっと崩す
+
+もしルールが
+
+* **A と C の数の差が 2 以内**でなければコンテストを開けない
+  という追加制約があったら？
+
+上界だけでは答えが出せなくなります。
+なぜなら、A と C のバランスが崩れていると、
+必要条件を満たしていても作れない状況が出てくるから。
+
+このときは
+
+* x を置いて条件を書くときに「|nA − nC| ≤ 2x」みたいな新しい条件が追加される
+* その条件を満たす最大の x を求めるために場合分けや探索が必要になる
+
+
+## ポイント
+
+* **「必要条件の上界が答えになるか？」は常に仮説に過ぎない**
+  → 必ず達成可能性をチェックする
+* 達成できなければ「条件が足りない」と考え、
+  **より精緻な条件にアップデートする**
+* それでも難しければ探索アルゴリズムへ切り替える
+
+
+## メンタル的に大事なこと
+
+> 「上界が答えじゃなかった…終わった…」
+> ではなく
+> 「上界は少なくとも答えのヒントになった、次はどの条件が抜けてるか探そう」
+
+このマインドセットがあると、行き詰まりが減ります。
+上界を求めるのは失敗ではなく、**次のステップへの布石**なんです。
+
+
+## まとめ
+
+* 上界が答えじゃなかったら → **原因分析して条件を強化する**
+* それでも複雑なら → **探索や DP に切り替える**
+* 上界は常に役立つ情報（探索範囲の制限・最適解の目安）になる
+
+
+次に練習するなら、\*\*「上界を求めても達成できないケースがある問題」\*\*を選んで
+実際に「条件強化 → 再定式化」をやってみると、かなり鍛えられます。
+
+やりますか？（例として「ペアを作るが、特定のペアは作れない制約がある問題」などを用意できます）
+
+
+
+ -->
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
