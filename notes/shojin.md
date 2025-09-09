@@ -202,6 +202,7 @@ while t > 0:
     
     # print("COUPON"if original > dp[n] else"NO COUPON")
 ```
+https://atcoder.jp/contests/abc141/tasks/abc141_d
 
 ```python
 # AC
