@@ -42,26 +42,54 @@ const md = new MarkdownIt({
 
 const notesDir = path.join(__dirname, '../notes');
 const distDir = path.join(__dirname, '../dist');
-const files = fs.readdirSync(notesDir).filter(f => f.endsWith('.md'));
+const files = fs.readdirSync(notesDir).filter(f => f.endsWith('.md') || f.endsWith('.html'));
 
 
 
-function getTags(src) {
-  const tagMatch = src.match(/tags:\s*\[([^\]]+)\]/);
-  if (!tagMatch) return [];
-  // カンマ区切り形式: tags: [tag1, tag2, tag3]
-  let arr = tagMatch[1].replace(/\\,/g, '<<COMMA>>').split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
-  // 置換を元に戻す
-  arr = arr.map(s => s.replace(/<<COMMA>>/g, ','));
-  return arr;
+function getTags(src, isHtml = false) {
+  let tagLine = '';
+  if (isHtml) {
+    // HTML: <!-- tags: ... --> コメントから抽出
+    const match = src.match(/<!--\s*tags:\s*([^>]*)-->/i);
+    if (match) tagLine = match[1].trim();
+  } else {
+    // Markdown: tags: 行から抽出
+    tagLine = src.split('\n').find(line => line.startsWith('tags:')) || '';
+  }
+  if (!tagLine) return [];
+  // カンマ区切り形式: [tag1, tag2, tag3]
+  const arrayMatch = tagLine.match(/\[([^\]]+)\]/);
+  if (arrayMatch) {
+    let arr = arrayMatch[1].replace(/\\,/g, '<<COMMA>>').split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
+    arr = arr.map(s => s.replace(/<<COMMA>>/g, ','));
+    return arr;
+  }
+  // ハッシュタグ形式: #tag1 #tag2 #tag3
+  const tags = [];
+  const regex = /#([^#\s]+)/g;
+  let match;
+  while ((match = regex.exec(tagLine)) !== null) {
+    tags.push(match[1]);
+  }
+  return tags;
 }
 
 const notesInfo = files.map(f => {
-  const src = fs.readFileSync(path.join(notesDir, f), 'utf8');
-  // 最初の # 見出しをタイトルに
-  const match = src.match(/^#\s*(.+)/m);
-  const title = match ? match[1].trim() : f.replace('.md', '');
-  const tags = getTags(src);
+  const filePath = path.join(notesDir, f);
+  const src = fs.readFileSync(filePath, 'utf8');
+  let title = '';
+  let tags = [];
+  if (f.endsWith('.md')) {
+    // Markdown: 最初の # 見出しをタイトルに
+    const match = src.match(/^#\s*(.+)/m);
+    title = match ? match[1].trim() : f.replace('.md', '');
+    tags = getTags(src);
+  } else if (f.endsWith('.html')) {
+    // HTML: <h1>タグをタイトルに
+    const match = src.match(/<h1[^>]*>(.*?)<\/h1>/i);
+    title = match ? match[1].trim() : f.replace('.html', '');
+    tags = getTags(src, true);
+  }
   return { file: f, title, tags };
 });
 

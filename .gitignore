@@ -22,4 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
+# RStudio project files
+*.Rproj
+.Rhistory
+.RData
+.Rproj.user
