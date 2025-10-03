@@ -1,0 +1,43 @@
+---
+title: "Bookdown Equation Test"
+output: 
+  bookdown::html_document2:
+    css: "style.css"
+---
+
+これは数式番号のテストです。
+$$
+\begin{equation}
+a^2 + b^2 = c^2 (\#eq:pythag)
+\end{equation}
+$$
+\begin{equation}
+|x| = 
+\begin{cases}
+x~~~&(x\geq0)\\
+-x~~~&(x<0)
+\end{cases}
+(\#eq:def-abs)
+\end{equation}
+
+ここで式 \@ref(eq:pythag) を参照します。
+
+:::{.definition #pythag name="ピタゴラスの定理の定義"}
+直角三角形において、斜辺の長さを $c$、他の二辺の長さを $a, b$ とすると、次の関係が成り立つ。
+
+$$
+\begin{equation}
+a^2 + b^2 = c^2 (\#eq:pythag)
+\end{equation}
+$$
+$$
+\begin{equation}
+|x| = 
+\begin{cases}
+x~~~&(x\geq0)\\
+-x~~~&(x<0)
+\end{cases}
+(\#eq:def-abs)
+\end{equation}
+$$
+:::
