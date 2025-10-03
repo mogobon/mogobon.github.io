@@ -1,0 +1,306 @@
+---
+title: "絶対値の話"
+author: "mogobon"
+date: "2025-10-03"
+output:
+  bookdown::html_document2:
+    css: "style.css"
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    includes:
+      in_header: "../mathjax_macros.js"
+    code_download: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: no
+
+---
+
+# 絶対値の性質
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## 準備
+
+
+
+
+:::{.definition #def-abs name="絶対値"}
+<!--$$の直前に文章がないとうまくパーザ出来ずにエラーになる, なのでこのコメント行が必要. 試しにこのコメントを消して, knitしてみよ. (#eq:..の部分がうまく解釈されないはずである)-->
+$$
+\begin{equation}
+|x| = 
+\begin{cases}
+x~~~&(x\geq0)\\
+-x~~~&(x<0)
+\end{cases}
+(\#eq:def-abs)
+\end{equation}
+$$
+:::
+
+
+<!--参照**\@ref(def:abs)**-->
+<!--https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html-->
+
+* 関数$y=|x|$のグラフを描画する.
+
+```{r absplot0,eval=FALSE, echo=FALSE}
+base <- ggplot()
+base
+
+base <- base + xlim(-5, 5)
+base
+
+base <- base + geom_function(fun = abs)
+base
+```
+
+```{r absplot}
+base <- ggplot() + 
+  xlim(-5, 5) + 
+  geom_function(fun = abs)
+base
+```
+
+
+### 絶対値の非負性
+
+次の命題\@ref(prp:absgeq0)は真である. 
+
+:::{.proposition #absgeq0 name="絶対値の非負性"}
+
+
+
+任意の$x\in\mathbb{R}$に対して, 次が成り立つ.
+
+$$
+|x|\geq 0
+$$
+:::
+
+
+::: {.proof}
+
+
+* $x\geq 0$のとき, $|x|=x\geq 0$が成り立つ. 
+* $x<0$のとき, $|x|=-x=-(x)\geq0$が成り立つ.
+
+
+:::
+
+:::{.note}
+**注意**
+
+* 上で, $x<0$の場合, $|x|\geq 0\Longleftrightarrow |x|>0\lor |x|=0$であり, $|x|=0$は偽であるが, $|x|>0$は真であるから, $|x|\geq 0$が成り立つ. 
+
+* 絶対値の中身が多変数になっている場合は, 複雑に見えるが, 冷静に考えよう.
+* 例えば, 以下は誤りである.
+
+**誤り**
+
+$$
+\begin{align*}
+|x-y|&=
+\begin{cases}
+x-y~~~&(x\geq0,~y>0)\\
+x+y~~~&(x\geq0,~y<0)\\
+-x-y~~~&(x<0,~y\geq0)\\
+-x+y~~~&(x<0,~y<0)
+\end{cases}\\
+|x-y|&=
+\begin{cases}
+< 0~~~(x<y)\\
+\geq0~~~(x\geq y)
+\end{cases}
+\end{align*}
+$$
+
+
+* 場合わけする理由は, **絶対値の中身全体**が正と負の場合とで表現が異なるからである.
+* 冷静に, 全体を捉えよう.
+
+:::
+
+
+### 絶対値の範囲
+
+次の命題\@ref(prp:absrange)は真である.
+
+:::{.proposition #absrange name="絶対値の範囲"}
+任意の$x\in\mathbb{R}$に対して, 次が成り立つ.
+$$
+-|x|\leq x\leq |x|
+$$
+:::
+
+:::{.proof}
+* $|x|\leq x$について
+  * $x\geq 0$の場合
+    * $|x|=x$であるから, $|x|\leq x$が成り立つ.
+  * $x < 0$の場合
+    * $|x|=-x>0$であるから, $x<0<|x|$が成り立つ.
+    * よって, $x\leq|x|$が成り立つ.
+* $-|x|\leq x$について
+  * $x\geq 0$の場合
+    * $-|x|=-x$であるから, $-|x|=-x\leq0$が成り立つ.
+    * よって, $-|x|\leq x$が成り立つ.
+  * $x<0$の場合
+    * $-|x|=-(-x)$であるから, $-|x|=-(-x)=x$が成り立つ.
+    * よって, $-|x|\leq x$が成り立つ.
+
+:::
+
+
+
+
+## 積の絶対値は絶対値の積
+
+次の命題は真である.
+
+:::{.proposition #prodabs name="積の絶対値は絶対値の積"}
+
+
+任意の$x,y\in\mathbb{R}$に対して, 次が成り立つ.
+
+$$
+\begin{align}
+|xy|&=|x||y|\\
+\end{align}
+$$
+
+:::
+
+
+:::{.proof}
+
+
+* 場合わけして示す.
+
+* $x\geq0,~y\geq0$の場合
+  * $xy>0$が成り立つので, $\text{(左辺)}=|xy|=xy$ が成り立つ.
+  * $\text{(右辺)}=|x||y|=xy$が成り立つ.
+  * よって, $|xy|=|x||y|$ が成り立つ.
+
+* $x<0,~y\geq0$の場合
+  * $xy\leq0$が成り立つので, $\text{(左辺)}=|xy|=-xy$ が成り立つ.
+  * $\text{(右辺)}=|x||y|=(-x)\cdot y=-xy$が成り立つ.
+  * よって, $|xy|=|x||y|$ が成り立つ.
+
+* $x\geq0,~y<0$の場合
+  * $xy\leq0$が成り立つので, $\text{(左辺)}=|xy|=-xy$ が成り立つ.
+  * $\text{(右辺)}=|x||y|=x\cdot (-y)=-xy$が成り立つ.
+  * よって, $|xy|=|x||y|$ が成り立つ.
+
+* $x<0,~y<0$の場合
+  * $xy>0$が成り立つので, $\text{(左辺)}=|xy|=xy$ が成り立つ.
+  * $\text{(右辺)}=|x||y|=x\cdot y=xy$が成り立つ.
+  * よって, $|xy|=|x||y|$ が成り立つ.
+
+:::
+
+
+:::{.note}
+
+**注意**
+
+今回は, 右辺に注目すると, 
+
+* $|x|$について, 絶対値の中身全体は, $x$である.
+* $|y|$について, 絶対値の中身全体は, $y$である.
+
+よって, $x$と$y$の正負で場合わけしている.
+
+:::
+
+## 商の絶対値は絶対値の商
+
+### 準備
+
+次の命題は真である.
+
+:::{.proposition #invabs name="絶対値の逆数は逆数の絶対値"}
+
+
+任意の任意の$x\in\mathbb{R}\setminus\{0\}$に対して, 次が成り立つ.
+
+$$
+1/|x|=|1/x|
+$$
+
+:::
+
+:::{.proof}
+
+* 場合わけにより示す.
+* $x>0$の場合
+  * $|x|=x$であるから, $\text{(左辺)}=1/|x|=1/x$が成り立つ.
+  * $1/x>0$であるから, $\text{(右辺)}=|1/x|=1/x$が成り立つ.
+  * よって, $1/|x|=|1/x|$が成り立つ.
+* $x<0$の場合
+  * $|x|=-x$であるから, $\text{(左辺)}=1/|x|=1/(-x)=-1/x$が成り立つ.
+  * $1/x<0$であるから, $\text{(右辺)}=|1/x|=-1/x$が成り立つ.
+  * よって, $1/|x|=|1/x|$が成り立つ.
+
+:::
+
+
+次の命題は真である.
+
+:::{.proposition #divabs name="商の絶対値は絶対値の商"}
+
+
+任意の$x\in\mathbb{R}$と, 任意の$y\in\mathbb{R}\setminus\{0\}$に対して, 次が成り立つ.
+
+$$
+\begin{align}
+|x/y|&=|x|/|y|\\
+\end{align}
+$$
+
+:::
+
+
+:::{.proof}
+
+
+* 任意の実数$a$と$0$を除く任意の実数$b$について, $a/b=a\cdot(1/b)$が成り立つ.
+* 上で, $a=|x|,~b=|y|$とすることで, $|x|/|y|=|x|\cdot(1/|y|)=|x|\cdot|1/y|$が成り立つ.
+* したがって, $|x|/|y|=|x||1/y|=|x\cdot(1/y)|=|x/y|$が成り立つ.
+
+:::
+
+<!--
+## 和の絶対値は絶対値の和以下
+
+次の命題\@ref(prp:sumabs)は真である.
+
+:::{.proposition #sumabs name="和の絶対値は絶対値の和以下"}
+
+任意の$x,y\in\mathbb{R}$に対して次が成り立つ.
+
+$$
+|x+y| \leq |x|+|y| \\
+$$
+:::
+
+:::{.proof}
+* 命題\@ref(prp:absrange)を用いると, $x+y\leq|x|+|y|$が成り立つ. 
+* $\text{(左辺)}=|x+y|\leq||x|+|y||$が成り立つ.
+* $|x|+|y|\geq 0$が成り立つので, $||x|+|y||=|x|+|y|$が成り立つ.
+* よって, $|x+y|\leq |x|+|y|$が成り立つ. 
+:::
+
+この証明は誤りなので直す
+-->
+
+
+
+
+
+

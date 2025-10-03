@@ -1,0 +1,49 @@
+/* 定義用(proposition)のスタイル */
+div.definition {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #f2f2ff; /* 非常に薄い紫色 */
+  border: 1px solid #dcdcff;
+  border-left: 5px solid #8a2be2; /* 青みがかった紫色 (BlueViolet) */
+  border-radius: 5px;
+}
+
+/* 証明用のスタイル */
+div.proof {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-left: 5px solid #007bff;
+  border-radius: 5px;
+}
+
+/* 命題用(proposition)のスタイル */
+div.proposition {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #e9f7ef; /* 薄い緑色 */
+  border: 1px solid #a9dfbf;
+  border-left: 5px solid #2ecc71; /* 緑色 */
+  border-radius: 5px;
+}
+
+/* 注意用のスタイル */
+div.note {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fef9e7; /* 薄い黄色 */
+  border: 1px solid #f9e79f;
+  border-left: 5px solid #f1c40f; /* 黄色 */
+  border-radius: 5px;
+}
+
+/* インライン数式（埋め込み数式）の左右に少し余白を追加 */
+mjx-container:not(.mjx-display) {
+  margin: 0 0.2em;
+}
+
+/* bookdownが自動生成する定義や命題のタイトルを非表示にする (安全な方法) */
+/*.theorem-header {
+  display: none;
+}*/

@@ -106,6 +106,4 @@ output: html_document
     * $\sqrt{3}=q/p\Leftrightarrow 3p^2=q^2$が成り立つ。-->
   
 
-* 図のテスト
-![img](img/samp.jpeg)
 
