@@ -16,6 +16,15 @@ output:
 
 ---
 
+# 記号
+
+* $\land$:「かつ」を表す論理記号である.
+* $\lor$:「または」を表す論理記号である.
+* $\mathbb{R}$: 実数全体の集合
+* $\leq$: $\leqq$と同じである.
+* $\geq$: $\geqq$と同じである.
+
+
 # 絶対値の性質
 
 
@@ -32,6 +41,9 @@ library(ggplot2)
 
 :::{.definition #def-abs name="絶対値"}
 <!--$$の直前に文章がないとうまくパーザ出来ずにエラーになる, なのでこのコメント行が必要. 試しにこのコメントを消して, knitしてみよ. (#eq:..の部分がうまく解釈されないはずである)-->
+
+実数$x$に対して, 絶対値$|x|$を次のように定義する.
+
 $$
 \begin{equation}
 |x| = 
@@ -39,7 +51,6 @@ $$
 x~~~&(x\geq0)\\
 -x~~~&(x<0)
 \end{cases}
-(\#eq:def-abs)
 \end{equation}
 $$
 :::
@@ -69,9 +80,45 @@ base
 ```
 
 
+### 絶対値と$\max$関数
+
+:::{.proposition #absmax name="絶対値と$\max$関数"}
+
+任意の実数$x$に対して, 次が成り立つ.
+
+$$
+|x|=\max(\{x,-x\})
+$$
+
+:::
+
+
+:::{.proof}
+
+* $x\geq0$の場合
+  * $\text{(左辺)}=|x|=x$が成り立つ.
+  * $x\geq-x$より, $\text{(右辺)}=\max(\{x,-x\})=x$が成り立つ.
+  * よって, $|x|=\max(\{x,-x\})$が成り立つ.
+* $x<0$の場合
+  * $\text{(左辺)}=|x|=-x$が成り立つ.
+  * $-x> x$より, $\text{(右辺)}=\max(\{x,-x\})=-x$が成り立つ.
+  * よって, $|x|=\max(\{x,-x\})$が成り立つ.
+
+:::
+
+:::{.note}
+**補足**
+
+* 「任意の実数$x$に対して, $x\geq0\Longrightarrow x\geq-x$」が成り立つことは直感的に明らかである. 
+* しかし, 次のようにして示すこともできる.
+* $x\geq0\Longleftrightarrow 2x\geq 0\Longleftrightarrow x+x\geq0\Longleftrightarrow x\geq -x$
+* 「任意の実数$x$に対して, $x<0\Longrightarrow -x<x$」が成り立つことも同様にして示すことができる.
+* $x<0\Longleftrightarrow 2x< 0\Longleftrightarrow x+x<0\Longleftrightarrow x< -x$
+:::
+
+
 ### 絶対値の非負性
 
-次の命題\@ref(prp:absgeq0)は真である. 
 
 :::{.proposition #absgeq0 name="絶対値の非負性"}
 
@@ -98,7 +145,6 @@ $$
 **注意**
 
 * 上で, $x<0$の場合, $|x|\geq 0\Longleftrightarrow |x|>0\lor |x|=0$であり, $|x|=0$は偽であるが, $|x|>0$は真であるから, $|x|\geq 0$が成り立つ. 
-
 * 絶対値の中身が多変数になっている場合は, 複雑に見えるが, 冷静に考えよう.
 * 例えば, 以下は誤りである.
 
@@ -128,11 +174,11 @@ $$
 :::
 
 
-### 絶対値の範囲
+### 絶対値を含む基本的な不等式
 
-次の命題\@ref(prp:absrange)は真である.
 
-:::{.proposition #absrange name="絶対値の範囲"}
+
+:::{.proposition #absrange name="絶対値による評価"}
 任意の$x\in\mathbb{R}$に対して, 次が成り立つ.
 $$
 -|x|\leq x\leq |x|
@@ -157,11 +203,68 @@ $$
 :::
 
 
+:::{.proposition #absieq1 name="絶対値を含む基本的な不等式"}
+
+任意の$x,M\in\mathbb{R}$に対して, 次が成り立つ.
+
+$$
+|x|\leq M \Longleftrightarrow -M\leq x\leq M
+$$
+
+:::
+
+
+:::{.proof}
+* $(\Longrightarrow)$
+  * $M\geq|x|\geq 0$が成り立つので, $M$が非負の場合を考える.
+  * $|x|=\max(\{x,-x\})\leq M$が成り立つ.
+  * よって, $x\leq M\land -x\leq M$が成り立つ.
+  * $x\leq M\land -x\leq M\Longleftrightarrow x\leq M\land x \geq-M\Longleftrightarrow-M\leq x \leq M$が成り立つ.
+  * したがって, $|x|\leq M\Longrightarrow-M\leq x \leq M$が成り立つ.
+* $(\Longleftarrow)$
+  * $M<0$の場合
+    * 「任意の$x,M\in\mathbb{R}$に対して, $x\leq M<0\land x\geq-M>0$である」は偽である. 
+    * よって, $|x|\leq M \Longleftarrow-M\leq x \leq M$が成り立つ.
+  * $M\geq0$の場合
+    * $-M\leq x \leq M\Longleftrightarrow(x+M)(x-M)\leq 0\Longleftrightarrow x^2\leq M^2$が成り立つ. 
+    * $|x|^2=x^2$より, $x^2\leq M^2 \Longleftrightarrow |x|\leq M$が成り立つ.
+    * よって, $|x|\leq M \Longleftarrow-M\leq x \leq M$が成り立つ.
+
+:::
+
+
+
+:::{.proposition #absieq name="絶対値を含む基本的な不等式2"}
+
+任意の$x,m\in\mathbb{R}$に対して, 次が成り立つ.
+
+$$
+|x|\geq m \Longleftrightarrow x\leq -m\lor x\geq m
+$$
+
+:::
+
+
+:::{.proof}
+* $(\Longrightarrow)$
+  * $|x|=\max(\{x,-x\})\geq m$より, $x\geq m\lor -x\geq m$が成り立つ.
+  * よって, $|x|\geq m\Longrightarrow x\leq -m\lor x\geq m$が成り立つ.
+* $(\Longleftarrow)$
+  * $m<0$の場合
+    * $x\leq-m\lor x\geq m\Longleftrightarrow x\in\mathbb{R}$が成り立つ.
+    * また, $m<0$により, $x\in\mathbb{R}\Longrightarrow |x|\geq m$が成り立つ.
+    * よって, $|x|\geq m \Longleftarrow x\leq-m\lor x \geq m$が成り立つ.
+  * $m\geq0$の場合
+    * $x\leq -m\lor x\geq m\Longleftrightarrow(x+m)(x-m)\geq0\Longleftrightarrow x^2\geq m^2$が成り立つ.
+    * $|x|^2=x^2$より, $x^2\geq m\Longleftrightarrow|x|\geq m$が成り立つ.
+  
+
+:::
 
 
 ## 積の絶対値は絶対値の積
 
-次の命題は真である.
+
 
 :::{.proposition #prodabs name="積の絶対値は絶対値の積"}
 
@@ -183,7 +286,7 @@ $$
 * 場合わけして示す.
 
 * $x\geq0,~y\geq0$の場合
-  * $xy>0$が成り立つので, $\text{(左辺)}=|xy|=xy$ が成り立つ.
+  * $xy\geq0$が成り立つので, $\text{(左辺)}=|xy|=xy$ が成り立つ.
   * $\text{(右辺)}=|x||y|=xy$が成り立つ.
   * よって, $|xy|=|x||y|$ が成り立つ.
 
@@ -205,6 +308,10 @@ $$
 :::
 
 
+
+
+
+
 :::{.note}
 
 **注意**
@@ -222,7 +329,7 @@ $$
 
 ### 準備
 
-次の命題は真である.
+
 
 :::{.proposition #invabs name="絶対値の逆数は逆数の絶対値"}
 
@@ -250,7 +357,7 @@ $$
 :::
 
 
-次の命題は真である.
+
 
 :::{.proposition #divabs name="商の絶対値は絶対値の商"}
 
@@ -275,10 +382,10 @@ $$
 
 :::
 
-<!--
-## 和の絶対値は絶対値の和以下
 
-次の命題\@ref(prp:sumabs)は真である.
+## 和の絶対値は絶対値の和以下(劣加法性)
+
+
 
 :::{.proposition #sumabs name="和の絶対値は絶対値の和以下"}
 
@@ -289,18 +396,67 @@ $$
 $$
 :::
 
+
+
 :::{.proof}
-* 命題\@ref(prp:absrange)を用いると, $x+y\leq|x|+|y|$が成り立つ. 
+
+* $x+y\geq 0$の場合
+  * $|x+y|=x+y$が成り立つ.
+  * 絶対値による評価\@ref(prp:absrange)より, $x\leq|x|,~y\leq|y|$が成り立つ.
+  * よって, $x+y\leq|x|+|y|$が成り立つ.
+  * したがって, $|x+y|=x+y\leq|x|+|y|$が成り立つ.
+* $x+y< 0$の場合
+  * $|x+y|=-x-y$が成り立つ.
+  * 絶対値による評価\@ref(prp:absrange)より, $-x\leq|x|,~-y\leq|y|$が成り立つ.
+  * よって, $-x-y\leq|x|+|y|$が成り立つ.
+  * したがって, $|x+y|=-x-y\leq|x|+|y|$が成り立つ.
+
+:::
+
+
+:::{.proof name="別証明"}
+
+* 絶対値による評価(命題\@ref(prp:absrange))より, $-|x|\leq x\leq |x|,~-|y|\leq y\leq |y|$が成り立つ.
+* 辺々を足し合わせて$-(|x|+|y|)\leq x+y\leq|x|+|y|$を得る.
+* 上の式が成り立つので, $|x+y|\leq|x|+|y|$が成り立つ.
+
+:::
+
+:::{.note name="$x\leq y\Longrightarrow|x|\leq|y|$か？"}
+
+**注意**
+
+* 一般に, $x\leq y\Longrightarrow|x|\leq|y|$が成り立つとは限らず, 次の証明は誤りである.
+
+**誤り**
+
+* $x\leq |x|,~y\leq|y|$より, $x+y\leq|x|+|y|$が成り立つ. 
 * $\text{(左辺)}=|x+y|\leq||x|+|y||$が成り立つ.
-* $|x|+|y|\geq 0$が成り立つので, $||x|+|y||=|x|+|y|$が成り立つ.
+* {$|x|+|y|\geq 0$が成り立つので, $||x|+|y||=|x|+|y|$が成り立つ.
 * よって, $|x+y|\leq |x|+|y|$が成り立つ. 
 :::
 
-この証明は誤りなので直す
--->
+## 和の絶対値は絶対値の差以上
+
+:::{.proposition #sumabs name="和の絶対値は絶対値の差以上"}
+
+任意の$x,y\in\mathbb{R}$に対して次が成り立つ.
+
+$$
+|x|-|y| \leq |x+y| \\
+$$
+:::
 
 
 
+:::{.proof}
 
+* $X=x+y,~Y=-y$とすると, $x=X+Y,y=-Y$である.
+* また, $|-Y|=|Y|$であるから次が成り立つ.
+* $|x+y| \leq |x|+|y|\Longleftrightarrow|X|\leq|X+Y|+|-Y|\Longleftrightarrow|X|-|Y|\leq|X+Y|$
 
+:::
 
+:::{.note}
+* $|x+y|\leq|x|+|y|$と, $|x|-|y|\leq|x+y|$を合わせて, $|x|-|y|\leq|x+y|\leq|x|+|y|$が言える.
+:::
