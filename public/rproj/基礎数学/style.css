@@ -43,7 +43,4 @@ mjx-container:not(.mjx-display) {
   margin: 0 0.2em;
 }
 
-/* bookdownが自動生成する定義や命題のタイトルを非表示にする (安全な方法) */
-/*.theorem-header {
-  display: none;
-}*/
+
