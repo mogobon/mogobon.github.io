@@ -203,7 +203,30 @@ $$
 :::
 
 
-:::{.proposition #absieq1 name="絶対値を含む基本的な不等式"}
+:::{.proposition #absgeqmi name="絶対値を含む基本的な不等式"}
+
+任意の実数$x$に対して, 次が成り立つ.
+
+$$
+-x\leq |x|
+$$
+
+:::
+
+:::{.proof}
+
+* $x\geq0$の場合
+  * $|x|=x$が成り立つので, $|x|+x=x+x=2x\geq0$が成り立つ.
+  * よって, $-x\leq|x|$が成り立つ.
+* $x<0$の場合
+  * $|x|=-x$が成り立つので, $|x|+x=-x+x=0\geq0$が成り立つ.
+  * よって, $-x\leq|x|$が成り立つ.
+  
+
+:::
+
+
+:::{.proposition #absieq1 name="絶対値を含む基本的な不等式2"}
 
 任意の$x,M\in\mathbb{R}$に対して, 次が成り立つ.
 
@@ -234,7 +257,7 @@ $$
 
 
 
-:::{.proposition #absieq name="絶対値を含む基本的な不等式2"}
+:::{.proposition #absieq name="絶対値を含む基本的な不等式3"}
 
 任意の$x,m\in\mathbb{R}$に対して, 次が成り立つ.
 
@@ -257,6 +280,7 @@ $$
   * $m\geq0$の場合
     * $x\leq -m\lor x\geq m\Longleftrightarrow(x+m)(x-m)\geq0\Longleftrightarrow x^2\geq m^2$が成り立つ.
     * $|x|^2=x^2$より, $x^2\geq m\Longleftrightarrow|x|\geq m$が成り立つ.
+    * よって, $|x|\geq m \Longleftarrow x\leq-m\lor x \geq m$が成り立つ.
   
 
 :::
