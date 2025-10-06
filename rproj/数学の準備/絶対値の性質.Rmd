@@ -159,11 +159,6 @@ x+y~~~&(x\geq0,~y<0)\\
 -x-y~~~&(x<0,~y\geq0)\\
 -x+y~~~&(x<0,~y<0)
 \end{cases}\\
-|x-y|&=
-\begin{cases}
-< 0~~~(x<y)\\
-\geq0~~~(x\geq y)
-\end{cases}
 \end{align*}
 $$
 
