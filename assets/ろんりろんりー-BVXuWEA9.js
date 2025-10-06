@@ -379,7 +379,7 @@ display: none;
 
 <h1 class="title toc-ignore">論理式</h1>
 <h4 class="author">mogobon</h4>
-<h4 class="date">最終更新 2025-10-05</h4>
+<h4 class="date">最終更新 2025-10-06</h4>
 
 </div>
 
@@ -444,7 +444,7 @@ display: none;
 <li>命題も条件も真理値を返す.</li>
 </ul></li>
 </ul>
-<p>以降, 断りなく<span class="math inline">\\(p,q\\)</span>と出てきた場合には, それらは命題であるとする.</p>
+<!--以降, 断りなく$p,q$と出てきた場合には, それらは命題であるとする. -->
 <ul>
 <li>でない<span class="math inline">\\((\\lnot)\\)</span>（命題の否定）
 <ul>
@@ -558,38 +558,38 @@ display: none;
 <li><span class="math inline">\\(\\because\\)</span> 真偽が一意に定まる文であるから.</li>
 </ul></li>
 </ul></li>
+<li>自由変数と束縛変数
+<ul>
+<li><span class="math inline">\\(\\forall,\\exists\\)</span>で束縛(修飾)される変数を束縛変数という.</li>
+<li>束縛変数でない変数を自由変数という.</li>
+</ul></li>
+<li>全称閉包と, 全称量化子<span class="math inline">\\(\\forall\\)</span>の省略
+<ul>
+<li>述語<span class="math inline">\\(p\\)</span>の自由変数を, <span class="math inline">\\(x_1,x_2,\\cdots, x_n\\)</span>とする.</li>
+<li>このとき, <span class="math inline">\\(\\forall x_1,\\forall x_2,\\cdots,\\forall x_n,~p\\)</span>にを全称閉包(universal closure)という.</li>
+<li>全称閉包における<span class="math inline">\\(\\forall x_1,\\cdots,\\forall x_n\\)</span>は省略される場合がある.</li>
+<li>例: <span class="math inline">\\(\\forall x\\in\\mathbb{R},\\forall y \\in \\mathbb{R}, [x+y=y+x]\\)</span>
+<ul>
+<li><span class="math inline">\\(x+y=y+x~(x,y\\in\\mathbb{R})\\)</span></li>
+<li><span class="math inline">\\(x,y\\)</span>は実数である. 命題「<span class="math inline">\\(x+y=y+x\\)</span>」が成り立つ.</li>
+<li><span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>とする. このとき, <span class="math inline">\\(x+y=y+x\\)</span></li>
+</ul></li>
+<li>全称による束縛(修飾)が省略されているだけで, (やや誇張しているが)すべて同じ命題である.</li>
+<li>例2: 「ルベーグ積分 要点と演習(相川弘明, 小林政晴著)」の「命題1.27測度の基本的性質」より
+<ul>
+<li><span class="math inline">\\((X,\\mathscr{B},\\mu)\\)</span>を測度空間とする. このとき, 以下の性質が成り立つ.</li>
+<li>単調性. <span class="math inline">\\(E,F\\in \\mathscr{B}, E\\subset F \\Longrightarrow \\mu(E)\\leq \\mu(F).\\)</span></li>
+<li>加算劣加法性. <span class="math inline">\\(E_n\\in\\mathscr{B}\\Longrightarrow \\mu(\\bigcup_{n}E_n)\\leq\\sum_{n}\\mu(E_n).\\)</span></li>
+<li>単調増加極限. <span class="math inline">\\(E_n\\in\\mathscr{B},~E_{n}\\uparrow E\\in\\mathscr{B}\\Longrightarrow\\mu(E_n)\\uparrow\\mu(E)\\)</span></li>
+<li>単調減少極限. <span class="math inline">\\(E_n\\in\\mathscr{B},~E_{n}\\downarrow E\\in\\mathscr{B},~\\mu(E_n)&lt;\\infty\\Longrightarrow\\mu(E_n)\\downarrow\\mu(E)\\)</span></li>
+</ul></li>
+</ul></li>
 </ul>
 <hr />
 <ul>
-<li>関連する例
-<ul>
-<li><span class="math inline">\\(2x=1\\)</span>
-<ul>
-<li><span class="math inline">\\(x=1/2\\)</span>のとき, <span class="math inline">\\(1=1\\)</span>となり, 「<span class="math inline">\\(2x=1\\)</span>」は真である.</li>
-<li><span class="math inline">\\(x=3\\)</span>のとき, <span class="math inline">\\(6=1\\)</span>となり, 「<span class="math inline">\\(2x=1\\)</span>」は偽である.</li>
-<li>場合によって, 変数の具体的な範囲が省略される場合がある.</li>
-<li>今回, <span class="math inline">\\(x\\in\\mathbb{R}\\)</span>を省略している.</li>
-</ul></li>
-<li><span class="math inline">\\(x\\in\\mathbb{R},~x^2=-1\\)</span>
-<ul>
-<li><span class="math inline">\\(x^2\\geq 0\\)</span>より, 「<span class="math inline">\\(x^2=-1\\)</span>」は常に偽の命題である. （恒偽命題）</li>
-</ul></li>
-<li><span class="math inline">\\(x\\in\\mathbb{C},~x^2=-1\\)</span>
-<ul>
-<li><span class="math inline">\\(x=i\\)</span>のとき, <span class="math inline">\\(i^2=-1\\)</span>となり「<span class="math inline">\\(x^2=-1\\)</span>」は真である.</li>
-<li><span class="math inline">\\(x\\neq i\\)</span>のとき, 「<span class="math inline">\\(x^2=-1\\)</span>」は偽である.</li>
-</ul></li>
+<li>例</li>
 <li>「方程式を解く」とは, 真理集合を定めることに他ならない.</li>
-</ul></li>
 </ul>
-<!--* 整数$n$について, $n^2$が$3$の倍数ならば$n$は$3$の倍数であることを示せ. 
-    * $n$が$3$の
-  * $\\sqrt{3}$が無理数であることを示せ. 
-    * 「$\\sqrt{3}$は無理数である」の否定は, 「$\\sqrt{3}$は有理数である」である. 
-    * $\\sqrt{3}$が有理数であると仮定して矛盾することを示せば良い. 
-    * $\\sqrt{3}=q/p$を満たす互いに素な整数$p,q$が存在する. 
-      * 互いに素な整数は最大公約数が$1$の整数である. 
-    * $\\sqrt{3}=q/p\\Leftrightarrow 3p^2=q^2$が成り立つ. -->
 
 
 

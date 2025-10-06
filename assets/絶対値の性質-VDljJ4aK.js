@@ -11,7 +11,6 @@ const t=`<!DOCTYPE html>
 
 <meta name="author" content="mogobon" />
 
-<meta name="date" content="2025-10-03" />
 
 <title>絶対値の話</title>
 
@@ -1628,7 +1627,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">絶対値の話</h1>
 <h4 class="author">mogobon</h4>
-<h4 class="date">2025-10-03</h4>
+<h4 class="date">最終更新 2025-10-05</h4>
 
 </div>
 
@@ -1751,17 +1750,36 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <li>冷静に, 全体を捉えよう.</li>
 </ul>
 </div>
+<div class="proposition">
+<p><span id="prp:abssq" class="proposition"><strong>Proposition 3  (絶対値の2乗と元の数の2乗は同じ) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.
+<span class="math display">\\[
+|x|^2=x^2
+\\]</span></p>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span></p>
+<ul>
+<li><span class="math inline">\\(x\\geq0\\)</span>の場合
+<ul>
+<li><span class="math inline">\\(|x|=x\\)</span>より, <span class="math inline">\\(|x|^2=(|x|)^2=(x)^2=x^2\\)</span>が成り立つ.</li>
+</ul></li>
+<li><span class="math inline">\\(x&lt;0\\)</span>の場合
+<ul>
+<li><span class="math inline">\\(|x|=-x\\)</span>より, <span class="math inline">\\(|x|^2=(|x|)^2=(-x)^2=x^2\\)</span>が成り立つ.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 <div id="絶対値を含む基本的な不等式" class="section level3">
 <h3>絶対値を含む基本的な不等式</h3>
 <div class="proposition">
-<p><span id="prp:absrange" class="proposition"><strong>Proposition 3  (絶対値による評価) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.
+<p><span id="prp:absrange" class="proposition"><strong>Proposition 4  (絶対値による評価) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.
 <span class="math display">\\[
 -|x|\\leq x\\leq |x|
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-3" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><span class="math inline">\\(|x|\\leq x\\)</span>について
 <ul>
@@ -1791,13 +1809,13 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 </ul>
 </div>
 <div class="proposition">
-<p><span id="prp:absgeqmi" class="proposition"><strong>Proposition 4  (絶対値を含む基本的な不等式) </strong></span>任意の実数<span class="math inline">\\(x\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:absgeqmi" class="proposition"><strong>Proposition 5  (絶対値を含む基本的な不等式) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 -x\\leq |x|
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-4" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-5" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><span class="math inline">\\(x\\geq0\\)</span>の場合
 <ul>
@@ -1812,13 +1830,13 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 </ul>
 </div>
 <div class="proposition">
-<p><span id="prp:absieq1" class="proposition"><strong>Proposition 5  (絶対値を含む基本的な不等式2) </strong></span>任意の<span class="math inline">\\(x,M\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:absieq1" class="proposition"><strong>Proposition 6  (絶対値を含む基本的な不等式2) </strong></span>任意の<span class="math inline">\\(x,M\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 |x|\\leq M \\Longleftrightarrow -M\\leq x\\leq M
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-5" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-6" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><span class="math inline">\\((\\Longrightarrow)\\)</span>
 <ul>
@@ -1845,13 +1863,13 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 </ul>
 </div>
 <div class="proposition">
-<p><span id="prp:absieq" class="proposition"><strong>Proposition 6  (絶対値を含む基本的な不等式3) </strong></span>任意の<span class="math inline">\\(x,m\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:absieq" class="proposition"><strong>Proposition 7  (絶対値を含む基本的な不等式3) </strong></span>任意の<span class="math inline">\\(x,m\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 |x|\\geq m \\Longleftrightarrow x\\leq -m\\lor x\\geq m
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-6" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-7" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><span class="math inline">\\((\\Longrightarrow)\\)</span>
 <ul>
@@ -1880,7 +1898,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <div id="積の絶対値は絶対値の積" class="section level2">
 <h2>積の絶対値は絶対値の積</h2>
 <div class="proposition">
-<p><span id="prp:prodabs" class="proposition"><strong>Proposition 7  (積の絶対値は絶対値の積) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:prodabs" class="proposition"><strong>Proposition 8  (積の絶対値は絶対値の積) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 \\begin{align}
 |xy|&amp;=|x||y|\\\\
@@ -1888,7 +1906,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-7" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-8" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><p>場合わけして示す.</p></li>
 <li><p><span class="math inline">\\(x\\geq0,~y\\geq0\\)</span>の場合</p>
@@ -1932,13 +1950,13 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <div id="準備-1" class="section level3">
 <h3>準備</h3>
 <div class="proposition">
-<p><span id="prp:invabs" class="proposition"><strong>Proposition 8  (絶対値の逆数は逆数の絶対値) </strong></span>任意の任意の<span class="math inline">\\(x\\in\\mathbb{R}\\setminus\\{0\\}\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:invabs" class="proposition"><strong>Proposition 9  (絶対値の逆数は逆数の絶対値) </strong></span>任意の任意の<span class="math inline">\\(x\\in\\mathbb{R}\\setminus\\{0\\}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 1/|x|=|1/x|
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-8" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-9" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li>場合わけにより示す.</li>
 <li><span class="math inline">\\(x&gt;0\\)</span>の場合
@@ -1956,7 +1974,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 </ul>
 </div>
 <div class="proposition">
-<p><span id="prp:divabs" class="proposition"><strong>Proposition 9  (商の絶対値は絶対値の商) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>と, 任意の<span class="math inline">\\(y\\in\\mathbb{R}\\setminus\\{0\\}\\)</span>に対して, 次が成り立つ.</p>
+<p><span id="prp:divabs" class="proposition"><strong>Proposition 10  (商の絶対値は絶対値の商) </strong></span>任意の<span class="math inline">\\(x\\in\\mathbb{R}\\)</span>と, 任意の<span class="math inline">\\(y\\in\\mathbb{R}\\setminus\\{0\\}\\)</span>に対して, 次が成り立つ.</p>
 <p><span class="math display">\\[
 \\begin{align}
 |x/y|&amp;=|x|/|y|\\\\
@@ -1964,7 +1982,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-9" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-10" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li>任意の実数<span class="math inline">\\(a\\)</span>と<span class="math inline">\\(0\\)</span>を除く任意の実数<span class="math inline">\\(b\\)</span>について, <span class="math inline">\\(a/b=a\\cdot(1/b)\\)</span>が成り立つ.</li>
 <li>上で, <span class="math inline">\\(a=|x|,~b=|y|\\)</span>とすることで, <span class="math inline">\\(|x|/|y|=|x|\\cdot(1/|y|)=|x|\\cdot|1/y|\\)</span>が成り立つ.</li>
@@ -1976,36 +1994,55 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <div id="和の絶対値は絶対値の和以下劣加法性" class="section level2">
 <h2>和の絶対値は絶対値の和以下(劣加法性)</h2>
 <div class="proposition">
-<p><span id="prp:sumabs" class="proposition"><strong>Proposition 10  (和の絶対値は絶対値の和以下) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して次が成り立つ.</p>
+<p><span id="prp:sumabs" class="proposition"><strong>Proposition 11  (和の絶対値は絶対値の和以下) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して次が成り立つ.</p>
 <p><span class="math display">\\[
 |x+y| \\leq |x|+|y| \\\\
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-10" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-11" class="proof"><em>Proof</em> (場合分けによる証明). </span></p>
 <ul>
 <li><span class="math inline">\\(x+y\\geq 0\\)</span>の場合
 <ul>
 <li><span class="math inline">\\(|x+y|=x+y\\)</span>が成り立つ.</li>
-<li>絶対値による評価<a href="#prp:absrange">3</a>より, <span class="math inline">\\(x\\leq|x|,~y\\leq|y|\\)</span>が成り立つ.</li>
+<li>絶対値による評価<a href="#prp:absrange">4</a>より, <span class="math inline">\\(x\\leq|x|,~y\\leq|y|\\)</span>が成り立つ.</li>
 <li>よって, <span class="math inline">\\(x+y\\leq|x|+|y|\\)</span>が成り立つ.</li>
 <li>したがって, <span class="math inline">\\(|x+y|=x+y\\leq|x|+|y|\\)</span>が成り立つ.</li>
 </ul></li>
 <li><span class="math inline">\\(x+y&lt; 0\\)</span>の場合
 <ul>
 <li><span class="math inline">\\(|x+y|=-x-y\\)</span>が成り立つ.</li>
-<li>絶対値による評価<a href="#prp:absrange">3</a>より, <span class="math inline">\\(-x\\leq|x|,~-y\\leq|y|\\)</span>が成り立つ.</li>
+<li>絶対値による評価<a href="#prp:absrange">4</a>より, <span class="math inline">\\(-x\\leq|x|,~-y\\leq|y|\\)</span>が成り立つ.</li>
 <li>よって, <span class="math inline">\\(-x-y\\leq|x|+|y|\\)</span>が成り立つ.</li>
 <li>したがって, <span class="math inline">\\(|x+y|=-x-y\\leq|x|+|y|\\)</span>が成り立つ.</li>
 </ul></li>
 </ul>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-11" class="proof"><em>Proof</em> (別証明). </span></p>
+<p><span id="unlabeled-div-12" class="proof"><em>Proof</em> ($-|x|\\leq x\\leq |x|$を利用する証明). </span></p>
 <ul>
-<li>絶対値による評価(命題<a href="#prp:absrange">3</a>)より, <span class="math inline">\\(-|x|\\leq x\\leq |x|,~-|y|\\leq y\\leq |y|\\)</span>が成り立つ.</li>
+<li>絶対値による評価(命題<a href="#prp:absrange">4</a>)より, <span class="math inline">\\(-|x|\\leq x\\leq |x|,~-|y|\\leq y\\leq |y|\\)</span>が成り立つ.</li>
 <li>辺々を足し合わせて<span class="math inline">\\(-(|x|+|y|)\\leq x+y\\leq|x|+|y|\\)</span>を得る.</li>
 <li>上の式が成り立つので, <span class="math inline">\\(|x+y|\\leq|x|+|y|\\)</span>が成り立つ.</li>
+</ul>
+</div>
+<div class="proof">
+<p><span id="unlabeled-div-13" class="proof"><em>Proof</em> (平方の差を考える方法による証明). </span></p>
+<ul>
+<li><span class="math inline">\\(|x+y|\\geq0, |x|+|y|\\geq0\\)</span>より, <span class="math inline">\\(|x+y|^2\\leq(|x|+|y|)^2\\Longleftrightarrow |x+y|\\leq|x|+|y|\\)</span>が成り立つ.</li>
+<li><span class="math inline">\\((|x|+|y|)^2-|x+y|^2\\)</span>は次のように同値変形できる.</li>
+</ul>
+<p><span class="math display">\\[
+\\begin{align*}
+(|x|+|y|)^2-|x+y|^2&amp;=|x|^2+|y|^2+2|x||y|-|x+y|^2\\\\
+&amp;=x^2+y^2+2|xy|-(x+y)^2\\\\
+&amp;=2(|xy|-xy)\\\\
+&amp;\\geq0
+\\end{align*}
+\\]</span></p>
+<ul>
+<li>よって, <span class="math inline">\\(|x+y|^2\\leq(|x|+|y|)^2\\)</span>が成り立つ.</li>
+<li>したがって, <span class="math inline">\\(|x+y|\\leq|x|+|y|\\)</span>が成り立つ.</li>
 </ul>
 </div>
 <div class="note" name="$x\\leq y\\Longrightarrow|x|\\leq|y|$か？">
@@ -2017,7 +2054,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <ul>
 <li><span class="math inline">\\(x\\leq |x|,~y\\leq|y|\\)</span>より, <span class="math inline">\\(x+y\\leq|x|+|y|\\)</span>が成り立つ.</li>
 <li><span class="math inline">\\(\\text{(左辺)}=|x+y|\\leq||x|+|y||\\)</span>が成り立つ.</li>
-<li>{<span class="math inline">\\(|x|+|y|\\geq 0\\)</span>が成り立つので, <span class="math inline">\\(||x|+|y||=|x|+|y|\\)</span>が成り立つ.</li>
+<li><span class="math inline">\\(|x|+|y|\\geq 0\\)</span>が成り立つので, <span class="math inline">\\(||x|+|y||=|x|+|y|\\)</span>が成り立つ.</li>
 <li>よって, <span class="math inline">\\(|x+y|\\leq |x|+|y|\\)</span>が成り立つ.</li>
 </ul>
 </div>
@@ -2025,13 +2062,13 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 <div id="和の絶対値は絶対値の差以上" class="section level2">
 <h2>和の絶対値は絶対値の差以上</h2>
 <div class="proposition">
-<p><span id="prp:sumabs" class="proposition"><strong>Proposition 10  (和の絶対値は絶対値の差以上) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して次が成り立つ.</p>
+<p><span id="prp:sumabs" class="proposition"><strong>Proposition 11  (和の絶対値は絶対値の差以上) </strong></span>任意の<span class="math inline">\\(x,y\\in\\mathbb{R}\\)</span>に対して次が成り立つ.</p>
 <p><span class="math display">\\[
 |x|-|y| \\leq |x+y| \\\\
 \\]</span></p>
 </div>
 <div class="proof">
-<p><span id="unlabeled-div-12" class="proof"><em>Proof</em>. </span></p>
+<p><span id="unlabeled-div-14" class="proof"><em>Proof</em>. </span></p>
 <ul>
 <li><span class="math inline">\\(X=x+y,~Y=-y\\)</span>とすると, <span class="math inline">\\(x=X+Y,y=-Y\\)</span>である.</li>
 <li>また, <span class="math inline">\\(|-Y|=|Y|\\)</span>であるから次が成り立つ.</li>
@@ -2046,7 +2083,7 @@ x+y~~~&amp;(x\\geq0,~y&lt;0)\\\\
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAi57W25a++5YCk44Gu6KmxIgphdXRob3I6ICJtb2dvYm9uIgpkYXRlOiAiMjAyNS0xMC0wMyIKb3V0cHV0OgogIGJvb2tkb3duOjpodG1sX2RvY3VtZW50MjoKICAgIGNzczogInN0eWxlLmNzcyIKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGluY2x1ZGVzOgogICAgICBpbl9oZWFkZXI6ICIuLi9tYXRoamF4X21hY3Jvcy5qcyIKICAgIGNvZGVfZG93bmxvYWQ6IHllcwogICAgdG9jOiB5ZXMKICAgIHRvY19kZXB0aDogMwogICAgdG9jX2Zsb2F0OiB5ZXMKICAgIG51bWJlcl9zZWN0aW9uczogbm8KCi0tLQoKIyDoqJjlj7cKCiogJFxsYW5kJDrjgIzjgYvjgaTjgI3jgpLooajjgZnoq5bnkIboqJjlj7fjgafjgYLjgosuCiogJFxsb3IkOuOAjOOBvuOBn+OBr+OAjeOCkuihqOOBmeirlueQhuiomOWPt+OBp+OBguOCiy4KKiAkXG1hdGhiYntSfSQ6IOWun+aVsOWFqOS9k+OBrumbhuWQiAoqICRcbGVxJDogJFxsZXFxJOOBqOWQjOOBmOOBp+OBguOCiy4KKiAkXGdlcSQ6ICRcZ2VxcSTjgajlkIzjgZjjgafjgYLjgosuCgoKIyDntbblr77lgKTjga7mgKfos6oKCgoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKbGlicmFyeShnZ3Bsb3QyKQpgYGAKCiMjIOa6luWCmQoKCgoKOjo6ey5kZWZpbml0aW9uICNkZWYtYWJzIG5hbWU9Iue1tuWvvuWApCJ9CjwhLS0kJOOBruebtOWJjeOBq+aWh+eroOOBjOOBquOBhOOBqOOBhuOBvuOBj+ODkeODvOOCtuWHuuadpeOBmuOBq+OCqOODqeODvOOBq+OBquOCiywg44Gq44Gu44Gn44GT44Gu44Kz44Oh44Oz44OI6KGM44GM5b+F6KaBLiDoqabjgZfjgavjgZPjga7jgrPjg6Hjg7Pjg4jjgpLmtojjgZfjgaYsIGtuaXTjgZfjgabjgb/jgoguICgjZXE6Li7jga7pg6jliIbjgYzjgYbjgb7jgY/op6Pph4jjgZXjgozjgarjgYTjga/jgZrjgafjgYLjgospLS0+Cgrlrp/mlbAkeCTjgavlr77jgZfjgaYsIOe1tuWvvuWApCR8eHwk44KS5qyh44Gu44KI44GG44Gr5a6a576p44GZ44KLLgoKJCQKXGJlZ2lue2VxdWF0aW9ufQp8eHwgPSAKXGJlZ2lue2Nhc2VzfQp4fn5+Jih4XGdlcTApXFwKLXh+fn4mKHg8MCkKXGVuZHtjYXNlc30KXGVuZHtlcXVhdGlvbn0KJCQKOjo6CgoKPCEtLeWPgueFpyoqXEByZWYoZGVmOmFicykqKi0tPgo8IS0taHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvYm9va2Rvd24vbWFya2Rvd24tZXh0ZW5zaW9ucy1ieS1ib29rZG93bi5odG1sLS0+CgoqIOmWouaVsCR5PXx4fCTjga7jgrDjg6njg5XjgpLmj4/nlLvjgZnjgosuCgpgYGB7ciBhYnNwbG90MCxldmFsPUZBTFNFLCBlY2hvPUZBTFNFfQpiYXNlIDwtIGdncGxvdCgpCmJhc2UKCmJhc2UgPC0gYmFzZSArIHhsaW0oLTUsIDUpCmJhc2UKCmJhc2UgPC0gYmFzZSArIGdlb21fZnVuY3Rpb24oZnVuID0gYWJzKQpiYXNlCmBgYAoKYGBge3IgYWJzcGxvdH0KYmFzZSA8LSBnZ3Bsb3QoKSArIAogIHhsaW0oLTUsIDUpICsgCiAgZ2VvbV9mdW5jdGlvbihmdW4gPSBhYnMpCmJhc2UKYGBgCgoKIyMjIOe1tuWvvuWApOOBqCRcbWF4JOmWouaVsAoKOjo6ey5wcm9wb3NpdGlvbiAjYWJzbWF4IG5hbWU9Iue1tuWvvuWApOOBqCRcbWF4JOmWouaVsCJ9Cgrku7vmhI/jga7lrp/mlbAkeCTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCnx4fD1cbWF4KFx7eCwteFx9KQokJAoKOjo6CgoKOjo6ey5wcm9vZn0KCiogJHhcZ2VxMCTjga7loLTlkIgKICAqICRcdGV4dHso5bem6L66KX09fHh8PXgk44GM5oiQ44KK56uL44GkLgogICogJHhcZ2VxLXgk44KI44KKLCAkXHRleHR7KOWPs+i+uil9PVxtYXgoXHt4LC14XH0pPXgk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh8PVxtYXgoXHt4LC14XH0pJOOBjOaIkOOCiueri+OBpC4KKiAkeDwwJOOBruWgtOWQiAogICogJFx0ZXh0eyjlt6bovropfT18eHw9LXgk44GM5oiQ44KK56uL44GkLgogICogJC14PiB4JOOCiOOCiiwgJFx0ZXh0eyjlj7PovropfT1cbWF4KFx7eCwteFx9KT0teCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR8eHw9XG1heChce3gsLXhcfSkk44GM5oiQ44KK56uL44GkLgoKOjo6Cgo6Ojp7Lm5vdGV9Cioq6KOc6LazKioKCiog44CM5Lu75oSP44Gu5a6f5pWwJHgk44Gr5a++44GX44GmLCAkeFxnZXEwXExvbmdyaWdodGFycm93IHhcZ2VxLXgk44CN44GM5oiQ44KK56uL44Gk44GT44Go44Gv55u05oSf55qE44Gr5piO44KJ44GL44Gn44GC44KLLiAKKiDjgZfjgYvjgZcsIOasoeOBruOCiOOBhuOBq+OBl+OBpuekuuOBmeOBk+OBqOOCguOBp+OBjeOCiy4KKiAkeFxnZXEwXExvbmdsZWZ0cmlnaHRhcnJvdyAyeFxnZXEgMFxMb25nbGVmdHJpZ2h0YXJyb3cgeCt4XGdlcTBcTG9uZ2xlZnRyaWdodGFycm93IHhcZ2VxIC14JAoqIOOAjOS7u+aEj+OBruWun+aVsCR4JOOBq+WvvuOBl+OBpiwgJHg8MFxMb25ncmlnaHRhcnJvdyAteDx4JOOAjeOBjOaIkOOCiueri+OBpOOBk+OBqOOCguWQjOanmOOBq+OBl+OBpuekuuOBmeOBk+OBqOOBjOOBp+OBjeOCiy4KKiAkeDwwXExvbmdsZWZ0cmlnaHRhcnJvdyAyeDwgMFxMb25nbGVmdHJpZ2h0YXJyb3cgeCt4PDBcTG9uZ2xlZnRyaWdodGFycm93IHg8IC14JAo6OjoKCgojIyMg57W25a++5YCk44Gu6Z2e6LKg5oCnCgoKOjo6ey5wcm9wb3NpdGlvbiAjYWJzZ2VxMCBuYW1lPSLntbblr77lgKTjga7pnZ7osqDmgKcifQoKCgrku7vmhI/jga4keFxpblxtYXRoYmJ7Un0k44Gr5a++44GX44GmLCDmrKHjgYzmiJDjgornq4vjgaQuCgokJAp8eHxcZ2VxIDAKJCQKOjo6CgoKOjo6IHsucHJvb2Z9CgoKKiAkeFxnZXEgMCTjga7jgajjgY0sICR8eHw9eFxnZXEgMCTjgYzmiJDjgornq4vjgaQuIAoqICR4PDAk44Gu44Go44GNLCAkfHh8PS14PS0oeClcZ2VxMCTjgYzmiJDjgornq4vjgaQuCgoKOjo6Cgo6Ojp7Lm5vdGV9Cioq5rOo5oSPKioKCiog5LiK44GnLCAkeDwwJOOBruWgtOWQiCwgJHx4fFxnZXEgMFxMb25nbGVmdHJpZ2h0YXJyb3cgfHh8PjBcbG9yIHx4fD0wJOOBp+OBguOCiiwgJHx4fD0wJOOBr+WBveOBp+OBguOCi+OBjCwgJHx4fD4wJOOBr+ecn+OBp+OBguOCi+OBi+OCiSwgJHx4fFxnZXEgMCTjgYzmiJDjgornq4vjgaQuIAoqIOe1tuWvvuWApOOBruS4rei6q+OBjOWkmuWkieaVsOOBq+OBquOBo+OBpuOBhOOCi+WgtOWQiOOBrywg6KSH6ZuR44Gr6KaL44GI44KL44GMLCDlhrfpnZnjgavogIPjgYjjgojjgYYuCiog5L6L44GI44GwLCDku6XkuIvjga/oqqTjgorjgafjgYLjgosuCgoqKuiqpOOCiioqCgokJApcYmVnaW57YWxpZ24qfQp8eC15fCY9ClxiZWdpbntjYXNlc30KeC15fn5+Jih4XGdlcTAsfnk+MClcXAp4K3l+fn4mKHhcZ2VxMCx+eTwwKVxcCi14LXl+fn4mKHg8MCx+eVxnZXEwKVxcCi14K3l+fn4mKHg8MCx+eTwwKQpcZW5ke2Nhc2VzfVxcCnx4LXl8Jj0KXGJlZ2lue2Nhc2VzfQo8IDB+fn4oeDx5KVxcClxnZXEwfn5+KHhcZ2VxIHkpClxlbmR7Y2FzZXN9ClxlbmR7YWxpZ24qfQokJAoKCiog5aC05ZCI44KP44GR44GZ44KL55CG55Sx44GvLCAqKue1tuWvvuWApOOBruS4rei6q+WFqOS9kyoq44GM5q2j44Go6LKg44Gu5aC05ZCI44Go44Gn6KGo54++44GM55Ww44Gq44KL44GL44KJ44Gn44GC44KLLgoqIOWGt+mdmeOBqywg5YWo5L2T44KS5o2J44GI44KI44GGLgoKOjo6CgoKIyMjIOe1tuWvvuWApOOCkuWQq+OCgOWfuuacrOeahOOBquS4jeetieW8jwoKCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNyYW5nZSBuYW1lPSLntbblr77lgKTjgavjgojjgovoqZXkvqEifQrku7vmhI/jga4keFxpblxtYXRoYmJ7Un0k44Gr5a++44GX44GmLCDmrKHjgYzmiJDjgornq4vjgaQuCiQkCi18eHxcbGVxIHhcbGVxIHx4fAokJAo6OjoKCjo6OnsucHJvb2Z9CiogJHx4fFxsZXEgeCTjgavjgaTjgYTjgaYKICAqICR4XGdlcSAwJOOBruWgtOWQiAogICAgKiAkfHh8PXgk44Gn44GC44KL44GL44KJLCAkfHh8XGxlcSB4JOOBjOaIkOOCiueri+OBpC4KICAqICR4IDwgMCTjga7loLTlkIgKICAgICogJHx4fD0teD4wJOOBp+OBguOCi+OBi+OCiSwgJHg8MDx8eHwk44GM5oiQ44KK56uL44GkLgogICAgKiDjgojjgaPjgaYsICR4XGxlcXx4fCTjgYzmiJDjgornq4vjgaQuCiogJC18eHxcbGVxIHgk44Gr44Gk44GE44GmCiAgKiAkeFxnZXEgMCTjga7loLTlkIgKICAgICogJC18eHw9LXgk44Gn44GC44KL44GL44KJLCAkLXx4fD0teFxsZXEwJOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkLXx4fFxsZXEgeCTjgYzmiJDjgornq4vjgaQuCiAgKiAkeDwwJOOBruWgtOWQiAogICAgKiAkLXx4fD0tKC14KSTjgafjgYLjgovjgYvjgoksICQtfHh8PS0oLXgpPXgk44GM5oiQ44KK56uL44GkLgogICAgKiDjgojjgaPjgaYsICQtfHh8XGxlcSB4JOOBjOaIkOOCiueri+OBpC4KCjo6OgoKCjo6OnsucHJvcG9zaXRpb24gI2Fic2dlcW1pIG5hbWU9Iue1tuWvvuWApOOCkuWQq+OCgOWfuuacrOeahOOBquS4jeetieW8jyJ9Cgrku7vmhI/jga7lrp/mlbAkeCTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCi14XGxlcSB8eHwKJCQKCjo6OgoKOjo6ey5wcm9vZn0KCiogJHhcZ2VxMCTjga7loLTlkIgKICAqICR8eHw9eCTjgYzmiJDjgornq4vjgaTjga7jgacsICR8eHwreD14K3g9MnhcZ2VxMCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICQteFxsZXF8eHwk44GM5oiQ44KK56uL44GkLgoqICR4PDAk44Gu5aC05ZCICiAgKiAkfHh8PS14JOOBjOaIkOOCiueri+OBpOOBruOBpywgJHx4fCt4PS14K3g9MFxnZXEwJOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJC14XGxlcXx4fCTjgYzmiJDjgornq4vjgaQuCiAgCgo6OjoKCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNpZXExIG5hbWU9Iue1tuWvvuWApOOCkuWQq+OCgOWfuuacrOeahOOBquS4jeetieW8jzIifQoK5Lu75oSP44GuJHgsTVxpblxtYXRoYmJ7Un0k44Gr5a++44GX44GmLCDmrKHjgYzmiJDjgornq4vjgaQuCgokJAp8eHxcbGVxIE0gXExvbmdsZWZ0cmlnaHRhcnJvdyAtTVxsZXEgeFxsZXEgTQokJAoKOjo6CgoKOjo6ey5wcm9vZn0KKiAkKFxMb25ncmlnaHRhcnJvdykkCiAgKiAkTVxnZXF8eHxcZ2VxIDAk44GM5oiQ44KK56uL44Gk44Gu44GnLCAkTSTjgYzpnZ7osqDjga7loLTlkIjjgpLogIPjgYjjgosuCiAgKiAkfHh8PVxtYXgoXHt4LC14XH0pXGxlcSBNJOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJHhcbGVxIE1cbGFuZCAteFxsZXEgTSTjgYzmiJDjgornq4vjgaQuCiAgKiAkeFxsZXEgTVxsYW5kIC14XGxlcSBNXExvbmdsZWZ0cmlnaHRhcnJvdyB4XGxlcSBNXGxhbmQgeCBcZ2VxLU1cTG9uZ2xlZnRyaWdodGFycm93LU1cbGVxIHggXGxlcSBNJOOBjOaIkOOCiueri+OBpC4KICAqIOOBl+OBn+OBjOOBo+OBpiwgJHx4fFxsZXEgTVxMb25ncmlnaHRhcnJvdy1NXGxlcSB4IFxsZXEgTSTjgYzmiJDjgornq4vjgaQuCiogJChcTG9uZ2xlZnRhcnJvdykkCiAgKiAkTTwwJOOBruWgtOWQiAogICAgKiDjgIzku7vmhI/jga4keCxNXGluXG1hdGhiYntSfSTjgavlr77jgZfjgaYsICR4XGxlcSBNPDBcbGFuZCB4XGdlcS1NPjAk44Gn44GC44KL44CN44Gv5YG944Gn44GC44KLLiAKICAgICog44KI44Gj44GmLCAkfHh8XGxlcSBNIFxMb25nbGVmdGFycm93LU1cbGVxIHggXGxlcSBNJOOBjOaIkOOCiueri+OBpC4KICAqICRNXGdlcTAk44Gu5aC05ZCICiAgICAqICQtTVxsZXEgeCBcbGVxIE1cTG9uZ2xlZnRyaWdodGFycm93KHgrTSkoeC1NKVxsZXEgMFxMb25nbGVmdHJpZ2h0YXJyb3cgeF4yXGxlcSBNXjIk44GM5oiQ44KK56uL44GkLiAKICAgICogJHx4fF4yPXheMiTjgojjgoosICR4XjJcbGVxIE1eMiBcTG9uZ2xlZnRyaWdodGFycm93IHx4fFxsZXEgTSTjgYzmiJDjgornq4vjgaQuCiAgICAqIOOCiOOBo+OBpiwgJHx4fFxsZXEgTSBcTG9uZ2xlZnRhcnJvdy1NXGxlcSB4IFxsZXEgTSTjgYzmiJDjgornq4vjgaQuCgo6OjoKCgoKOjo6ey5wcm9wb3NpdGlvbiAjYWJzaWVxIG5hbWU9Iue1tuWvvuWApOOCkuWQq+OCgOWfuuacrOeahOOBquS4jeetieW8jzMifQoK5Lu75oSP44GuJHgsbVxpblxtYXRoYmJ7Un0k44Gr5a++44GX44GmLCDmrKHjgYzmiJDjgornq4vjgaQuCgokJAp8eHxcZ2VxIG0gXExvbmdsZWZ0cmlnaHRhcnJvdyB4XGxlcSAtbVxsb3IgeFxnZXEgbQokJAoKOjo6CgoKOjo6ey5wcm9vZn0KKiAkKFxMb25ncmlnaHRhcnJvdykkCiAgKiAkfHh8PVxtYXgoXHt4LC14XH0pXGdlcSBtJOOCiOOCiiwgJHhcZ2VxIG1cbG9yIC14XGdlcSBtJOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJHx4fFxnZXEgbVxMb25ncmlnaHRhcnJvdyB4XGxlcSAtbVxsb3IgeFxnZXEgbSTjgYzmiJDjgornq4vjgaQuCiogJChcTG9uZ2xlZnRhcnJvdykkCiAgKiAkbTwwJOOBruWgtOWQiAogICAgKiAkeFxsZXEtbVxsb3IgeFxnZXEgbVxMb25nbGVmdHJpZ2h0YXJyb3cgeFxpblxtYXRoYmJ7Un0k44GM5oiQ44KK56uL44GkLgogICAgKiDjgb7jgZ8sICRtPDAk44Gr44KI44KKLCAkeFxpblxtYXRoYmJ7Un1cTG9uZ3JpZ2h0YXJyb3cgfHh8XGdlcSBtJOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkfHh8XGdlcSBtIFxMb25nbGVmdGFycm93IHhcbGVxLW1cbG9yIHggXGdlcSBtJOOBjOaIkOOCiueri+OBpC4KICAqICRtXGdlcTAk44Gu5aC05ZCICiAgICAqICR4XGxlcSAtbVxsb3IgeFxnZXEgbVxMb25nbGVmdHJpZ2h0YXJyb3coeCttKSh4LW0pXGdlcTBcTG9uZ2xlZnRyaWdodGFycm93IHheMlxnZXEgbV4yJOOBjOaIkOOCiueri+OBpC4KICAgICogJHx4fF4yPXheMiTjgojjgoosICR4XjJcZ2VxIG1cTG9uZ2xlZnRyaWdodGFycm93fHh8XGdlcSBtJOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkfHh8XGdlcSBtIFxMb25nbGVmdGFycm93IHhcbGVxLW1cbG9yIHggXGdlcSBtJOOBjOaIkOOCiueri+OBpC4KICAKCjo6OgoKCiMjIOepjeOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruepjQoKCgo6Ojp7LnByb3Bvc2l0aW9uICNwcm9kYWJzIG5hbWU9IuepjeOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruepjSJ9CgoK5Lu75oSP44GuJHgseVxpblxtYXRoYmJ7Un0k44Gr5a++44GX44GmLCDmrKHjgYzmiJDjgornq4vjgaQuCgokJApcYmVnaW57YWxpZ259Cnx4eXwmPXx4fHx5fFxcClxlbmR7YWxpZ259CiQkCgo6OjoKCgo6Ojp7LnByb29mfQoKCiog5aC05ZCI44KP44GR44GX44Gm56S644GZLgoKKiAkeFxnZXEwLH55XGdlcTAk44Gu5aC05ZCICiAgKiAkeHlcZ2VxMCTjgYzmiJDjgornq4vjgaTjga7jgacsICRcdGV4dHso5bem6L66KX09fHh5fD14eSQg44GM5oiQ44KK56uL44GkLgogICogJFx0ZXh0eyjlj7PovropfT18eHx8eXw9eHkk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh5fD18eHx8eXwkIOOBjOaIkOOCiueri+OBpC4KCiogJHg8MCx+eVxnZXEwJOOBruWgtOWQiAogICogJHh5XGxlcTAk44GM5oiQ44KK56uL44Gk44Gu44GnLCAkXHRleHR7KOW3pui+uil9PXx4eXw9LXh5JCDjgYzmiJDjgornq4vjgaQuCiAgKiAkXHRleHR7KOWPs+i+uil9PXx4fHx5fD0oLXgpXGNkb3QgeT0teHkk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh5fD18eHx8eXwkIOOBjOaIkOOCiueri+OBpC4KCiogJHhcZ2VxMCx+eTwwJOOBruWgtOWQiAogICogJHh5XGxlcTAk44GM5oiQ44KK56uL44Gk44Gu44GnLCAkXHRleHR7KOW3pui+uil9PXx4eXw9LXh5JCDjgYzmiJDjgornq4vjgaQuCiAgKiAkXHRleHR7KOWPs+i+uil9PXx4fHx5fD14XGNkb3QgKC15KT0teHkk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh5fD18eHx8eXwkIOOBjOaIkOOCiueri+OBpC4KCiogJHg8MCx+eTwwJOOBruWgtOWQiAogICogJHh5PjAk44GM5oiQ44KK56uL44Gk44Gu44GnLCAkXHRleHR7KOW3pui+uil9PXx4eXw9eHkkIOOBjOaIkOOCiueri+OBpC4KICAqICRcdGV4dHso5Y+z6L66KX09fHh8fHl8PXhcY2RvdCB5PXh5JOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJHx4eXw9fHh8fHl8JCDjgYzmiJDjgornq4vjgaQuCgo6OjoKCgoKCgoKOjo6ey5ub3RlfQoKKirms6jmhI8qKgoK5LuK5Zue44GvLCDlj7Povrrjgavms6jnm67jgZnjgovjgagsIAoKKiAkfHh8JOOBq+OBpOOBhOOBpiwg57W25a++5YCk44Gu5Lit6Lqr5YWo5L2T44GvLCAkeCTjgafjgYLjgosuCiogJHx5fCTjgavjgaTjgYTjgaYsIOe1tuWvvuWApOOBruS4rei6q+WFqOS9k+OBrywgJHkk44Gn44GC44KLLgoK44KI44Gj44GmLCAkeCTjgagkeSTjga7mraPosqDjgafloLTlkIjjgo/jgZHjgZfjgabjgYTjgosuCgo6OjoKCiMjIOWVhuOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruWVhgoKIyMjIOa6luWCmQoKCgo6Ojp7LnByb3Bvc2l0aW9uICNpbnZhYnMgbmFtZT0i57W25a++5YCk44Gu6YCG5pWw44Gv6YCG5pWw44Gu57W25a++5YCkIn0KCgrku7vmhI/jga7ku7vmhI/jga4keFxpblxtYXRoYmJ7Un1cc2V0bWludXNcezBcfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCjEvfHh8PXwxL3h8CiQkCgo6OjoKCjo6OnsucHJvb2Z9CgoqIOWgtOWQiOOCj+OBkeOBq+OCiOOCiuekuuOBmS4KKiAkeD4wJOOBruWgtOWQiAogICogJHx4fD14JOOBp+OBguOCi+OBi+OCiSwgJFx0ZXh0eyjlt6bovropfT0xL3x4fD0xL3gk44GM5oiQ44KK56uL44GkLgogICogJDEveD4wJOOBp+OBguOCi+OBi+OCiSwgJFx0ZXh0eyjlj7PovropfT18MS94fD0xL3gk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkMS98eHw9fDEveHwk44GM5oiQ44KK56uL44GkLgoqICR4PDAk44Gu5aC05ZCICiAgKiAkfHh8PS14JOOBp+OBguOCi+OBi+OCiSwgJFx0ZXh0eyjlt6bovropfT0xL3x4fD0xLygteCk9LTEveCTjgYzmiJDjgornq4vjgaQuCiAgKiAkMS94PDAk44Gn44GC44KL44GL44KJLCAkXHRleHR7KOWPs+i+uil9PXwxL3h8PS0xL3gk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkMS98eHw9fDEveHwk44GM5oiQ44KK56uL44GkLgoKOjo6CgoKCgo6Ojp7LnByb3Bvc2l0aW9uICNkaXZhYnMgbmFtZT0i5ZWG44Gu57W25a++5YCk44Gv57W25a++5YCk44Gu5ZWGIn0KCgrku7vmhI/jga4keFxpblxtYXRoYmJ7Un0k44GoLCDku7vmhI/jga4keVxpblxtYXRoYmJ7Un1cc2V0bWludXNcezBcfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkClxiZWdpbnthbGlnbn0KfHgveXwmPXx4fC98eXxcXApcZW5ke2FsaWdufQokJAoKOjo6CgoKOjo6ey5wcm9vZn0KCgoqIOS7u+aEj+OBruWun+aVsCRhJOOBqCQwJOOCkumZpOOBj+S7u+aEj+OBruWun+aVsCRiJOOBq+OBpOOBhOOBpiwgJGEvYj1hXGNkb3QoMS9iKSTjgYzmiJDjgornq4vjgaQuCiog5LiK44GnLCAkYT18eHwsfmI9fHl8JOOBqOOBmeOCi+OBk+OBqOOBpywgJHx4fC98eXw9fHh8XGNkb3QoMS98eXwpPXx4fFxjZG90fDEveXwk44GM5oiQ44KK56uL44GkLgoqIOOBl+OBn+OBjOOBo+OBpiwgJHx4fC98eXw9fHh8fDEveXw9fHhcY2RvdCgxL3kpfD18eC95fCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCgojIyDlkozjga7ntbblr77lgKTjga/ntbblr77lgKTjga7lkozku6XkuIso5Yqj5Yqg5rOV5oCnKQoKCgo6Ojp7LnByb3Bvc2l0aW9uICNzdW1hYnMgbmFtZT0i5ZKM44Gu57W25a++5YCk44Gv57W25a++5YCk44Gu5ZKM5Lul5LiLIn0KCuS7u+aEj+OBriR4LHlcaW5cbWF0aGJie1J9JOOBq+WvvuOBl+OBpuasoeOBjOaIkOOCiueri+OBpC4KCiQkCnx4K3l8IFxsZXEgfHh8K3x5fCBcXAokJAo6OjoKCgoKOjo6ey5wcm9vZn0KCiogJHgreVxnZXEgMCTjga7loLTlkIgKICAqICR8eCt5fD14K3kk44GM5oiQ44KK56uL44GkLgogICog57W25a++5YCk44Gr44KI44KL6KmV5L6hXEByZWYocHJwOmFic3JhbmdlKeOCiOOCiiwgJHhcbGVxfHh8LH55XGxlcXx5fCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR4K3lcbGVxfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgZfjgZ/jgYzjgaPjgaYsICR8eCt5fD14K3lcbGVxfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCiogJHgreTwgMCTjga7loLTlkIgKICAqICR8eCt5fD0teC15JOOBjOaIkOOCiueri+OBpC4KICAqIOe1tuWvvuWApOOBq+OCiOOCi+ipleS+oVxAcmVmKHBycDphYnNyYW5nZSnjgojjgoosICQteFxsZXF8eHwsfi15XGxlcXx5fCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICQteC15XGxlcXx4fCt8eXwk44GM5oiQ44KK56uL44GkLgogICog44GX44Gf44GM44Gj44GmLCAkfHgreXw9LXgteVxsZXF8eHwrfHl8JOOBjOaIkOOCiueri+OBpC4KCjo6OgoKCjo6OnsucHJvb2YgbmFtZT0i5Yil6Ki85piOIn0KCiog57W25a++5YCk44Gr44KI44KL6KmV5L6hKOWRvemhjFxAcmVmKHBycDphYnNyYW5nZSkp44KI44KKLCAkLXx4fFxsZXEgeFxsZXEgfHh8LH4tfHl8XGxlcSB5XGxlcSB8eXwk44GM5oiQ44KK56uL44GkLgoqIOi+uuOAheOCkui2s+OBl+WQiOOCj+OBm+OBpiQtKHx4fCt8eXwpXGxlcSB4K3lcbGVxfHh8K3x5fCTjgpLlvpfjgosuCiog5LiK44Gu5byP44GM5oiQ44KK56uL44Gk44Gu44GnLCAkfHgreXxcbGVxfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCjo6Onsubm90ZSBuYW1lPSIkeFxsZXEgeVxMb25ncmlnaHRhcnJvd3x4fFxsZXF8eXwk44GL77yfIn0KCioq5rOo5oSPKioKCiog5LiA6Iis44GrLCAkeFxsZXEgeVxMb25ncmlnaHRhcnJvd3x4fFxsZXF8eXwk44GM5oiQ44KK56uL44Gk44Go44Gv6ZmQ44KJ44GaLCDmrKHjga7oqLzmmI7jga/oqqTjgorjgafjgYLjgosuCgoqKuiqpOOCiioqCgoqICR4XGxlcSB8eHwsfnlcbGVxfHl8JOOCiOOCiiwgJHgreVxsZXF8eHwrfHl8JOOBjOaIkOOCiueri+OBpC4gCiogJFx0ZXh0eyjlt6bovropfT18eCt5fFxsZXF8fHh8K3x5fHwk44GM5oiQ44KK56uL44GkLgoqIHskfHh8K3x5fFxnZXEgMCTjgYzmiJDjgornq4vjgaTjga7jgacsICR8fHh8K3x5fHw9fHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCiog44KI44Gj44GmLCAkfHgreXxcbGVxIHx4fCt8eXwk44GM5oiQ44KK56uL44GkLiAKOjo6CgojIyDlkozjga7ntbblr77lgKTjga/ntbblr77lgKTjga7lt67ku6XkuIoKCjo6OnsucHJvcG9zaXRpb24gI3N1bWFicyBuYW1lPSLlkozjga7ntbblr77lgKTjga/ntbblr77lgKTjga7lt67ku6XkuIoifQoK5Lu75oSP44GuJHgseVxpblxtYXRoYmJ7Un0k44Gr5a++44GX44Gm5qyh44GM5oiQ44KK56uL44GkLgoKJCQKfHh8LXx5fCBcbGVxIHx4K3l8IFxcCiQkCjo6OgoKCgo6Ojp7LnByb29mfQoKKiAkWD14K3ksflk9LXkk44Go44GZ44KL44GoLCAkeD1YK1kseT0tWSTjgafjgYLjgosuCiog44G+44GfLCAkfC1ZfD18WXwk44Gn44GC44KL44GL44KJ5qyh44GM5oiQ44KK56uL44GkLgoqICR8eCt5fCBcbGVxIHx4fCt8eXxcTG9uZ2xlZnRyaWdodGFycm93fFh8XGxlcXxYK1l8K3wtWXxcTG9uZ2xlZnRyaWdodGFycm93fFh8LXxZfFxsZXF8WCtZfCQKCjo6OgoKOjo6ey5ub3RlfQoqICR8eCt5fFxsZXF8eHwrfHl8JOOBqCwgJHx4fC18eXxcbGVxfHgreXwk44KS5ZCI44KP44Gb44GmLCAkfHh8LXx5fFxsZXF8eCt5fFxsZXF8eHwrfHl8JOOBjOiogOOBiOOCiy4KOjo6Cg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAi57W25a++5YCk44Gu6KmxIgphdXRob3I6ICJtb2dvYm9uIgpkYXRlOiAi5pyA57WC5pu05pawIGByIFN5cy5EYXRlKClgIgpvdXRwdXQ6CiAgYm9va2Rvd246Omh0bWxfZG9jdW1lbnQyOgogICAgY3NzOiAic3R5bGUuY3NzIgogICAgbWF0aGpheDogImh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbWF0aGpheEAzL2VzNS90ZXgtbW1sLWNodG1sLmpzIgogICAgaW5jbHVkZXM6CiAgICAgIGluX2hlYWRlcjogIi4uL21hdGhqYXhfbWFjcm9zLmpzIgogICAgY29kZV9kb3dubG9hZDogeWVzCiAgICB0b2M6IHllcwogICAgdG9jX2RlcHRoOiAzCiAgICB0b2NfZmxvYXQ6IHllcwogICAgbnVtYmVyX3NlY3Rpb25zOiBubwoKLS0tCgojIOiomOWPtwoKKiAkXGxhbmQkOuOAjOOBi+OBpOOAjeOCkuihqOOBmeirlueQhuiomOWPt+OBp+OBguOCiy4KKiAkXGxvciQ644CM44G+44Gf44Gv44CN44KS6KGo44GZ6KuW55CG6KiY5Y+344Gn44GC44KLLgoqICRcbWF0aGJie1J9JDog5a6f5pWw5YWo5L2T44Gu6ZuG5ZCICiogJFxsZXEkOiAkXGxlcXEk44Go5ZCM44GY44Gn44GC44KLLgoqICRcZ2VxJDogJFxnZXFxJOOBqOWQjOOBmOOBp+OBguOCiy4KCgojIOe1tuWvvuWApOOBruaAp+izqgoKCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpsaWJyYXJ5KGdncGxvdDIpCmBgYAoKIyMg5rqW5YKZCgoKCgo6Ojp7LmRlZmluaXRpb24gI2RlZi1hYnMgbmFtZT0i57W25a++5YCkIn0KPCEtLSQk44Gu55u05YmN44Gr5paH56ug44GM44Gq44GE44Go44GG44G+44GP44OR44O844K25Ye65p2l44Ga44Gr44Ko44Op44O844Gr44Gq44KLLCDjgarjga7jgafjgZPjga7jgrPjg6Hjg7Pjg4jooYzjgYzlv4XopoEuIOippuOBl+OBq+OBk+OBruOCs+ODoeODs+ODiOOCkua2iOOBl+OBpiwga25pdOOBl+OBpuOBv+OCiC4gKCNlcTouLuOBrumDqOWIhuOBjOOBhuOBvuOBj+ino+mHiOOBleOCjOOBquOBhOOBr+OBmuOBp+OBguOCiyktLT4KCuWun+aVsCR4JOOBq+WvvuOBl+OBpiwg57W25a++5YCkJHx4fCTjgpLmrKHjga7jgojjgYbjgavlrprnvqnjgZnjgosuCgokJApcYmVnaW57ZXF1YXRpb259Cnx4fCA9IApcYmVnaW57Y2FzZXN9Cnh+fn4mKHhcZ2VxMClcXAoteH5+fiYoeDwwKQpcZW5ke2Nhc2VzfQpcZW5ke2VxdWF0aW9ufQokJAo6OjoKCgo8IS0t5Y+C54WnKipcQHJlZihkZWY6YWJzKSoqLS0+CjwhLS1odHRwczovL2Jvb2tkb3duLm9yZy95aWh1aS9ib29rZG93bi9tYXJrZG93bi1leHRlbnNpb25zLWJ5LWJvb2tkb3duLmh0bWwtLT4KCiog6Zai5pWwJHk9fHh8JOOBruOCsOODqeODleOCkuaPj+eUu+OBmeOCiy4KCmBgYHtyIGFic3Bsb3QwLGV2YWw9RkFMU0UsIGVjaG89RkFMU0V9CmJhc2UgPC0gZ2dwbG90KCkKYmFzZQoKYmFzZSA8LSBiYXNlICsgeGxpbSgtNSwgNSkKYmFzZQoKYmFzZSA8LSBiYXNlICsgZ2VvbV9mdW5jdGlvbihmdW4gPSBhYnMpCmJhc2UKYGBgCgpgYGB7ciBhYnNwbG90fQpiYXNlIDwtIGdncGxvdCgpICsgCiAgeGxpbSgtNSwgNSkgKyAKICBnZW9tX2Z1bmN0aW9uKGZ1biA9IGFicykKYmFzZQpgYGAKCgojIyMg57W25a++5YCk44GoJFxtYXgk6Zai5pWwCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNtYXggbmFtZT0i57W25a++5YCk44GoJFxtYXgk6Zai5pWwIn0KCuS7u+aEj+OBruWun+aVsCR4JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgoKJCQKfHh8PVxtYXgoXHt4LC14XH0pCiQkCgo6OjoKCgo6Ojp7LnByb29mfQoKKiAkeFxnZXEwJOOBruWgtOWQiAogICogJFx0ZXh0eyjlt6bovropfT18eHw9eCTjgYzmiJDjgornq4vjgaQuCiAgKiAkeFxnZXEteCTjgojjgoosICRcdGV4dHso5Y+z6L66KX09XG1heChce3gsLXhcfSk9eCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR8eHw9XG1heChce3gsLXhcfSkk44GM5oiQ44KK56uL44GkLgoqICR4PDAk44Gu5aC05ZCICiAgKiAkXHRleHR7KOW3pui+uil9PXx4fD0teCTjgYzmiJDjgornq4vjgaQuCiAgKiAkLXg+IHgk44KI44KKLCAkXHRleHR7KOWPs+i+uil9PVxtYXgoXHt4LC14XH0pPS14JOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJHx4fD1cbWF4KFx7eCwteFx9KSTjgYzmiJDjgornq4vjgaQuCgo6OjoKCjo6Onsubm90ZX0KKiroo5zotrMqKgoKKiDjgIzku7vmhI/jga7lrp/mlbAkeCTjgavlr77jgZfjgaYsICR4XGdlcTBcTG9uZ3JpZ2h0YXJyb3cgeFxnZXEteCTjgI3jgYzmiJDjgornq4vjgaTjgZPjgajjga/nm7TmhJ/nmoTjgavmmI7jgonjgYvjgafjgYLjgosuIAoqIOOBl+OBi+OBlywg5qyh44Gu44KI44GG44Gr44GX44Gm56S644GZ44GT44Go44KC44Gn44GN44KLLgoqICR4XGdlcTBcTG9uZ2xlZnRyaWdodGFycm93IDJ4XGdlcSAwXExvbmdsZWZ0cmlnaHRhcnJvdyB4K3hcZ2VxMFxMb25nbGVmdHJpZ2h0YXJyb3cgeFxnZXEgLXgkCiog44CM5Lu75oSP44Gu5a6f5pWwJHgk44Gr5a++44GX44GmLCAkeDwwXExvbmdyaWdodGFycm93IC14PHgk44CN44GM5oiQ44KK56uL44Gk44GT44Go44KC5ZCM5qeY44Gr44GX44Gm56S644GZ44GT44Go44GM44Gn44GN44KLLgoqICR4PDBcTG9uZ2xlZnRyaWdodGFycm93IDJ4PCAwXExvbmdsZWZ0cmlnaHRhcnJvdyB4K3g8MFxMb25nbGVmdHJpZ2h0YXJyb3cgeDwgLXgkCjo6OgoKCiMjIyDntbblr77lgKTjga7pnZ7osqDmgKcKCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNnZXEwIG5hbWU9Iue1tuWvvuWApOOBrumdnuiyoOaApyJ9CgoKCuS7u+aEj+OBriR4XGluXG1hdGhiYntSfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCnx4fFxnZXEgMAokJAo6OjoKCgo6Ojogey5wcm9vZn0KCgoqICR4XGdlcSAwJOOBruOBqOOBjSwgJHx4fD14XGdlcSAwJOOBjOaIkOOCiueri+OBpC4gCiogJHg8MCTjga7jgajjgY0sICR8eHw9LXg9LSh4KVxnZXEwJOOBjOaIkOOCiueri+OBpC4KCgo6OjoKCjo6Onsubm90ZX0KKirms6jmhI8qKgoKKiDkuIrjgacsICR4PDAk44Gu5aC05ZCILCAkfHh8XGdlcSAwXExvbmdsZWZ0cmlnaHRhcnJvdyB8eHw+MFxsb3IgfHh8PTAk44Gn44GC44KKLCAkfHh8PTAk44Gv5YG944Gn44GC44KL44GMLCAkfHh8PjAk44Gv55yf44Gn44GC44KL44GL44KJLCAkfHh8XGdlcSAwJOOBjOaIkOOCiueri+OBpC4gCiog57W25a++5YCk44Gu5Lit6Lqr44GM5aSa5aSJ5pWw44Gr44Gq44Gj44Gm44GE44KL5aC05ZCI44GvLCDopIfpm5HjgavopovjgYjjgovjgYwsIOWGt+mdmeOBq+iAg+OBiOOCiOOBhi4KKiDkvovjgYjjgbAsIOS7peS4i+OBr+iqpOOCiuOBp+OBguOCiy4KCioq6Kqk44KKKioKCiQkClxiZWdpbnthbGlnbip9Cnx4LXl8Jj0KXGJlZ2lue2Nhc2VzfQp4LXl+fn4mKHhcZ2VxMCx+eT4wKVxcCngreX5+fiYoeFxnZXEwLH55PDApXFwKLXgteX5+fiYoeDwwLH55XGdlcTApXFwKLXgreX5+fiYoeDwwLH55PDApClxlbmR7Y2FzZXN9XFwKfHgteXwmPQpcYmVnaW57Y2FzZXN9CjwgMH5+fih4PHkpXFwKXGdlcTB+fn4oeFxnZXEgeSkKXGVuZHtjYXNlc30KXGVuZHthbGlnbip9CiQkCgoKKiDloLTlkIjjgo/jgZHjgZnjgovnkIbnlLHjga8sICoq57W25a++5YCk44Gu5Lit6Lqr5YWo5L2TKirjgYzmraPjgajosqDjga7loLTlkIjjgajjgafooajnj77jgYznlbDjgarjgovjgYvjgonjgafjgYLjgosuCiog5Ya36Z2Z44GrLCDlhajkvZPjgpLmjYnjgYjjgojjgYYuCgo6OjoKCjo6OnsucHJvcG9zaXRpb24gI2Fic3NxIG5hbWU9Iue1tuWvvuWApOOBrjLkuZfjgajlhYPjga7mlbDjga4y5LmX44Gv5ZCM44GYIn0K5Lu75oSP44GuJHhcaW5cbWF0aGJie1J9JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgokJAp8eHxeMj14XjIKJCQKOjo6Cgo6Ojp7LnByb29mfQoqICR4XGdlcTAk44Gu5aC05ZCICiAgKiAkfHh8PXgk44KI44KKLCAkfHh8XjI9KHx4fCleMj0oeCleMj14XjIk44GM5oiQ44KK56uL44GkLgoqICR4PDAk44Gu5aC05ZCICiAgKiAkfHh8PS14JOOCiOOCiiwgJHx4fF4yPSh8eHwpXjI9KC14KV4yPXheMiTjgYzmiJDjgornq4vjgaQuCgo6OjoKCiMjIyDntbblr77lgKTjgpLlkKvjgoDln7rmnKznmoTjgarkuI3nrYnlvI8KCgoKOjo6ey5wcm9wb3NpdGlvbiAjYWJzcmFuZ2UgbmFtZT0i57W25a++5YCk44Gr44KI44KL6KmV5L6hIn0K5Lu75oSP44GuJHhcaW5cbWF0aGJie1J9JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgokJAotfHh8XGxlcSB4XGxlcSB8eHwKJCQKOjo6Cgo6Ojp7LnByb29mfQoqICR8eHxcbGVxIHgk44Gr44Gk44GE44GmCiAgKiAkeFxnZXEgMCTjga7loLTlkIgKICAgICogJHx4fD14JOOBp+OBguOCi+OBi+OCiSwgJHx4fFxsZXEgeCTjgYzmiJDjgornq4vjgaQuCiAgKiAkeCA8IDAk44Gu5aC05ZCICiAgICAqICR8eHw9LXg+MCTjgafjgYLjgovjgYvjgoksICR4PDA8fHh8JOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkeFxsZXF8eHwk44GM5oiQ44KK56uL44GkLgoqICQtfHh8XGxlcSB4JOOBq+OBpOOBhOOBpgogICogJHhcZ2VxIDAk44Gu5aC05ZCICiAgICAqICQtfHh8PS14JOOBp+OBguOCi+OBi+OCiSwgJC18eHw9LXhcbGVxMCTjgYzmiJDjgornq4vjgaQuCiAgICAqIOOCiOOBo+OBpiwgJC18eHxcbGVxIHgk44GM5oiQ44KK56uL44GkLgogICogJHg8MCTjga7loLTlkIgKICAgICogJC18eHw9LSgteCkk44Gn44GC44KL44GL44KJLCAkLXx4fD0tKC14KT14JOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkLXx4fFxsZXEgeCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNnZXFtaSBuYW1lPSLntbblr77lgKTjgpLlkKvjgoDln7rmnKznmoTjgarkuI3nrYnlvI8ifQoK5Lu75oSP44GuJHhcaW5cbWF0aGJie1J9JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgoKJCQKLXhcbGVxIHx4fAokJAoKOjo6Cgo6Ojp7LnByb29mfQoKKiAkeFxnZXEwJOOBruWgtOWQiAogICogJHx4fD14JOOBjOaIkOOCiueri+OBpOOBruOBpywgJHx4fCt4PXgreD0yeFxnZXEwJOOBjOaIkOOCiueri+OBpC4KICAqIOOCiOOBo+OBpiwgJC14XGxlcXx4fCTjgYzmiJDjgornq4vjgaQuCiogJHg8MCTjga7loLTlkIgKICAqICR8eHw9LXgk44GM5oiQ44KK56uL44Gk44Gu44GnLCAkfHh8K3g9LXgreD0wXGdlcTAk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkLXhcbGVxfHh8JOOBjOaIkOOCiueri+OBpC4KICAKCjo6OgoKCjo6OnsucHJvcG9zaXRpb24gI2Fic2llcTEgbmFtZT0i57W25a++5YCk44KS5ZCr44KA5Z+65pys55qE44Gq5LiN562J5byPMiJ9Cgrku7vmhI/jga4keCxNXGluXG1hdGhiYntSfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCnx4fFxsZXEgTSBcTG9uZ2xlZnRyaWdodGFycm93IC1NXGxlcSB4XGxlcSBNCiQkCgo6OjoKCgo6Ojp7LnByb29mfQoqICQoXExvbmdyaWdodGFycm93KSQKICAqICRNXGdlcXx4fFxnZXEgMCTjgYzmiJDjgornq4vjgaTjga7jgacsICRNJOOBjOmdnuiyoOOBruWgtOWQiOOCkuiAg+OBiOOCiy4KICAqICR8eHw9XG1heChce3gsLXhcfSlcbGVxIE0k44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkeFxsZXEgTVxsYW5kIC14XGxlcSBNJOOBjOaIkOOCiueri+OBpC4KICAqICR4XGxlcSBNXGxhbmQgLXhcbGVxIE1cTG9uZ2xlZnRyaWdodGFycm93IHhcbGVxIE1cbGFuZCB4IFxnZXEtTVxMb25nbGVmdHJpZ2h0YXJyb3ctTVxsZXEgeCBcbGVxIE0k44GM5oiQ44KK56uL44GkLgogICog44GX44Gf44GM44Gj44GmLCAkfHh8XGxlcSBNXExvbmdyaWdodGFycm93LU1cbGVxIHggXGxlcSBNJOOBjOaIkOOCiueri+OBpC4KKiAkKFxMb25nbGVmdGFycm93KSQKICAqICRNPDAk44Gu5aC05ZCICiAgICAqIOOAjOS7u+aEj+OBriR4LE1caW5cbWF0aGJie1J9JOOBq+WvvuOBl+OBpiwgJHhcbGVxIE08MFxsYW5kIHhcZ2VxLU0+MCTjgafjgYLjgovjgI3jga/lgb3jgafjgYLjgosuIAogICAgKiDjgojjgaPjgaYsICR8eHxcbGVxIE0gXExvbmdsZWZ0YXJyb3ctTVxsZXEgeCBcbGVxIE0k44GM5oiQ44KK56uL44GkLgogICogJE1cZ2VxMCTjga7loLTlkIgKICAgICogJC1NXGxlcSB4IFxsZXEgTVxMb25nbGVmdHJpZ2h0YXJyb3coeCtNKSh4LU0pXGxlcSAwXExvbmdsZWZ0cmlnaHRhcnJvdyB4XjJcbGVxIE1eMiTjgYzmiJDjgornq4vjgaQuIAogICAgKiAkfHh8XjI9eF4yJOOCiOOCiiwgJHheMlxsZXEgTV4yIFxMb25nbGVmdHJpZ2h0YXJyb3cgfHh8XGxlcSBNJOOBjOaIkOOCiueri+OBpC4KICAgICog44KI44Gj44GmLCAkfHh8XGxlcSBNIFxMb25nbGVmdGFycm93LU1cbGVxIHggXGxlcSBNJOOBjOaIkOOCiueri+OBpC4KCjo6OgoKCgo6Ojp7LnByb3Bvc2l0aW9uICNhYnNpZXEgbmFtZT0i57W25a++5YCk44KS5ZCr44KA5Z+65pys55qE44Gq5LiN562J5byPMyJ9Cgrku7vmhI/jga4keCxtXGluXG1hdGhiYntSfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkCnx4fFxnZXEgbSBcTG9uZ2xlZnRyaWdodGFycm93IHhcbGVxIC1tXGxvciB4XGdlcSBtCiQkCgo6OjoKCgo6Ojp7LnByb29mfQoqICQoXExvbmdyaWdodGFycm93KSQKICAqICR8eHw9XG1heChce3gsLXhcfSlcZ2VxIG0k44KI44KKLCAkeFxnZXEgbVxsb3IgLXhcZ2VxIG0k44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh8XGdlcSBtXExvbmdyaWdodGFycm93IHhcbGVxIC1tXGxvciB4XGdlcSBtJOOBjOaIkOOCiueri+OBpC4KKiAkKFxMb25nbGVmdGFycm93KSQKICAqICRtPDAk44Gu5aC05ZCICiAgICAqICR4XGxlcS1tXGxvciB4XGdlcSBtXExvbmdsZWZ0cmlnaHRhcnJvdyB4XGluXG1hdGhiYntSfSTjgYzmiJDjgornq4vjgaQuCiAgICAqIOOBvuOBnywgJG08MCTjgavjgojjgoosICR4XGluXG1hdGhiYntSfVxMb25ncmlnaHRhcnJvdyB8eHxcZ2VxIG0k44GM5oiQ44KK56uL44GkLgogICAgKiDjgojjgaPjgaYsICR8eHxcZ2VxIG0gXExvbmdsZWZ0YXJyb3cgeFxsZXEtbVxsb3IgeCBcZ2VxIG0k44GM5oiQ44KK56uL44GkLgogICogJG1cZ2VxMCTjga7loLTlkIgKICAgICogJHhcbGVxIC1tXGxvciB4XGdlcSBtXExvbmdsZWZ0cmlnaHRhcnJvdyh4K20pKHgtbSlcZ2VxMFxMb25nbGVmdHJpZ2h0YXJyb3cgeF4yXGdlcSBtXjIk44GM5oiQ44KK56uL44GkLgogICAgKiAkfHh8XjI9eF4yJOOCiOOCiiwgJHheMlxnZXEgbVxMb25nbGVmdHJpZ2h0YXJyb3d8eHxcZ2VxIG0k44GM5oiQ44KK56uL44GkLgogICAgKiDjgojjgaPjgaYsICR8eHxcZ2VxIG0gXExvbmdsZWZ0YXJyb3cgeFxsZXEtbVxsb3IgeCBcZ2VxIG0k44GM5oiQ44KK56uL44GkLgogIAoKOjo6CgoKIyMg56mN44Gu57W25a++5YCk44Gv57W25a++5YCk44Gu56mNCgoKCjo6OnsucHJvcG9zaXRpb24gI3Byb2RhYnMgbmFtZT0i56mN44Gu57W25a++5YCk44Gv57W25a++5YCk44Gu56mNIn0KCgrku7vmhI/jga4keCx5XGluXG1hdGhiYntSfSTjgavlr77jgZfjgaYsIOasoeOBjOaIkOOCiueri+OBpC4KCiQkClxiZWdpbnthbGlnbn0KfHh5fCY9fHh8fHl8XFwKXGVuZHthbGlnbn0KJCQKCjo6OgoKCjo6OnsucHJvb2Z9CgoKKiDloLTlkIjjgo/jgZHjgZfjgabnpLrjgZkuCgoqICR4XGdlcTAsfnlcZ2VxMCTjga7loLTlkIgKICAqICR4eVxnZXEwJOOBjOaIkOOCiueri+OBpOOBruOBpywgJFx0ZXh0eyjlt6bovropfT18eHl8PXh5JCDjgYzmiJDjgornq4vjgaQuCiAgKiAkXHRleHR7KOWPs+i+uil9PXx4fHx5fD14eSTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR8eHl8PXx4fHx5fCQg44GM5oiQ44KK56uL44GkLgoKKiAkeDwwLH55XGdlcTAk44Gu5aC05ZCICiAgKiAkeHlcbGVxMCTjgYzmiJDjgornq4vjgaTjga7jgacsICRcdGV4dHso5bem6L66KX09fHh5fD0teHkkIOOBjOaIkOOCiueri+OBpC4KICAqICRcdGV4dHso5Y+z6L66KX09fHh8fHl8PSgteClcY2RvdCB5PS14eSTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR8eHl8PXx4fHx5fCQg44GM5oiQ44KK56uL44GkLgoKKiAkeFxnZXEwLH55PDAk44Gu5aC05ZCICiAgKiAkeHlcbGVxMCTjgYzmiJDjgornq4vjgaTjga7jgacsICRcdGV4dHso5bem6L66KX09fHh5fD0teHkkIOOBjOaIkOOCiueri+OBpC4KICAqICRcdGV4dHso5Y+z6L66KX09fHh8fHl8PXhcY2RvdCAoLXkpPS14eSTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICR8eHl8PXx4fHx5fCQg44GM5oiQ44KK56uL44GkLgoKKiAkeDwwLH55PDAk44Gu5aC05ZCICiAgKiAkeHk+MCTjgYzmiJDjgornq4vjgaTjga7jgacsICRcdGV4dHso5bem6L66KX09fHh5fD14eSQg44GM5oiQ44KK56uL44GkLgogICogJFx0ZXh0eyjlj7PovropfT18eHx8eXw9eFxjZG90IHk9eHkk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkfHh5fD18eHx8eXwkIOOBjOaIkOOCiueri+OBpC4KCjo6OgoKCgoKCgo6Ojp7Lm5vdGV9CgoqKuazqOaEjyoqCgrku4rlm57jga8sIOWPs+i+uuOBq+azqOebruOBmeOCi+OBqCwgCgoqICR8eHwk44Gr44Gk44GE44GmLCDntbblr77lgKTjga7kuK3ouqvlhajkvZPjga8sICR4JOOBp+OBguOCiy4KKiAkfHl8JOOBq+OBpOOBhOOBpiwg57W25a++5YCk44Gu5Lit6Lqr5YWo5L2T44GvLCAkeSTjgafjgYLjgosuCgrjgojjgaPjgaYsICR4JOOBqCR5JOOBruato+iyoOOBp+WgtOWQiOOCj+OBkeOBl+OBpuOBhOOCiy4KCjo6OgoKIyMg5ZWG44Gu57W25a++5YCk44Gv57W25a++5YCk44Gu5ZWGCgojIyMg5rqW5YKZCgoKCjo6OnsucHJvcG9zaXRpb24gI2ludmFicyBuYW1lPSLntbblr77lgKTjga7pgIbmlbDjga/pgIbmlbDjga7ntbblr77lgKQifQoKCuS7u+aEj+OBruS7u+aEj+OBriR4XGluXG1hdGhiYntSfVxzZXRtaW51c1x7MFx9JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgoKJCQKMS98eHw9fDEveHwKJCQKCjo6OgoKOjo6ey5wcm9vZn0KCiog5aC05ZCI44KP44GR44Gr44KI44KK56S644GZLgoqICR4PjAk44Gu5aC05ZCICiAgKiAkfHh8PXgk44Gn44GC44KL44GL44KJLCAkXHRleHR7KOW3pui+uil9PTEvfHh8PTEveCTjgYzmiJDjgornq4vjgaQuCiAgKiAkMS94PjAk44Gn44GC44KL44GL44KJLCAkXHRleHR7KOWPs+i+uil9PXwxL3h8PTEveCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICQxL3x4fD18MS94fCTjgYzmiJDjgornq4vjgaQuCiogJHg8MCTjga7loLTlkIgKICAqICR8eHw9LXgk44Gn44GC44KL44GL44KJLCAkXHRleHR7KOW3pui+uil9PTEvfHh8PTEvKC14KT0tMS94JOOBjOaIkOOCiueri+OBpC4KICAqICQxL3g8MCTjgafjgYLjgovjgYvjgoksICRcdGV4dHso5Y+z6L66KX09fDEveHw9LTEveCTjgYzmiJDjgornq4vjgaQuCiAgKiDjgojjgaPjgaYsICQxL3x4fD18MS94fCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCgoKCjo6OnsucHJvcG9zaXRpb24gI2RpdmFicyBuYW1lPSLllYbjga7ntbblr77lgKTjga/ntbblr77lgKTjga7llYYifQoKCuS7u+aEj+OBriR4XGluXG1hdGhiYntSfSTjgagsIOS7u+aEj+OBriR5XGluXG1hdGhiYntSfVxzZXRtaW51c1x7MFx9JOOBq+WvvuOBl+OBpiwg5qyh44GM5oiQ44KK56uL44GkLgoKJCQKXGJlZ2lue2FsaWdufQp8eC95fCY9fHh8L3x5fFxcClxlbmR7YWxpZ259CiQkCgo6OjoKCgo6Ojp7LnByb29mfQoKCiog5Lu75oSP44Gu5a6f5pWwJGEk44GoJDAk44KS6Zmk44GP5Lu75oSP44Gu5a6f5pWwJGIk44Gr44Gk44GE44GmLCAkYS9iPWFcY2RvdCgxL2IpJOOBjOaIkOOCiueri+OBpC4KKiDkuIrjgacsICRhPXx4fCx+Yj18eXwk44Go44GZ44KL44GT44Go44GnLCAkfHh8L3x5fD18eHxcY2RvdCgxL3x5fCk9fHh8XGNkb3R8MS95fCTjgYzmiJDjgornq4vjgaQuCiog44GX44Gf44GM44Gj44GmLCAkfHh8L3x5fD18eHx8MS95fD18eFxjZG90KDEveSl8PXx4L3l8JOOBjOaIkOOCiueri+OBpC4KCjo6OgoKCiMjIOWSjOOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruWSjOS7peS4iyjliqPliqDms5XmgKcpCgoKCjo6OnsucHJvcG9zaXRpb24gI3N1bWFicyBuYW1lPSLlkozjga7ntbblr77lgKTjga/ntbblr77lgKTjga7lkozku6XkuIsifQoK5Lu75oSP44GuJHgseVxpblxtYXRoYmJ7Un0k44Gr5a++44GX44Gm5qyh44GM5oiQ44KK56uL44GkLgoKJCQKfHgreXwgXGxlcSB8eHwrfHl8IFxcCiQkCjo6OgoKCgo6Ojp7LnByb29mIG5hbWU9IuWgtOWQiOWIhuOBkeOBq+OCiOOCi+iovOaYjiJ9CgoqICR4K3lcZ2VxIDAk44Gu5aC05ZCICiAgKiAkfHgreXw9eCt5JOOBjOaIkOOCiueri+OBpC4KICAqIOe1tuWvvuWApOOBq+OCiOOCi+ipleS+oVxAcmVmKHBycDphYnNyYW5nZSnjgojjgoosICR4XGxlcXx4fCx+eVxsZXF8eXwk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkeCt5XGxlcXx4fCt8eXwk44GM5oiQ44KK56uL44GkLgogICog44GX44Gf44GM44Gj44GmLCAkfHgreXw9eCt5XGxlcXx4fCt8eXwk44GM5oiQ44KK56uL44GkLgoqICR4K3k8IDAk44Gu5aC05ZCICiAgKiAkfHgreXw9LXgteSTjgYzmiJDjgornq4vjgaQuCiAgKiDntbblr77lgKTjgavjgojjgovoqZXkvqFcQHJlZihwcnA6YWJzcmFuZ2Up44KI44KKLCAkLXhcbGVxfHh8LH4teVxsZXF8eXwk44GM5oiQ44KK56uL44GkLgogICog44KI44Gj44GmLCAkLXgteVxsZXF8eHwrfHl8JOOBjOaIkOOCiueri+OBpC4KICAqIOOBl+OBn+OBjOOBo+OBpiwgJHx4K3l8PS14LXlcbGVxfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCgo6Ojp7LnByb29mIG5hbWU9IiQtfHh8XGxlcSB4XGxlcSB8eHwk44KS5Yip55So44GZ44KL6Ki85piOIn0KCiog57W25a++5YCk44Gr44KI44KL6KmV5L6hKOWRvemhjFxAcmVmKHBycDphYnNyYW5nZSkp44KI44KKLCAkLXx4fFxsZXEgeFxsZXEgfHh8LH4tfHl8XGxlcSB5XGxlcSB8eXwk44GM5oiQ44KK56uL44GkLgoqIOi+uuOAheOCkui2s+OBl+WQiOOCj+OBm+OBpiQtKHx4fCt8eXwpXGxlcSB4K3lcbGVxfHh8K3x5fCTjgpLlvpfjgosuCiog5LiK44Gu5byP44GM5oiQ44KK56uL44Gk44Gu44GnLCAkfHgreXxcbGVxfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuCgo6OjoKCjo6OnsucHJvb2YgbmFtZT0i5bmz5pa544Gu5beu44KS6ICD44GI44KL5pa55rOV44Gr44KI44KL6Ki85piOIn0KKiAkfHgreXxcZ2VxMCwgfHh8K3x5fFxnZXEwJOOCiOOCiiwgJHx4K3l8XjJcbGVxKHx4fCt8eXwpXjJcTG9uZ2xlZnRyaWdodGFycm93IHx4K3l8XGxlcXx4fCt8eXwk44GM5oiQ44KK56uL44GkLgoqICQofHh8K3x5fCleMi18eCt5fF4yJOOBr+asoeOBruOCiOOBhuOBq+WQjOWApOWkieW9ouOBp+OBjeOCiy4KCiQkClxiZWdpbnthbGlnbip9Cih8eHwrfHl8KV4yLXx4K3l8XjImPXx4fF4yK3x5fF4yKzJ8eHx8eXwtfHgreXxeMlxcCiY9eF4yK3leMisyfHh5fC0oeCt5KV4yXFwKJj0yKHx4eXwteHkpXFwKJlxnZXEwClxlbmR7YWxpZ24qfQokJAoKKiDjgojjgaPjgaYsICR8eCt5fF4yXGxlcSh8eHwrfHl8KV4yJOOBjOaIkOOCiueri+OBpC4KKiDjgZfjgZ/jgYzjgaPjgaYsICR8eCt5fFxsZXF8eHwrfHl8JOOBjOaIkOOCiueri+OBpC4gCgo6OjoKCjo6Onsubm90ZSBuYW1lPSIkeFxsZXEgeVxMb25ncmlnaHRhcnJvd3x4fFxsZXF8eXwk44GL77yfIn0KCioq5rOo5oSPKioKCiog5LiA6Iis44GrLCAkeFxsZXEgeVxMb25ncmlnaHRhcnJvd3x4fFxsZXF8eXwk44GM5oiQ44KK56uL44Gk44Go44Gv6ZmQ44KJ44GaLCDmrKHjga7oqLzmmI7jga/oqqTjgorjgafjgYLjgosuCgoqKuiqpOOCiioqCgoqICR4XGxlcSB8eHwsfnlcbGVxfHl8JOOCiOOCiiwgJHgreVxsZXF8eHwrfHl8JOOBjOaIkOOCiueri+OBpC4gCiogJFx0ZXh0eyjlt6bovropfT18eCt5fFxsZXF8fHh8K3x5fHwk44GM5oiQ44KK56uL44GkLgoqICR8eHwrfHl8XGdlcSAwJOOBjOaIkOOCiueri+OBpOOBruOBpywgJHx8eHwrfHl8fD18eHwrfHl8JOOBjOaIkOOCiueri+OBpC4KKiDjgojjgaPjgaYsICR8eCt5fFxsZXEgfHh8K3x5fCTjgYzmiJDjgornq4vjgaQuIAo6OjoKCiMjIOWSjOOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruW3ruS7peS4igoKOjo6ey5wcm9wb3NpdGlvbiAjc3VtYWJzIG5hbWU9IuWSjOOBrue1tuWvvuWApOOBr+e1tuWvvuWApOOBruW3ruS7peS4iiJ9Cgrku7vmhI/jga4keCx5XGluXG1hdGhiYntSfSTjgavlr77jgZfjgabmrKHjgYzmiJDjgornq4vjgaQuCgokJAp8eHwtfHl8IFxsZXEgfHgreXwgXFwKJCQKOjo6CgoKCjo6OnsucHJvb2Z9CgoqICRYPXgreSx+WT0teSTjgajjgZnjgovjgagsICR4PVgrWSx5PS1ZJOOBp+OBguOCiy4KKiDjgb7jgZ8sICR8LVl8PXxZfCTjgafjgYLjgovjgYvjgonmrKHjgYzmiJDjgornq4vjgaQuCiogJHx4K3l8IFxsZXEgfHh8K3x5fFxMb25nbGVmdHJpZ2h0YXJyb3d8WHxcbGVxfFgrWXwrfC1ZfFxMb25nbGVmdHJpZ2h0YXJyb3d8WHwtfFl8XGxlcXxYK1l8JAoKOjo6Cgo6Ojp7Lm5vdGV9CiogJHx4K3l8XGxlcXx4fCt8eXwk44GoLCAkfHh8LXx5fFxsZXF8eCt5fCTjgpLlkIjjgo/jgZvjgaYsICR8eHwtfHl8XGxlcXx4K3l8XGxlcXx4fCt8eXwk44GM6KiA44GI44KLLgo6OjoK</div>
 
 
 </div>
