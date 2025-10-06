@@ -1,0 +1,105 @@
+/* 問題文全体を囲むスタイル */
+div.problem {
+  padding: 1.5em;
+  margin: 1em 0;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 制約用のスタイル */
+div.constraints {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fef5f5; /* 薄い赤色 */
+  border: 1px solid #f8d7da;
+  border-left: 5px solid #dc3545; /* 赤色 */
+  border-radius: 5px;
+}
+
+/* 入力/出力セクションの共通スタイル */
+div.io-section {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+/* 入力/出力セクションのタイトル */
+div.io-section h3 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+  font-size: 1.1em;
+}
+
+
+/* 愚直な解法用のスタイル */
+div.naive {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #f1f3f5; /* 薄い灰色 */
+  border: 1px solid #dee2e6;
+  border-left: 5px solid #6c757d; /* 灰色 */
+  border-radius: 5px;
+}
+
+
+/* 定義用(proposition)のスタイル */
+div.definition {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #f2f2ff; /* 非常に薄い紫色 */
+  border: 1px solid #dcdcff;
+  border-left: 5px solid #8a2be2; /* 青みがかった紫色 (BlueViolet) */
+  border-radius: 5px;
+}
+
+/* 命題用(proposition)のスタイル */
+div.proposition {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #e9f7ef; /* 薄い緑色 */
+  border: 1px solid #a9dfbf;
+  border-left: 5px solid #2ecc71; /* 緑色 */
+  border-radius: 5px;
+}
+
+/* 証明用のスタイル */
+div.proof {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-left: 5px solid #007bff;
+  border-radius: 5px;
+}
+
+/* 例用のスタイル (bookdown exmブロック) */
+div.exm {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #e8f7f9; /* 薄いシアン */
+  border: 1px solid #bce9f0;
+  border-left: 5px solid #17a2b8; /* シアン (Teal) */
+  border-radius: 5px;
+}
+
+/* メソッド・アルゴリズム用のスタイル */
+div.method {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fff4e6; /* 薄いオレンジ */
+  border: 1px solid #ffe8cc;
+  border-left: 5px solid #fd7e14; /* オレンジ */
+  border-radius: 5px;
+}
+
+/* インライン数式（埋め込み数式）の左右に少し余白を追加 */
+mjx-container:not(.mjx-display) {
+  margin: 0 0.2em;
+}
