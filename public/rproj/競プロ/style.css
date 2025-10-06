@@ -99,6 +99,16 @@ div.method {
   border-radius: 5px;
 }
 
+/* 仮定・前提条件用のスタイル */
+div.assumption {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fdf8f2; /* 薄い茶色（ベージュ） */
+  border: 1px solid #f8ead6;
+  border-left: 5px solid #d35400; /* 茶色 (Pomegranate) */
+  border-radius: 5px;
+}
+
 /* インライン数式（埋め込み数式）の左右に少し余白を追加 */
 mjx-container:not(.mjx-display) {
   margin: 0 0.2em;

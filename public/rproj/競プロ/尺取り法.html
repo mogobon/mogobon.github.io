@@ -1507,6 +1507,15 @@ border-left: 5px solid #fd7e14;
 border-radius: 5px;
 }
 
+div.assumption {
+padding: 1em;
+margin: 1em 0;
+background-color: #fdf8f2; 
+border: 1px solid #f8ead6;
+border-left: 5px solid #d35400; 
+border-radius: 5px;
+}
+
 mjx-container:not(.mjx-display) {
 margin: 0 0.2em;
 }</style>
@@ -1731,18 +1740,21 @@ border-radius: 0px;
 <li>計算量改善にならない.</li>
 </ul>
 <div class="definition">
-<p><span id="def:unlabeled-div-1" class="definition"><strong>Definition 1  (区間の長さに対する単調性) </strong></span>集合<span class="math inline">\(S\)</span>を<span class="math inline">\(S=\{0,1,\cdots N-1\}\)</span>とし, その部分集合である区間<span class="math inline">\(I=[l,r)\)</span>を考える. 区間に対して, 定まる量<span class="math inline">\(c(I)\)</span>が, 次の性質を満たすとき, <span class="math inline">\(c\)</span>は 「区間に対して, <strong>単調性</strong>を持つ」という.</p>
+<p><span id="def:unlabeled-div-1" class="definition"><strong>Definition 1  (単調性) </strong></span>列<span class="math inline">\(S\)</span>を<span class="math inline">\(S=(0,1,\cdots N-1)\)</span>とする. <span class="math inline">\(S\)</span>に含まれる連続部分列をなす区間<span class="math inline">\(I=[l,r)\)</span>を考える. 区間<span class="math inline">\(I\)</span>に対して定まる量<span class="math inline">\(c(I)\)</span>が, 次の性質を満たすとき, <span class="math inline">\(c\)</span>は 「(区間の長さに対して, )<strong>単調性</strong>を持つ」という.</p>
 <!--* 区間の長さが増えるほど, 量$c$も増える-->
 <ul>
-<li><span class="math inline">\(I_1,I_2\in S,~ I_1\subseteq I_2 \Longrightarrow c(I_1)\leq c(I_2)\)</span></li>
+<li><span class="math inline">\(I_1,I_2\subset S,~ I_1\subseteq I_2 \Longrightarrow c(I_1)\leq c(I_2)\)</span></li>
 </ul>
 </div>
 <ul>
 <li>本当はもうちょっと厳密に定義したい.</li>
-<li>例: <span class="math inline">\(c(l,r)=\prod_{i=l}^{r-1}s_i\)</span>, <span class="math inline">\(c(l,r)=\sum_{i=l}^{r-1}s_i\)</span></li>
+</ul>
+<!--* 区間とは何か？$c(I)$についても厳密に定義しなければいけないと思っている. -->
+<ul>
+<li>例: <span class="math inline">\(c(l,r)=s_l\times s_{l+1}\cdots \times s_{r-1}~~~(\textcolor{red}{s_i&gt;0},i\in\{l,l+1,\cdots,r-1\})\)</span>, <span class="math inline">\(c(l,r)=s_l+s_{l+1}+\cdots+s_{r-1}~~~(\textcolor{red}{s_i&gt;0},i\in\{l,l+1,\cdots,r-1\})\)</span></li>
 </ul>
 <div class="proposition">
-<p><span id="prp:unlabeled-div-2" class="proposition"><strong>Proposition 1  </strong></span><span class="math inline">\(c\)</span>は区間に対して単調な量である.
+<p><span id="prp:unlabeled-div-2" class="proposition"><strong>Proposition 1  </strong></span><span class="math inline">\(c\)</span>は区間の長さに対して単調な量である.
 区間の左端<span class="math inline">\(l\)</span>に対して, <span class="math inline">\(c(l,r)\leq M\)</span>を満たす最大の<span class="math inline">\(r\)</span>を<span class="math inline">\(r_{l}\)</span>とする. このとき, <span class="math inline">\(r_{l}\geq r_{l-1}\)</span>である.</p>
 </div>
 <div class="proof">
@@ -1757,8 +1769,23 @@ border-radius: 0px;
 </div>
 <ul>
 <li>上の証明が意味するところは, <span class="math inline">\(c(l,r_{l-1})\leq M\)</span>だし, <span class="math inline">\(l\)</span>に対する右端<span class="math inline">\(r_l\)</span>を<span class="math inline">\(r_{l-1}\)</span>よりも左に動かしても<span class="math inline">\(c\)</span>の値は小さくなるだけなので, <span class="math inline">\(r_{l}\geq r_{l-1}\)</span> だよね. ということである.</li>
-<li>上を認めると, <span class="math inline">\(r_{l}\)</span>は<span class="math inline">\(l\)</span>から探索しなくても, <span class="math inline">\(r_{l-1}\)</span>からはじめれば十分である.</li>
+<li>上を認めると, <span class="math inline">\(r_{l+1}\)</span>は<span class="math inline">\(l+1\)</span>から探索しなくても, <span class="math inline">\(r_{l}\)</span>からはじめれば十分である.</li>
 </ul>
+<div class="assumption" name="差分更新の効率性に関する仮定">
+<p><strong>仮定</strong></p>
+<p>次の差分更新が高速に行えること.</p>
+<ul>
+<li><span class="math inline">\(c([l,r))\)</span>と<span class="math inline">\(s_{r+1}\)</span>から, <span class="math inline">\(c([l,r+1))\)</span>の値が高速に計算できること.
+<ul>
+<li><span class="math inline">\(c([l,r+1))=\mathrm{add}(c([l,r)),s_{r+1})\)</span></li>
+</ul></li>
+<li><span class="math inline">\(c([l,r))\)</span>と<span class="math inline">\(s_{l}\)</span>から, <span class="math inline">\(c([l+1,r))\)</span>の値が高速に計算できること.
+<ul>
+<li><span class="math inline">\(c([l+1,r))=\mathrm{remove}(c([l,r)),s_{l})\)</span></li>
+</ul></li>
+</ul>
+</div>
+<p>上の仮定のもとで, 尺取り法が成り立つ.</p>
 <div class="method" name="尺取り法">
 <p><strong>尺取り法</strong></p>
 <ul>
@@ -1767,15 +1794,28 @@ border-radius: 0px;
 <li>条件を満たす間<span class="math inline">\(r\)</span>を一つずつ右に動かしていき, <span class="math inline">\(r_{l}\)</span>を求める.</li>
 <li>満たさなくなったら答えを更新する.</li>
 </ul></li>
-<li><span class="math inline">\(l\)</span>を縮める分, <span class="math inline">\(c([l+1,r_{l}))\)</span>の初期値に更新する</li>
+<li><span class="math inline">\(l\)</span>を縮める分, <span class="math inline">\(c([l+1,r_{l}))\)</span>の初期値を更新する</li>
 <li><span class="math inline">\(l\)</span>を一つ右に動かして繰り返す.</li>
 </ul>
 </div>
 <ul>
 <li>繰り返し直前で区間が<span class="math inline">\([l,r_l)\)</span>から<span class="math inline">\([l+1,r_l)\)</span>に縮む.</li>
-<li>この縮んだ分について, <span class="math inline">\(c([l+1,r_{l}))\)</span>の初期値の更新処理が必要である.</li>
+<li>この縮んだ分について, 区間を伸ばし始める前に, <span class="math inline">\(c([l+1,r_{l}))\)</span>の初期値の更新処理が必要である.
+<ul>
+<li>ここで, 仮定の<span class="math inline">\(\mathrm{remove}\)</span>が必要である.</li>
+</ul></li>
 <li>変数を<code>l</code>としたfor文を動かせば, <span class="math inline">\(l\)</span>は一つ右に動くという処理を書く必要はなくなる.</li>
 </ul>
+<hr />
+<ul>
+<li>このブログは書きかけです。今後更新するかもしれないことをまとめています。
+<ul>
+<li>同様に, <span class="math inline">\(r\)</span>を固定する場合を記述したい.</li>
+<li><span class="math inline">\(s(I)\)</span>の定義と演算の範囲</li>
+<li>他の問題の例も試してミスの穴を埋めたい</li>
+</ul></li>
+</ul>
+<hr />
 </div>
 </div>
 <div id="参考にした本" class="section level1">
@@ -1785,7 +1825,7 @@ border-radius: 0px;
 </ul>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAi5bC65Y+W5rOVIgphdXRob3I6ICJtb2dvYm9uIgpkYXRlOiAi5pyA57WC5pu05pawOiBgciBTeXMuRGF0ZSgpYCIKb3V0cHV0OgogIGJvb2tkb3duOjpodG1sX2RvY3VtZW50MjoKICAgIGNzczogInN0eWxlLmNzcyIKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGluY2x1ZGVzOgogICAgICBpbl9oZWFkZXI6ICIuLi9tYXRoamF4X21hY3Jvcy5qcyIKICAgIGNvZGVfZG93bmxvYWQ6IHllcwogICAgdG9jOiB5ZXMKICAgIHRvY19kZXB0aDogMwogICAgdG9jX2Zsb2F0OiB5ZXMKICAgIG51bWJlcl9zZWN0aW9uczogbm8KLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpgYGAKCiMg6YGp55So44GZ44KL5b2i5byPCiog5YiX44GM5LiO44GI44KJ44KM44KL44Gu44GnLCDmnaHku7bjgpLmuoDjgZ/jgZnpg6jliIbliJfjgpLjgZnjgbnjgabliKnnlKjjgZfjgabkvZXjgonjgYvjga7op6PjgpLmsYLjgoHjgoguIAoKIyDkvosKCiMjIFtBQkMwMzJDIOWIl10oaHR0cHM6Ly9hdGNvZGVyLmpwL2NvbnRlc3RzL2FiYzAzMi90YXNrcy9hYmMwMzJfYykKCjo6OnsucHJvYmxlbX0K6ZW344GVJE4k44Gu5pW05pWw5YiXJFM9KHNfMSxcY2RvdHMsc19OKSTjgajmlbTmlbAkSyTjgYzjgYLjgosuIOS7peS4i+OBruadoeS7tuOCkua6gOOBn+OBmSRTJOOBrumAo+e2mumDqOWIhuWIl+OBruOBhuOBoSwg5pyA6ZW344Gu44KC44Gu44KS5rGC44KB44KILiAKCiog6YOo5YiG5YiX44Gr5ZCr44G+44KM44KL44GZ44G544Gm44Gu6KaB57Sg44Gu5YCk44Gu56mN44GvJEsk5Lul5LiL44Gn44GC44KLLgoK5p2h5Lu244KS5rqA44Gf44GZ6YOo5YiG5YiX44GM44Gy44Go44Gk44KC5a2Y5Zyo44GX44Gq44GE44Go44GN44GvLCAkMCTjgpLlh7rlipvjgZvjgoguCjo6OgoKOjo6ey5jb25zdHJhaW50c30KCioq5Yi257SEKioKCiogJDFcbGVxIE5cbGVxIDEwXjUkCiogJDFcbGVxIEtcbGVxIDEwXjUkCiogJDBcbGVxIHNfaVxsZXExMF45figxXGxlcSBpXGxlcSBOKSQKCjo6OgoKKiDphY3liJckUyTjgaskMCTjgYzlkKvjgb7jgozjgabjgYTjgovloLTlkIgsIOOBmeOBueOBpuOBruimgee0oOOBrue3j+epjeOBryQwJOOBq+OBquOCiy4KKiDopoHntKDjgZnjgbnjgabjgpLlkKvjgoDjgojjgYbjgarljLrplpPjgYzmnIDpganjgavjgarjgoosIOOBk+OBruWgtOWQiOetlOOBiOOBryROJOOBq+OBquOCiy4gCiog44GZ44G544Gm44Gu6KaB57Sg44GM5q2j44Gu5aC05ZCI44KS6ICD44GI44KLLgoKOjo6ey5uYWl2ZX0KKirmhJrnm7Tjgarmlrnms5UqKgoKKiDlt6bnq6/jgpLlm7rlrprjgZnjgosuCiAgKiDmnaHku7bjgpLmuoDjgZ/jgZnplpPlj7Pnq6/jgpI8Zm9udCBjb2xvcj0icmVkIj4qKuW3puerr+OBi+OCiSoqPC9mb250PuS4gOOBpOOBmuOBpOWPs+OBq+WLleOBi+OBl+OBpuOBhOOBjy4KICAqIOa6gOOBn+OBleOBquOBj+OBquOBo+OBn+OCieetlOOBiOOCkuabtOaWsOOBmeOCiy4KKiDlt6bnq6/jgpLkuIDjgaTlj7Pjgavli5XjgYvjgZfjgabnubDjgorov5TjgZkuCgo6OjoKCuaEmuebtOOBquaWueazleOBp+OBrywgCgoqIOacgOaCquOBruWgtOWQiCwg44GC44KK5b6X44KL5Yy66ZaTKOW3puerr+OBqOWPs+errynjgpLmjqLntKLjgZnjgovmlrnms5XjgajkuIDoh7TjgZnjgosuCiog6KiI566X6YeP5pS55ZaE44Gr44Gq44KJ44Gq44GELgoKOjo6ey5kZWZpbml0aW9uIG5hbWU9IuWMuumWk+OBrumVt+OBleOBq+WvvuOBmeOCi+WNmOiqv+aApyJ9CumbhuWQiCRTJOOCkiRTPVx7MCwxLFxjZG90cyBOLTFcfSTjgajjgZcsIOOBneOBrumDqOWIhumbhuWQiOOBp+OBguOCi+WMuumWkyRJPVtsLHIpJOOCkuiAg+OBiOOCiy4gIOWMuumWk+OBq+WvvuOBl+OBpiwg5a6a44G+44KL6YePJGMoSSkk44GMLCDmrKHjga7mgKfos6rjgpLmuoDjgZ/jgZnjgajjgY0sICRjJOOBryDjgIzljLrplpPjgavlr77jgZfjgaYsICoq5Y2Y6Kq/5oCnKirjgpLmjIHjgaTjgI3jgajjgYTjgYYuCgo8IS0tKiDljLrplpPjga7plbfjgZXjgYzlopfjgYjjgovjgbvjgaksIOmHjyRjJOOCguWil+OBiOOCiy0tPgoKKiAkSV8xLElfMlxpbiBTLH4gSV8xXHN1YnNldGVxIElfMiBcTG9uZ3JpZ2h0YXJyb3cgYyhJXzEpXGxlcSBjKElfMikkCgo6OjoKKiDmnKzlvZPjga/jgoLjgYbjgaHjgofjgaPjgajljrPlr4bjgavlrprnvqnjgZfjgZ/jgYQuIAoqIOS+izogJGMobCxyKT1ccHJvZF97aT1sfV57ci0xfXNfaSQsICRjKGwscik9XHN1bV97aT1sfV57ci0xfXNfaSQKCjo6OnsucHJvcG9zaXRpb259CiRjJOOBr+WMuumWk+OBq+WvvuOBl+OBpuWNmOiqv+OBqumHj+OBp+OBguOCiy4gCuWMuumWk+OBruW3puerryRsJOOBq+WvvuOBl+OBpiwgJGMobCxyKVxsZXEgTSTjgpLmuoDjgZ/jgZnmnIDlpKfjga4kciTjgpIkcl97bH0k44Go44GZ44KLLiDjgZPjga7jgajjgY0sICRyX3tsfVxnZXEgcl97bC0xfSTjgafjgYLjgosuIAoKOjo6Cgo6Ojp7LnByb29mfQoqICRjKEwsUilcbGVxIE0k44Gn44GC44KL44Go44GNLCDjgIwkYyhMLFIpJOOBr+mBlOaIkOWPr+iDveOBp+OBguOCi+OAjeOBqOWRvOOBti4KKiAkW2wscl97bC0xfSlcc3Vic2V0IFtsLTEscl97bC0xfSkk44GM5oiQ44KK56uL44GkLgoqICRjJOOBruWNmOiqv+aAp+OCiOOCiiwgJGMoW2wscl97bC0xfSkpXGxlcSBjKFtsLTEscl97bC0xfSkpXGxlcSBNJOOBjOaIkOOCiueri+OBpOOBruOBpywgJGMoW2wscl97bC0xfSkpJOOBr+mBlOaIkOWPr+iDveOBp+OBguOCiy4gCgo8IS0tKiDjgb7jgZ8sICRjKGwscl97bC0xfSlcZ2VxIGMobCxyX3tsLTF9LWQpfn5+KDA8ZDxyX3tsLTF9LWwrMSkkIOOBjOaIkOOCiueri+OBpC4tLT4KCjwhLS3mnIDlpKflgKTjgpLpgZTmiJDjgZfjgZ/jgYTjga7jgaDjgYvjgoksIOOCj+OBluOCj+OBluWMuumWk+OCkue4ruWwj+OBmeOCi+W/heimgeOBr+OBquOBhC0tPgoKOjo6CgoqIOS4iuOBruiovOaYjuOBjOaEj+WRs+OBmeOCi+OBqOOBk+OCjeOBrywgJGMobCxyX3tsLTF9KVxsZXEgTSTjgaDjgZcsICRsJOOBq+WvvuOBmeOCi+WPs+erryRyX2wk44KSJHJfe2wtMX0k44KI44KK44KC5bem44Gr5YuV44GL44GX44Gm44KCJGMk44Gu5YCk44Gv5bCP44GV44GP44Gq44KL44Gg44GR44Gq44Gu44GnLCAkcl97bH1cZ2VxIHJfe2wtMX0kIOOBoOOCiOOBrS4g44Go44GE44GG44GT44Go44Gn44GC44KLLiAKKiDkuIrjgpLoqo3jgoHjgovjgagsICRyX3tsfSTjga8kbCTjgYvjgonmjqLntKLjgZfjgarjgY/jgabjgoIsICRyX3tsLTF9JOOBi+OCieOBr+OBmOOCgeOCjOOBsOWNgeWIhuOBp+OBguOCiy4KCgo6Ojp7Lm1ldGhvZCBuYW1lPSLlsLrlj5bjgorms5UifQoKKirlsLrlj5bjgorms5UqKgoKCiog5bem56uvJGwk44KS5Zu65a6a44GZ44KLLgogICog5p2h5Lu244KS5rqA44Gf44GZ6ZaTJHIk44KS5LiA44Gk44Ga44Gk5Y+z44Gr5YuV44GL44GX44Gm44GE44GNLCAkcl97bH0k44KS5rGC44KB44KLLgogICog5rqA44Gf44GV44Gq44GP44Gq44Gj44Gf44KJ562U44GI44KS5pu05paw44GZ44KLLgoqICRsJOOCkue4ruOCgeOCi+WIhiwgJGMoW2wrMSxyX3tsfSkpJOOBruWIneacn+WApOOBq+abtOaWsOOBmeOCiwoqICRsJOOCkuS4gOOBpOWPs+OBq+WLleOBi+OBl+OBpue5sOOCiui/lOOBmS4KCjo6OgoKCiog57mw44KK6L+U44GX55u05YmN44Gn5Yy66ZaT44GMJFtsLHJfbCkk44GL44KJJFtsKzEscl9sKSTjgavnuK7jgoAuCiog44GT44Gu57iu44KT44Gg5YiG44Gr44Gk44GE44GmLCAkYyhbbCsxLHJfe2x9KSkk44Gu5Yid5pyf5YCk44Gu5pu05paw5Yem55CG44GM5b+F6KaB44Gn44GC44KLLiAKKiDlpInmlbDjgpJgbGDjgajjgZfjgZ9mb3LmlofjgpLli5XjgYvjgZvjgbAsICRsJOOBr+S4gOOBpOWPs+OBq+WLleOBj+OBqOOBhOOBhuWHpueQhuOCkuabuOOBj+W/heimgeOBr+OBquOBj+OBquOCiy4KCgojIOWPguiAg+OBq+OBl+OBn+acrAoqIOOCouODq+OCtOODquOCuuODoOWun+aKgOaknOWumiDlhazlvI/jg4bjgq3jgrnjg4jkuIrntJrjgJzjgqjjgq3jgrnjg5Hjg7zjg4jnt6gsIOWkp+anu+WFvOizhyDokZcsIOODnuOCpOODiuODk+WHuueJiCwgMjAyMwo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAi5bC65Y+W5rOVIgphdXRob3I6ICJtb2dvYm9uIgpkYXRlOiAi5pyA57WC5pu05pawOiBgciBTeXMuRGF0ZSgpYCIKb3V0cHV0OgogIGJvb2tkb3duOjpodG1sX2RvY3VtZW50MjoKICAgIGNzczogInN0eWxlLmNzcyIKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGluY2x1ZGVzOgogICAgICBpbl9oZWFkZXI6ICIuLi9tYXRoamF4X21hY3Jvcy5qcyIKICAgIGNvZGVfZG93bmxvYWQ6IHllcwogICAgdG9jOiB5ZXMKICAgIHRvY19kZXB0aDogMwogICAgdG9jX2Zsb2F0OiB5ZXMKICAgIG51bWJlcl9zZWN0aW9uczogbm8KLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpgYGAKCiMg6YGp55So44GZ44KL5b2i5byPCiog5YiX44GM5LiO44GI44KJ44KM44KL44Gu44GnLCDmnaHku7bjgpLmuoDjgZ/jgZnpg6jliIbliJfjgpLjgZnjgbnjgabliKnnlKjjgZfjgabkvZXjgonjgYvjga7op6PjgpLmsYLjgoHjgoguIAoKIyDkvosKCiMjIFtBQkMwMzJDIOWIl10oaHR0cHM6Ly9hdGNvZGVyLmpwL2NvbnRlc3RzL2FiYzAzMi90YXNrcy9hYmMwMzJfYykKCjo6OnsucHJvYmxlbX0K6ZW344GVJE4k44Gu5pW05pWw5YiXJFM9KHNfMSxcY2RvdHMsc19OKSTjgajmlbTmlbAkSyTjgYzjgYLjgosuIOS7peS4i+OBruadoeS7tuOCkua6gOOBn+OBmSRTJOOBrumAo+e2mumDqOWIhuWIl+OBruOBhuOBoSwg5pyA6ZW344Gu44KC44Gu44KS5rGC44KB44KILiAKCiog6YOo5YiG5YiX44Gr5ZCr44G+44KM44KL44GZ44G544Gm44Gu6KaB57Sg44Gu5YCk44Gu56mN44GvJEsk5Lul5LiL44Gn44GC44KLLgoK5p2h5Lu244KS5rqA44Gf44GZ6YOo5YiG5YiX44GM44Gy44Go44Gk44KC5a2Y5Zyo44GX44Gq44GE44Go44GN44GvLCAkMCTjgpLlh7rlipvjgZvjgoguCjo6OgoKOjo6ey5jb25zdHJhaW50c30KCioq5Yi257SEKioKCiogJDFcbGVxIE5cbGVxIDEwXjUkCiogJDFcbGVxIEtcbGVxIDEwXjUkCiogJDBcbGVxIHNfaVxsZXExMF45figxXGxlcSBpXGxlcSBOKSQKCjo6OgoKKiDphY3liJckUyTjgaskMCTjgYzlkKvjgb7jgozjgabjgYTjgovloLTlkIgsIOOBmeOBueOBpuOBruimgee0oOOBrue3j+epjeOBryQwJOOBq+OBquOCiy4KKiDopoHntKDjgZnjgbnjgabjgpLlkKvjgoDjgojjgYbjgarljLrplpPjgYzmnIDpganjgavjgarjgoosIOOBk+OBruWgtOWQiOetlOOBiOOBryROJOOBq+OBquOCiy4gCiog44GZ44G544Gm44Gu6KaB57Sg44GM5q2j44Gu5aC05ZCI44KS6ICD44GI44KLLgoKOjo6ey5uYWl2ZX0KKirmhJrnm7Tjgarmlrnms5UqKgoKKiDlt6bnq6/jgpLlm7rlrprjgZnjgosuCiAgKiDmnaHku7bjgpLmuoDjgZ/jgZnplpPlj7Pnq6/jgpI8Zm9udCBjb2xvcj0icmVkIj4qKuW3puerr+OBi+OCiSoqPC9mb250PuS4gOOBpOOBmuOBpOWPs+OBq+WLleOBi+OBl+OBpuOBhOOBjy4KICAqIOa6gOOBn+OBleOBquOBj+OBquOBo+OBn+OCieetlOOBiOOCkuabtOaWsOOBmeOCiy4KKiDlt6bnq6/jgpLkuIDjgaTlj7Pjgavli5XjgYvjgZfjgabnubDjgorov5TjgZkuCgo6OjoKCuaEmuebtOOBquaWueazleOBp+OBrywgCgoqIOacgOaCquOBruWgtOWQiCwg44GC44KK5b6X44KL5Yy66ZaTKOW3puerr+OBqOWPs+errynjgpLmjqLntKLjgZnjgovmlrnms5XjgajkuIDoh7TjgZnjgosuCiog6KiI566X6YeP5pS55ZaE44Gr44Gq44KJ44Gq44GELgoKOjo6ey5kZWZpbml0aW9uIG5hbWU9IuWNmOiqv+aApyJ9CuWIlyRTJOOCkiRTPSgwLDEsXGNkb3RzIE4tMSkk44Go44GZ44KLLiAkUyTjgavlkKvjgb7jgozjgovpgKPntprpg6jliIbliJfjgpLjgarjgZnljLrplpMkST1bbCxyKSTjgpLogIPjgYjjgosuICDljLrplpMkSSTjgavlr77jgZfjgablrprjgb7jgovph48kYyhJKSTjgYwsIOasoeOBruaAp+izquOCkua6gOOBn+OBmeOBqOOBjSwgJGMk44GvIOOAjCjljLrplpPjga7plbfjgZXjgavlr77jgZfjgaYsICkqKuWNmOiqv+aApyoq44KS5oyB44Gk44CN44Go44GE44GGLgoKPCEtLSog5Yy66ZaT44Gu6ZW344GV44GM5aKX44GI44KL44G744GpLCDph48kYyTjgoLlopfjgYjjgostLT4KCiogJElfMSxJXzJcc3Vic2V0IFMsfiBJXzFcc3Vic2V0ZXEgSV8yIFxMb25ncmlnaHRhcnJvdyBjKElfMSlcbGVxIGMoSV8yKSQKCjo6OgoqIOacrOW9k+OBr+OCguOBhuOBoeOCh+OBo+OBqOWOs+WvhuOBq+Wumue+qeOBl+OBn+OBhC4gCgo8IS0tKiDljLrplpPjgajjga/kvZXjgYvvvJ8kYyhJKSTjgavjgaTjgYTjgabjgoLljrPlr4bjgavlrprnvqnjgZfjgarjgZHjgozjgbDjgYTjgZHjgarjgYTjgajmgJ3jgaPjgabjgYTjgosuIC0tPgoKKiDkvos6ICRjKGwscik9c19sXHRpbWVzIHNfe2wrMX1cY2RvdHMgXHRpbWVzIHNfe3ItMX1+fn4oXHRleHRjb2xvcntyZWR9e3NfaT4wfSxpXGluXHtsLGwrMSxcY2RvdHMsci0xXH0pJCwgJGMobCxyKT1zX2wrc197bCsxfStcY2RvdHMrc197ci0xfX5+fihcdGV4dGNvbG9ye3JlZH17c19pPjB9LGlcaW5ce2wsbCsxLFxjZG90cyxyLTFcfSkkCgo6Ojp7LnByb3Bvc2l0aW9ufQokYyTjga/ljLrplpPjga7plbfjgZXjgavlr77jgZfjgabljZjoqr/jgarph4/jgafjgYLjgosuIArljLrplpPjga7lt6bnq68kbCTjgavlr77jgZfjgaYsICRjKGwscilcbGVxIE0k44KS5rqA44Gf44GZ5pyA5aSn44GuJHIk44KSJHJfe2x9JOOBqOOBmeOCiy4g44GT44Gu44Go44GNLCAkcl97bH1cZ2VxIHJfe2wtMX0k44Gn44GC44KLLiAKCjo6OgoKOjo6ey5wcm9vZn0KKiAkYyhMLFIpXGxlcSBNJOOBp+OBguOCi+OBqOOBjSwg44CMJGMoTCxSKSTjga/pgZTmiJDlj6/og73jgafjgYLjgovjgI3jgajlkbzjgbYuCiogJFtsLHJfe2wtMX0pXHN1YnNldCBbbC0xLHJfe2wtMX0pJOOBjOaIkOOCiueri+OBpC4KKiAkYyTjga7ljZjoqr/mgKfjgojjgoosICRjKFtsLHJfe2wtMX0pKVxsZXEgYyhbbC0xLHJfe2wtMX0pKVxsZXEgTSTjgYzmiJDjgornq4vjgaTjga7jgacsICRjKFtsLHJfe2wtMX0pKSTjga/pgZTmiJDlj6/og73jgafjgYLjgosuIAoKPCEtLSog44G+44GfLCAkYyhsLHJfe2wtMX0pXGdlcSBjKGwscl97bC0xfS1kKX5+figwPGQ8cl97bC0xfS1sKzEpJCDjgYzmiJDjgornq4vjgaQuLS0+Cgo8IS0t5pyA5aSn5YCk44KS6YGU5oiQ44GX44Gf44GE44Gu44Gg44GL44KJLCDjgo/jgZbjgo/jgZbljLrplpPjgpLnuK7lsI/jgZnjgovlv4XopoHjga/jgarjgYQtLT4KCjo6OgoKKiDkuIrjga7oqLzmmI7jgYzmhI/lkbPjgZnjgovjgajjgZPjgo3jga8sICRjKGwscl97bC0xfSlcbGVxIE0k44Gg44GXLCAkbCTjgavlr77jgZnjgovlj7Pnq68kcl9sJOOCkiRyX3tsLTF9JOOCiOOCiuOCguW3puOBq+WLleOBi+OBl+OBpuOCgiRjJOOBruWApOOBr+Wwj+OBleOBj+OBquOCi+OBoOOBkeOBquOBruOBpywgJHJfe2x9XGdlcSByX3tsLTF9JCDjgaDjgojjga0uIOOBqOOBhOOBhuOBk+OBqOOBp+OBguOCiy4gCiog5LiK44KS6KqN44KB44KL44GoLCAkcl97bCsxfSTjga8kbCsxJOOBi+OCieaOoue0ouOBl+OBquOBj+OBpuOCgiwgJHJfe2x9JOOBi+OCieOBr+OBmOOCgeOCjOOBsOWNgeWIhuOBp+OBguOCiy4KCjo6OnsuYXNzdW1wdGlvbiBuYW1lPSLlt67liIbmm7TmlrDjga7lirnnjofmgKfjgavplqLjgZnjgovku67lrpoifQoKKirku67lrpoqKgoK5qyh44Gu5beu5YiG5pu05paw44GM6auY6YCf44Gr6KGM44GI44KL44GT44GoLgoKKiAkYyhbbCxyKSkk44GoJHNfe3IrMX0k44GL44KJLCAkYyhbbCxyKzEpKSTjga7lgKTjgYzpq5jpgJ/jgavoqIjnrpfjgafjgY3jgovjgZPjgaguIAogICogJGMoW2wscisxKSk9XG1hdGhybXthZGR9KGMoW2wscikpLHNfe3IrMX0pJAoqICRjKFtsLHIpKSTjgagkc197bH0k44GL44KJLCAkYyhbbCsxLHIpKSTjga7lgKTjgYzpq5jpgJ/jgavoqIjnrpfjgafjgY3jgovjgZPjgaguIAogICogJGMoW2wrMSxyKSk9XG1hdGhybXtyZW1vdmV9KGMoW2wscikpLHNfe2x9KSQKCjo6OgoK5LiK44Gu5Luu5a6a44Gu44KC44Go44GnLCDlsLrlj5bjgorms5XjgYzmiJDjgornq4vjgaQuCgo6Ojp7Lm1ldGhvZCBuYW1lPSLlsLrlj5bjgorms5UifQoKKirlsLrlj5bjgorms5UqKgoKCiog5bem56uvJGwk44KS5Zu65a6a44GZ44KLLgogICog5p2h5Lu244KS5rqA44Gf44GZ6ZaTJHIk44KS5LiA44Gk44Ga44Gk5Y+z44Gr5YuV44GL44GX44Gm44GE44GNLCAkcl97bH0k44KS5rGC44KB44KLLgogICog5rqA44Gf44GV44Gq44GP44Gq44Gj44Gf44KJ562U44GI44KS5pu05paw44GZ44KLLgoqICRsJOOCkue4ruOCgeOCi+WIhiwgJGMoW2wrMSxyX3tsfSkpJOOBruWIneacn+WApOOCkuabtOaWsOOBmeOCiwoqICRsJOOCkuS4gOOBpOWPs+OBq+WLleOBi+OBl+OBpue5sOOCiui/lOOBmS4KCjo6OgoKCiog57mw44KK6L+U44GX55u05YmN44Gn5Yy66ZaT44GMJFtsLHJfbCkk44GL44KJJFtsKzEscl9sKSTjgavnuK7jgoAuCiog44GT44Gu57iu44KT44Gg5YiG44Gr44Gk44GE44GmLCDljLrplpPjgpLkvLjjgbDjgZflp4vjgoHjgovliY3jgassICRjKFtsKzEscl97bH0pKSTjga7liJ3mnJ/lgKTjga7mm7TmlrDlh6bnkIbjgYzlv4XopoHjgafjgYLjgosuIAogICog44GT44GT44GnLCDku67lrprjga4kXG1hdGhybXtyZW1vdmV9JOOBjOW/heimgeOBp+OBguOCiy4KKiDlpInmlbDjgpJgbGDjgajjgZfjgZ9mb3LmlofjgpLli5XjgYvjgZvjgbAsICRsJOOBr+S4gOOBpOWPs+OBq+WLleOBj+OBqOOBhOOBhuWHpueQhuOCkuabuOOBj+W/heimgeOBr+OBquOBj+OBquOCiy4KCi0tLQoKKiDjgZPjga7jg5bjg63jgrDjga/mm7jjgY3jgYvjgZHjgafjgZnjgILku4rlvozmm7TmlrDjgZnjgovjgYvjgoLjgZfjgozjgarjgYTjgZPjgajjgpLjgb7jgajjgoHjgabjgYTjgb7jgZnjgIIKICAqIOWQjOanmOOBqywgJHIk44KS5Zu65a6a44GZ44KL5aC05ZCI44KS6KiY6L+w44GX44Gf44GELiAKICAqICRzKEkpJOOBruWumue+qeOBqOa8lOeul+OBruevhOWbsgogICog5LuW44Gu5ZWP6aGM44Gu5L6L44KC6Kmm44GX44Gm44Of44K544Gu56m044KS5Z+L44KB44Gf44GECgotLS0KCiMg5Y+C6ICD44Gr44GX44Gf5pysCiog44Ki44Or44K044Oq44K644Og5a6f5oqA5qSc5a6aIOWFrOW8j+ODhuOCreOCueODiOS4iue0muOAnOOCqOOCreOCueODkeODvOODiOe3qCwg5aSn5qe75YW86LOHIOiRlywg44Oe44Kk44OK44OT5Ye654mILCAyMDIzCg==</div>
 
 
 </div>
