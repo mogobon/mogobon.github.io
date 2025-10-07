@@ -28,10 +28,9 @@ klippy::klippy(
 ```
 
 :::{.note}
-* この記事は`r Sys.Date()``現在執筆途中で未完成です. 内容・構想は流動的に変わります. 
+* この記事は`r Sys.Date()`現在執筆途中で未完成です. 内容・構想は流動的に変わります. 
 * この記事は, 筆者が数学と競プロを勉強するために書いたお遊びの記事です. 
 * 間違い等ございましたら, ご指摘いただけますと幸いです.
-* 議論が含まれている可能性に注意してください.
 
 :::
 
@@ -108,7 +107,7 @@ $c$は区間の長さに対して単調な量である.
 区間の左端$l$に対して, $c(l,r)\leq M$を満たす最大の$r$を$r_{l}$とする. このとき, $r_{l}\geq r_{l-1}$である. 
 
 :::
-
+<details><summary>証明</summary>
 :::{.proof}
 * $c(l,r)$を$c(L,R)$と表記する. 
 * $c(L,R)\leq M$であるとき, 「$c(L,R)$は達成可能である」と呼ぶ.
@@ -120,6 +119,12 @@ $c$は区間の長さに対して単調な量である.
 <!--最大値を達成したいのだから, わざわざ区間を縮小する必要はない-->
 
 :::
+</details>
+
+<!--* 上の証明が意味するところは, $c(l,r_{l-1})\leq M$だし, $l$に対する右端$r_l$を$r_{l-1}$よりも左に動かしても$c$の値は小さくなるだけなので, $r_{l}\geq r_{l-1}$ だよね. ということである. -->
+* 上を認めると, $r_{l+1}$は$l+1$から探索しなくても, $r_{l}$からはじめれば十分である.
+
+
 
 :::{.note name="$c([l,r))$の略称表記について"}
 
@@ -128,9 +133,6 @@ $c$は区間の長さに対して単調な量である.
 * 以降, 断りなく, $c([l,r))$を$c(l,r)$と表記するものとする. 
 
 :::
-
-<!--* 上の証明が意味するところは, $c(l,r_{l-1})\leq M$だし, $l$に対する右端$r_l$を$r_{l-1}$よりも左に動かしても$c$の値は小さくなるだけなので, $r_{l}\geq r_{l-1}$ だよね. ということである. -->
-* 上を認めると, $r_{l+1}$は$l+1$から探索しなくても, $r_{l}$からはじめれば十分である.
 
 :::{.assumption #cassump name="尺取法が成立するための, 仮定"}
 
@@ -162,7 +164,7 @@ $$
 
 * <font color=gray>$c^{op}$は最適([op]timal)な$c$を, $len^{op}$は最適な長さ([len]gth)を表す. </font>
 * $c^{op}\leftarrow e,~c\leftarrow e,~l\leftarrow 0,~r\leftarrow 0,~len^{op}\leftarrow0$
-* $l< N$の間繰り返す. 
+* **<font color = red>for</font>** $l$ **<font color = red>in</font>** $0,1,\cdots,N-1$:
   * <font color=gray>// $r$が探索範囲に含まれており, かつ条件を満たす間$r$を一つずつ右に動かしていき, $r_{l}$を求める.</font>
   * **<font color = red>while</font>** $r<N\land is\_valid(\mathrm{add}(c(l,r),s_{r}))==True$:
     * $c\leftarrow \mathrm{add}(c(l,r),s_{r})$
@@ -179,7 +181,7 @@ $$
   
   <!--* ($\mathrm{remove}(c(l,r_l),s_{l})=c(l,r_l)\oplus s_{l}^{-1}$となる場合もある.) -->
   
-  * $l\leftarrow l+1$
+  <!--* $l\leftarrow l+1$-->
 
 <!-- 初期値を求めるステップについて: $l$を縮める分必要である. 2,行目の伸ばす過程で行えない. 
 効率的に, 一定の繰り返しで更新できるように正規化しておくとも言える. -->
@@ -218,20 +220,21 @@ $$
   * 「差分計算ができるためには, 上を満たさなければならない」ということが言いたいわけではない.
   * 「上を満たせば, 差分計算が高速にできることを保証したい.」 ということである. -->
 
-列$S'$を$S'=(s_0,s_1,\cdots,s_{N-1})$,  $c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1} s_{i}\equiv s_{L}\oplus s_{L+1}\oplus s_{R-1}$とする. この$c$を用いた尺取り法は, $\mathrm{add}(c(l,r),s_{r})=c(l,r)\oplus s_{r}$, $\mathrm{remove}(c(l,r),s_{l})=c(l,r)\oplus s_{l}^{-1}$と置き換えて次のように表現できる.
+列$S'$を$S'=(s_0,s_1,\cdots,s_{N-1})$,  $c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1} s_{i}\equiv s_{L}\oplus s_{L+1}\oplus s_{R-1}$とする. この$c$を用いた尺取り法は, $\mathrm{add}(c(l,r),s_{r})=c(l,r)\oplus s_{r}$, $\mathrm{remove}(c(l,r),s_{l})=s_{l}^{-1}\oplus c(l,r) $と置き換えて次のように表現できる.
 
 * $c^{op}\leftarrow e,~c\leftarrow e,~l\leftarrow 0,~r\leftarrow 0,~len^{op}\leftarrow0$
-* $l<N$の間繰り返す. 
+* **<font color = red>for</font>** $l$ **<font color = red>in</font>** $0,1,\cdots,N-1$:
   * **<font color = red>while</font>** $r<N\land is\_valid(c\oplus s_{r})==True$:
     * $c\leftarrow c\oplus s_{r}$
     * $r\leftarrow r+1$
   * $c^{op}\leftarrow f(c^{op},~c)$
   * $len^{op}\leftarrow g(len^{op},~r-l)$
-  * $c(l+1,r)\leftarrow c(l,r)\oplus s_{l}^{-1}$
-  * $l\leftarrow l+1$    
+  * $c(l+1,r)\leftarrow s_{l}^{-1}\oplus c(l,r)$
+  
+  <!--* $l\leftarrow l+1$    -->
 
 :::
-
+<details><summary>例 \@ref(exm:Groupexm) の差分更新が高速できることの証明</summary>
 :::{.proof name="差分更新の効率性"}
 
 <!--* $s_i>0$より, $c(l,r)=\displaystyle\sum_{i=l}^{r-1}s_i$, $c(l,r)=\displaystyle\prod_{i=l}^{r-1}s_i$は明らかに区間の長さに対して単調である. -->
@@ -240,7 +243,8 @@ $$
 
 * $c(l,r+1)= \mathrm{add}(c(l,r),s_{r+1})$が高速に計算できることを示す.
 
-* $c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1}s_i$と表記する. 
+<!--* $c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1}s_i$と表記する. -->
+
 * $c(l,r+1)$について, 次のように同値変形できる.
 
 $$
@@ -253,7 +257,7 @@ $$
 * よって, $c(l,r+1)=c(l,r)\oplus s_{r}$が成り立つ.
 * これは, $c(l,r+1)$が, $c(l,r)$と$s_{r}$を用いて, 陽に(かつそれは高速に)計算できる量であることを表している.
 
-* $c(l,r+1)$は累積代入により, 求めることができることがわかる.
+<!--* $c(l,r+1)$は累積代入により, 求めることができることがわかる.-->
 
 <!--* 例(組$(S,\times),~S\subset \mathbb{Z}^{+}$の場合): `c *= s[r]` -->
   
@@ -287,7 +291,7 @@ $$
 <!--* 例(組$(S,\times),~S\subset \mathbb{Z}^{+}$の場合): `c //= s[l]`-->
 
 :::
-
+</details>
 
 
 
