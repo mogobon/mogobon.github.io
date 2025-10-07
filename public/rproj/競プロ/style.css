@@ -80,7 +80,7 @@ div.proof {
 }
 
 /* 例用のスタイル (bookdown exmブロック) */
-div.exm {
+div.example {
   padding: 1em;
   margin: 1em 0;
   background-color: #e8f7f9; /* 薄いシアン */
