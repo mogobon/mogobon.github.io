@@ -89,6 +89,16 @@ div.example {
   border-radius: 5px;
 }
 
+/* 注意用のスタイル */
+div.note {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fef9e7; /* 薄い黄色 */
+  border: 1px solid #f9e79f;
+  border-left: 5px solid #f1c40f; /* 黄色 */
+  border-radius: 5px;
+}
+
 /* メソッド・アルゴリズム用のスタイル */
 div.method {
   padding: 1em;
@@ -109,7 +119,20 @@ div.assumption {
   border-radius: 5px;
 }
 
+/* 仮説・予想用のスタイル */
+div.hypothesis {
+  padding: 1em;
+  margin: 1em 0;
+  background-color: #fff0f7; /* 薄いピンク */
+  border: 1px solid #ffd9ec;
+  border-left: 5px solid #d63384; /* マゼンタ (ピンク) */
+  border-radius: 5px;
+}
+
+
+
 /* インライン数式（埋め込み数式）の左右に少し余白を追加 */
 mjx-container:not(.mjx-display) {
   margin: 0 0.2em;
 }
+
