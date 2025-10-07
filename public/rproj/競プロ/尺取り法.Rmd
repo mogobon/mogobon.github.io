@@ -13,15 +13,24 @@ output:
     toc_depth: 3
     toc_float: yes
     number_sections: no
+    code_folding: show
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(reticulate) #python
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(
+  lang = c("r", "python")
+) #copy-paste
 ```
 
 :::{.note}
 
 * この記事は, 筆者が数学と競プロを勉強するために書いたお遊びの記事です. 
+* 間違い等ございましたら, ご指摘いただけますと幸いです.
 * 筆者はトンチンカンな議論を展開しがちなので, そのような議論が含まれている可能性に注意してください.
 * 私はそのような議論がなされることがないようにできる限り努めます. 
 :::
@@ -113,11 +122,14 @@ $c$は区間の長さに対して単調な量である.
 :::
 
 :::{.note name="$c([l,r))$の略称表記について"}
+
+**$c([l,r))$の略称表記について**
+
 * 以降, 断りなく, $c([l,r))$を$c(l,r)$と表記するものとする. 
 
 :::
 
-* 上の証明が意味するところは, $c(l,r_{l-1})\leq M$だし, $l$に対する右端$r_l$を$r_{l-1}$よりも左に動かしても$c$の値は小さくなるだけなので, $r_{l}\geq r_{l-1}$ だよね. ということである. 
+<!--* 上の証明が意味するところは, $c(l,r_{l-1})\leq M$だし, $l$に対する右端$r_l$を$r_{l-1}$よりも左に動かしても$c$の値は小さくなるだけなので, $r_{l}\geq r_{l-1}$ だよね. ということである. -->
 * 上を認めると, $r_{l+1}$は$l+1$から探索しなくても, $r_{l}$からはじめれば十分である.
 
 :::{.assumption name="尺取法が成立するための, 仮定"}
@@ -167,11 +179,11 @@ $$
   * 「差分計算ができるためには, 上を満たさなければならない」ということが言いたいわけではない.
   * 「上を満たせば, 差分計算が高速にできることを保証したい.」 ということである. 
 
-* このもとで, 差分更新は次のように高速に行うことができる.
+* このもとで, 差分更新は高速に行うことができることを以下で示す.
 
 * $c(l,r+1)= \mathrm{add}(c(l,r),s_{r+1})$が高速に計算できることを示す.
 
-* $c(l,r)=\displaystyle\bigoplus_{i=l}^{r}s_i$と表記する. 
+* $c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1}s_i$と表記する. 
 * $c(l,r+1)$について, 次のように同値変形できる.
 
 $$
@@ -185,7 +197,7 @@ $$
 * これは, $c(l,r+1)$が, $c(l,r)$と$s_{r}$を用いて, 陽に(かつそれは高速に)計算できる量であることを表している.
 
 * $c(l,r+1)$は累積代入により, 求めることができることがわかる.
-  * 例(組$(S,\times),~S\subset\mathbb{Z}\setminus\{0\}$の場合): `now *= s[r]` 
+  * 例(組$(S,\times),~S\subset\mathbb{Z}\setminus\{0\}$の場合): `c *= s[r]` 
   
 <!--右に伸ばすだけだったら, 可換律は不要-->
 
@@ -211,7 +223,7 @@ $$
 * よって, $c(l+1,r)=s_{l}^{-1}\oplus c(l,r)$が成り立つ.
 * これは, $c(l+1,r)$が, $c(l,r)$と$s_{l}$を用いて, 陽に(かつそれは高速に)計算できる量であることを表している.
 * また, 組$(S,\oplus)$が, 可換律$x,y\in S, x\oplus y=y\oplus x$を満たしていれば, $c(l+1,r)$は累積代入により, 求めることができることがわかる.
-    * 例(組$(S,\times),~S\subset \mathbb{Z}\setminus\{0\}$の場合): `now //= s[l]`
+    * 例(組$(S,\times),~S\subset \mathbb{Z}\setminus\{0\}$の場合): `c //= s[l]`
     
 
 :::
@@ -224,17 +236,53 @@ $$
 
 **尺取り法**
 
-
-* 左端$l$を固定する.
-  * 条件を満たす間$r$を一つずつ右に動かしていき, $r_{l}$を求める.
-  * 満たさなくなったら, 答えを現在の答えと求めた$c(l,r_{l})$のうち, 最適な方に更新する.
-* $c(l,r_{l})$と$s_{l}$から, $c(l+1,r_{l+1})$の初期値を求める.
-* $l$を一つ右に動かして繰り返す.
+* <font color=gray>$c^{op}$は最適([op]timal)な$c$を, $len^{op}$は最適な長さ([len]gth)を表す. </font>
+* $c^{op}\leftarrow e,~c\leftarrow e,~l\leftarrow 0,~r\leftarrow 0,~len^{op}\leftarrow0$
+* $l\in[0,N)$の間繰り返す. 
+  * <font color=gray>// $r$が探索範囲に含まれており, かつ条件を満たす間$r$を一つずつ右に動かしていき, $r_{l}$を求める.</font>
+  * **<font color = red>while</font>** $r<N\land is\_valid(\mathrm{add}(c(l,r),s_{r}))==True$:
+    * $c\leftarrow \mathrm{add}(c(l,r),s_{r})$
+    
+    <!--* ($\mathrm{add}(c(l,r),s_{r})= c\oplus s_{r}$となる場合もある.)-->
+    
+    * $r\leftarrow r+1$
+  * <font color=gray>// 条件を満たさなくなったら, 答えを現在の答えと求めた$c(l,r_{l})$のうち, 最適な方に更新する.</font>
+  * $c^{op}\leftarrow f(c^{op},~c)$
+  * $len^{op}\leftarrow g(len^{op},~r-l)$
+    * <font color=gray>$f,g$は比較関数の記号である.</font>
+  * <font color = gray>// $c(l,r_{l})$と$s_{l}$から, $c(l+1,r_{l+1})$の初期値を求める.</font>
+  * $c(l+1,r)\leftarrow \mathrm{remove}(c(l,r_l),s_{l})$
+  
+  <!--* ($\mathrm{remove}(c(l,r_l),s_{l})=c(l,r_l)\oplus s_{l}^{-1}$となる場合もある.) -->
+  
+  * $l\leftarrow l+1$
 
 <!-- 初期値を求めるステップについて: $l$を縮める分必要である. 2,行目の伸ばす過程で行えない. 
 効率的に, 一定の繰り返しで更新できるように正規化しておくとも言える. -->
+
 :::
 
+
+* **適切な仮定のもとで**, 上の尺取り法において, $\mathrm{add}(c(l,r),s_{r})=c(l,r)\oplus s_{r}$, $\mathrm{remove}(c(l,r),s_{l})=c(l,r)\oplus s_{l}^{-1}$と置き換えたとしても, 動作するという仮説を考えている.
+* これを下に示す. 
+
+
+:::{.hypothesis}
+列$S'$を$S'=(s_0,s_1,\cdots,s_{N-1})$とする. 台集合$S$を, $S=\{s_0,s_1,\cdots,s_{N-1}\}$とする. 
+$c(L,R)=\displaystyle\bigoplus_{i=L}^{R-1} s_{i}\equiv s_{L}\oplus s_{L+1}\oplus s_{R-1}$とする. 組$(S,\oplus)$がアーベル群であり, さらに$x\oplus y~(x,y\in S)$が高速($O(1)$程度を想定)に動くとき, 次の尺取り法アルゴリズムは正当である. 
+
+* $c^{op}\leftarrow e,~c\leftarrow e,~l\leftarrow 0,~r\leftarrow 0,~len^{op}\leftarrow0$
+* $l\in[0,N)$の間繰り返す. 
+  * **<font color = red>while</font>** $r<N\land is\_valid(c\oplus s_{r})==True$:
+    * $c\leftarrow c\oplus s_{r}$
+    * $r\leftarrow r+1$
+  * $c^{op}\leftarrow f(c^{op},~c)$
+  * $len^{op}\leftarrow g(len^{op},~r-l)$
+  * $c(l+1,r)\leftarrow c(l,r)\oplus s_{l}^{-1}$
+  * $l\leftarrow l+1$
+
+
+:::
 
 
 * 繰り返し直前で区間が$[l,r_l)$から$[l+1,r_l)$に縮む.
@@ -244,6 +292,28 @@ $$
 
 
 
+* [ABC032C 列](https://atcoder.jp/contests/abc032/tasks/abc032_c)に正解したソースコード(Python)を示す.
+
+```{python,eval=FALSE}
+N,K=map(int,input().split())
+S = [int(input())for _ in range(N)]
+# コーナーケース
+if 0 in S: exit(print(N))
+r = 0
+ans = 0
+prod = 1
+# 尺取り法で求める
+for l in range(N):
+    while r < N and prod*S[r] <= K:
+        prod *= S[r] # add
+        r += 1
+    # r は条件を満たさない. [l,r) の長さを求めれば良い.
+    ans = max(ans, r - l)
+    prod = max(1,prod//S[l]) # remove
+print(ans)
+```
+
+
 
 ---
 
@@ -251,6 +321,8 @@ $$
   * 同様に, $r$を固定する場合を記述したい. 
   * $s(I)$の定義と演算の範囲
   * 他の問題の例も試してミスの穴を埋めたい
+* 群論については, 勉強したてで準同型定理や剰余群すら怪しいです.（ズコー！）
+* 本ブログの内容は正しいとは限りません. ご容赦ください.
 
 ---
 
