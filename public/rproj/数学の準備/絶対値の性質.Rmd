@@ -59,6 +59,7 @@ $$
 <!--参照**\@ref(def:abs)**-->
 <!--https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html-->
 
+<details><summary>$y=|x|$のグラフ</summary>
 * 関数$y=|x|$のグラフを描画する.
 
 ```{r absplot0,eval=FALSE, echo=FALSE}
@@ -79,6 +80,7 @@ base <- ggplot() +
 base
 ```
 
+</details>
 
 ### 絶対値と$\max$関数
 
@@ -92,7 +94,7 @@ $$
 
 :::
 
-
+<details><summary>証明</summary>
 :::{.proof}
 
 * $x\geq0$の場合
@@ -105,7 +107,10 @@ $$
   * よって, $|x|=\max(\{x,-x\})$が成り立つ.
 
 :::
+</details>
 
+
+<details><summary>証明に関する補足</summary>
 :::{.note}
 **補足**
 
@@ -115,7 +120,7 @@ $$
 * 「任意の実数$x$に対して, $x<0\Longrightarrow -x<x$」が成り立つことも同様にして示すことができる.
 * $x<0\Longleftrightarrow 2x< 0\Longleftrightarrow x+x<0\Longleftrightarrow x< -x$
 :::
-
+</details>
 
 ### 絶対値の非負性
 
@@ -131,7 +136,7 @@ $$
 $$
 :::
 
-
+<details><summary>証明</summary>
 ::: {.proof}
 
 
@@ -140,7 +145,9 @@ $$
 
 
 :::
+</details>
 
+<details><summary>補足</summary>
 :::{.note}
 **注意**
 
@@ -167,6 +174,7 @@ $$
 * 冷静に, 全体を捉えよう.
 
 :::
+</details>
 
 :::{.proposition #abssq name="絶対値の2乗と元の数の2乗は同じ"}
 任意の$x\in\mathbb{R}$に対して, 次が成り立つ.
@@ -175,6 +183,7 @@ $$
 $$
 :::
 
+<details><summary>証明</summary>
 :::{.proof}
 * $x\geq0$の場合
   * $|x|=x$より, $|x|^2=(|x|)^2=(x)^2=x^2$が成り立つ.
@@ -182,6 +191,7 @@ $$
   * $|x|=-x$より, $|x|^2=(|x|)^2=(-x)^2=x^2$が成り立つ.
 
 :::
+</details>
 
 ### 絶対値を含む基本的な不等式
 
@@ -194,6 +204,7 @@ $$
 $$
 :::
 
+<details><summary>証明</summary>
 :::{.proof}
 * $|x|\leq x$について
   * $x\geq 0$の場合
@@ -210,7 +221,7 @@ $$
     * よって, $-|x|\leq x$が成り立つ.
 
 :::
-
+</details>
 
 :::{.proposition #absgeqmi name="絶対値を含む基本的な不等式"}
 
@@ -222,6 +233,7 @@ $$
 
 :::
 
+<details><summary>証明</summary>
 :::{.proof}
 
 * $x\geq0$の場合
@@ -233,7 +245,7 @@ $$
   
 
 :::
-
+</details>
 
 :::{.proposition #absieq1 name="絶対値を含む基本的な不等式2"}
 
@@ -245,7 +257,7 @@ $$
 
 :::
 
-
+<details><summary>証明</summary>
 :::{.proof}
 * $(\Longrightarrow)$
   * $M\geq|x|\geq 0$が成り立つので, $M$が非負の場合を考える.
@@ -263,7 +275,7 @@ $$
     * よって, $|x|\leq M \Longleftarrow-M\leq x \leq M$が成り立つ.
 
 :::
-
+</details>
 
 
 :::{.proposition #absieq name="絶対値を含む基本的な不等式3"}
@@ -276,7 +288,7 @@ $$
 
 :::
 
-
+<details><summary>証明</summary>
 :::{.proof}
 * $(\Longrightarrow)$
   * $|x|=\max(\{x,-x\})\geq m$より, $x\geq m\lor -x\geq m$が成り立つ.
@@ -293,7 +305,7 @@ $$
   
 
 :::
-
+</details>
 
 ## 積の絶対値は絶対値の積
 
@@ -312,7 +324,7 @@ $$
 
 :::
 
-
+<details><summary>証明</summary>
 :::{.proof}
 
 
@@ -339,12 +351,12 @@ $$
   * よって, $|xy|=|x||y|$ が成り立つ.
 
 :::
+</details>
 
 
 
 
-
-
+<details><summary>補足</summary>
 :::{.note}
 
 **注意**
@@ -357,10 +369,11 @@ $$
 よって, $x$と$y$の正負で場合わけしている.
 
 :::
+</details>
 
 ## 商の絶対値は絶対値の商
 
-### 準備
+
 
 
 
@@ -375,6 +388,8 @@ $$
 
 :::
 
+
+<details><summary>証明</summary>
 :::{.proof}
 
 * 場合わけにより示す.
@@ -388,7 +403,7 @@ $$
   * よって, $1/|x|=|1/x|$が成り立つ.
 
 :::
-
+</details>
 
 
 
@@ -405,7 +420,7 @@ $$
 
 :::
 
-
+<details><summary>証明</summary>
 :::{.proof}
 
 
@@ -414,7 +429,7 @@ $$
 * したがって, $|x|/|y|=|x||1/y|=|x\cdot(1/y)|=|x/y|$が成り立つ.
 
 :::
-
+</details>
 
 ## 和の絶対値は絶対値の和以下(劣加法性)
 
@@ -430,7 +445,7 @@ $$
 :::
 
 
-
+<details><summary>証明1</summary>
 :::{.proof name="場合分けによる証明"}
 
 * $x+y\geq 0$の場合
@@ -445,8 +460,9 @@ $$
   * したがって, $|x+y|=-x-y\leq|x|+|y|$が成り立つ.
 
 :::
+</details>
 
-
+<details><summary>証明2</summary>
 :::{.proof name="$-|x|\leq x\leq |x|$を利用する証明"}
 
 * 絶対値による評価(命題\@ref(prp:absrange))より, $-|x|\leq x\leq |x|,~-|y|\leq y\leq |y|$が成り立つ.
@@ -454,6 +470,9 @@ $$
 * 上の式が成り立つので, $|x+y|\leq|x|+|y|$が成り立つ.
 
 :::
+</details>
+
+<details><summary>証明3</summary>
 
 :::{.proof name="平方の差を考える方法による証明"}
 * $|x+y|\geq0, |x|+|y|\geq0$より, $|x+y|^2\leq(|x|+|y|)^2\Longleftrightarrow |x+y|\leq|x|+|y|$が成り立つ.
@@ -472,7 +491,9 @@ $$
 * したがって, $|x+y|\leq|x|+|y|$が成り立つ. 
 
 :::
+</details>
 
+<details><summary>証明に関する補足</summary>
 :::{.note name="$x\leq y\Longrightarrow|x|\leq|y|$か？"}
 
 **注意**
@@ -486,10 +507,12 @@ $$
 * $|x|+|y|\geq 0$が成り立つので, $||x|+|y||=|x|+|y|$が成り立つ.
 * よって, $|x+y|\leq |x|+|y|$が成り立つ. 
 :::
+</details>
+
 
 ## 和の絶対値は絶対値の差以上
 
-:::{.proposition #sumabs name="和の絶対値は絶対値の差以上"}
+:::{.proposition #sumabs2 name="和の絶対値は絶対値の差以上"}
 
 任意の$x,y\in\mathbb{R}$に対して次が成り立つ.
 
@@ -499,7 +522,7 @@ $$
 :::
 
 
-
+<details><summary>証明</summary>
 :::{.proof}
 
 * $X=x+y,~Y=-y$とすると, $x=X+Y,y=-Y$である.
@@ -507,7 +530,10 @@ $$
 * $|x+y| \leq |x|+|y|\Longleftrightarrow|X|\leq|X+Y|+|-Y|\Longleftrightarrow|X|-|Y|\leq|X+Y|$
 
 :::
+</details>
 
+<details><summary>補足</summary>
 :::{.note}
 * $|x+y|\leq|x|+|y|$と, $|x|-|y|\leq|x+y|$を合わせて, $|x|-|y|\leq|x+y|\leq|x|+|y|$が言える.
 :::
+</details>
