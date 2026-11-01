@@ -253,11 +253,11 @@ function App() {
                 ADT→ABC Converter
               </a>
             </li>
-            {/* <li>
-              <a href="/notes.html" rel="noopener noreferrer">
+            <li>
+              <a href="/notes" rel="noopener noreferrer">
                 競プロノート一覧
               </a>
-            </li> */}
+            </li>
           </ul>
         </section>
 
