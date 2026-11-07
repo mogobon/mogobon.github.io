@@ -109,6 +109,7 @@ const root=document.getElementById('cards');
 function mathify(markup) {
   const temp=document.createElement('div');temp.innerHTML=markup;
   return (temp.textContent||'').split(/([^\x00-\x7F]+)/).map(s=>{
+    if (s.includes('\\\\(') || s.includes('\\\\[')) return s;
     if (!/(\\[a-zA-Z]+|[A-Za-z0-9]\s*_\s*(?:\{|[A-Za-z0-9])|[A-Za-z0-9]\s*\^\s*(?:\{|[A-Za-z0-9]))/.test(s)) return s;
     const lead=(s.match(/^\s*/)||[''])[0];
     const trail=(s.match(/\s*$/)||[''])[0];
