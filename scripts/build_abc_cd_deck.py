@@ -8,9 +8,50 @@ from bs4 import BeautifulSoup
 COUNT=100
 LATEST=483
 OUT=Path("public/abc_cd_200.html")
+def summarize(statement):
+    """Create a compact review prompt; do not reproduce the full statement.
+
+    This heuristic extraction is NOT a verified human-written summary.
+    Complex requirements need confirmation on the official task page.
+    """
+    root = BeautifulSoup(str(statement), 'html.parser')
+    section = next((x for x in root.select('section')
+                    if (h := x.find('h3')) and '問題文' in h.get_text(' ', strip=True)), None)
+    if section is None:
+        raise ValueError('Japanese problem section missing')
+    def tidy(x):
+        return re.sub(r'\s+', ' ', x).strip()
+    def cut(x, maximum):
+        x = tidy(x)
+        if len(x) <= maximum:
+            return x
+        end = max(x.rfind('。', 0, maximum+1), x.rfind('．', 0, maximum+1))
+        if end > maximum//2:
+            return x[:end+1]
+        return x[:maximum].rstrip(' 、，')+'…'
+    paragraphs = [tidy(p.get_text(' ',strip=True)) for p in section.find_all('p')]
+    paragraphs = [p for p in paragraphs if p]
+    if not paragraphs:
+        raise ValueError('No Japanese statement paragraphs found')
+    first = paragraphs[0]
+    goal = next((p for p in reversed(paragraphs)
+                 if re.search('求め|答え|判定|出力|数え|最小|最大', p)), paragraphs[-1])
+    middle = [p for p in paragraphs[1:-1] if p != goal]
+    bits = [cut(first, 170)]
+    if middle:
+        bits.append(cut(middle[0], 115))
+    if goal != first:
+        bits.append('問：'+cut(goal, 190))
+    bullets = [tidy(li.get_text(' ',strip=True)) for li in section.find_all('li')]
+    bullets = [x for x in bullets if x]
+    if bullets:
+        bits.append('条件：'+cut(' / '.join(bullets[:2]),120))
+    return ' '.join(bits)
+
 session=requests.Session()
 session.headers.update({"User-Agent":"MogobonStudyDeck/1.0 (personal study; polite rate limiting)"})
 cards=[]
+failures=[]
 for abc in range(LATEST,LATEST-COUNT,-1):
     for letter in ("c","d"):
         task=f"abc{abc}_{letter}"
@@ -25,12 +66,15 @@ for abc in range(LATEST,LATEST-COUNT,-1):
             for bad in statement.select("script,style"): bad.decompose()
             # AtCoderの数式はMathJaxでレンダリングする
             cards.append({"id":task,"url":url,"title":title.get_text(" ",strip=True) if title else task,
-                          "body":str(statement)})
+                          "body":"<p>"+html.escape(summarize(statement))+"</p>"})
             print("OK",task,flush=True)
         except Exception as e:
             print("FAILED",task,str(e),flush=True)
+            failures.append(task)
             cards.append({"id":task,"url":url,"title":task,"body":"<p>問題文を取得できませんでした。再実行してください。</p>"})
         time.sleep(2.5+random.random()*1.5)
+if failures:
+    raise SystemExit(f"Aborting: {len(failures)} task(s) failed: {failures}")
 data=json.dumps(cards,ensure_ascii=False).replace("</","<\\/")
 page=r'''<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABC C・D 200問 | 通勤問題集</title>
@@ -50,7 +94,7 @@ footer{padding:20px;text-align:center;color:#64748b}a{color:#2563eb}.status{marg
 <body><header><h1>ABC C・D 200問 — 通勤問題集</h1><div class="controls">
 <select id="filter"><option value="all">C・Dすべて</option><option value="c">Cのみ</option><option value="d">Dのみ</option><option value="todo">未着手</option><option value="review">要復習</option></select>
 <button id="expand">全問題文を表示</button><span id="count"></span></div></header>
-<main id="cards"></main><footer>メモと進捗はこの端末のブラウザに保存されます。問題文の出典：AtCoder（各カードから原文へ移動可能）。</footer>
+<p style="max-width:820px;margin:12px auto;padding:0 18px;color:#64748b;font-size:.85rem">問題は自動抽出した短縮版です。複雑な条件は公式原文も確認してください。解法の着眼点は「考察・ポイント」に自分で記録できます。</p><main id="cards"></main><footer>自動短縮版のため条件の欠落があり得ます。厳密な確認はAtCoder原文で。メモと進捗はこの端末に保存されます。</footer>
 <script id="dataset" type="application/json">__DATA__</script>
 <script>
 const data=JSON.parse(document.getElementById('dataset').textContent);
@@ -68,7 +112,7 @@ function render(){
   const heading=document.createElement('h2');heading.textContent=item.title;card.append(heading);
   const link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener';link.textContent='AtCoder原文';card.append(link);
   const details=document.createElement('details');details.open=true;
-  const summary=document.createElement('summary');summary.textContent='問題文';details.append(summary);
+  const summary=document.createElement('summary');summary.textContent='問題の要点（自動短縮版）';details.append(summary);
   const body=document.createElement('div');body.className='statement';body.innerHTML=item.body;details.append(body);card.append(details);
   const status=document.createElement('select');status.className='status';
   [['','未着手'],['thinking','考察中'],['review','要復習'],['done','理解済み']].forEach(([v,label])=>{const o=document.createElement('option');o.value=v;o.textContent=label;status.append(o)});
