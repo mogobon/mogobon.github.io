@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 COUNT=100
 LATEST=483
-OUT=Path("notes/abc_cd_200.html")
+OUT=Path("public/abc_cd_200.html")
 session=requests.Session()
 session.headers.update({"User-Agent":"MogobonStudyDeck/1.0 (personal study; polite rate limiting)"})
 cards=[]
