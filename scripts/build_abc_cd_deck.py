@@ -19,6 +19,10 @@ def summarize(statement):
                     if (h := x.find('h3')) and '問題文' in h.get_text(' ', strip=True)), None)
     if section is None:
         raise ValueError('Japanese problem section missing')
+    # Preserve TeX math boundaries when extracting the summaries.
+    from bs4 import NavigableString
+    for var in root.find_all("var"):
+        var.replace_with(NavigableString(r"\(" + var.get_text(" ",strip=True) + r"\)"))
     def tidy(x):
         return re.sub(r'\s+', ' ', x).strip()
     def cut(x, maximum):
@@ -93,17 +97,30 @@ footer{padding:20px;text-align:center;color:#64748b}a{color:#2563eb}.status{marg
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
 <body><header><h1>ABC C・D 200問 — 通勤問題集</h1><div class="controls">
 <select id="filter"><option value="all">C・Dすべて</option><option value="c">Cのみ</option><option value="d">Dのみ</option><option value="todo">未着手</option><option value="review">要復習</option></select>
-<button id="expand">全問題文を表示</button><span id="count"></span></div></header>
+<button id="expand">要点を開閉</button><span id="count"></span></div></header>
 <p style="max-width:820px;margin:12px auto;padding:0 18px;color:#64748b;font-size:.85rem">問題は自動抽出した短縮版です。複雑な条件は公式原文も確認してください。解法の着眼点は「考察・ポイント」に自分で記録できます。</p><main id="cards"></main><footer>自動短縮版のため条件の欠落があり得ます。厳密な確認はAtCoder原文で。メモと進捗はこの端末に保存されます。</footer>
 <script id="dataset" type="application/json">__DATA__</script>
 <script>
 const data=JSON.parse(document.getElementById('dataset').textContent);
 const root=document.getElementById('cards');
+
+/* bs4.get_text() in earlier imports removed the <var> boundaries.
+   Restore inline math for the already-summarized 200 cards without re-scraping. */
+function mathify(markup) {
+  const temp=document.createElement('div');temp.innerHTML=markup;
+  return (temp.textContent||'').split(/([^\x00-\x7F]+)/).map(s=>{
+    if (!/(\\[a-zA-Z]+|[A-Za-z0-9]\s*_\s*(?:\{|[A-Za-z0-9])|[A-Za-z0-9]\s*\^\s*(?:\{|[A-Za-z0-9]))/.test(s)) return s;
+    const lead=(s.match(/^\s*/)||[''])[0];
+    const trail=(s.match(/\s*$/)||[''])[0];
+    return lead+'\\('+s.trim()+'\\)'+trail;
+  }).join('');
+}
+
 const storeKey='abc-cd-200-v1';
 let saved={};try{saved=JSON.parse(localStorage.getItem(storeKey)||'{}')}catch(e){}
 function save(){localStorage.setItem(storeKey,JSON.stringify(saved))}
 function render(){
- const f=document.getElementById('filter').value;root.replaceChildren();let n=0;
+ const f=document.getElementById('filter').value;if(window.MathJax?.typesetClear) MathJax.typesetClear([root]);root.replaceChildren();let n=0;
  for(const item of data){
   const s=saved[item.id]||{};
   if(f==='c'&&!item.id.endsWith('_c')||f==='d'&&!item.id.endsWith('_d')||f==='todo'&&s.status||f==='review'&&s.status!=='review')continue;
@@ -113,7 +130,7 @@ function render(){
   const link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener';link.textContent='AtCoder原文';card.append(link);
   const details=document.createElement('details');details.open=true;
   const summary=document.createElement('summary');summary.textContent='問題の要点（自動短縮版）';details.append(summary);
-  const body=document.createElement('div');body.className='statement';body.innerHTML=item.body;details.append(body);card.append(details);
+  const body=document.createElement('div');body.className='statement';body.textContent=mathify(item.body);details.append(body);card.append(details);
   const status=document.createElement('select');status.className='status';
   [['','未着手'],['thinking','考察中'],['review','要復習'],['done','理解済み']].forEach(([v,label])=>{const o=document.createElement('option');o.value=v;o.textContent=label;status.append(o)});
   status.value=s.status||'';status.onchange=()=>{saved[item.id]={...saved[item.id],status:status.value};save()};card.append(status);
@@ -124,6 +141,7 @@ function render(){
  document.getElementById('count').textContent=n+'問';
  if(window.MathJax?.typesetPromise) MathJax.typesetPromise([root]).catch(()=>{});
 }
+window.addEventListener('load',()=>{if(window.MathJax?.typesetPromise) MathJax.typesetPromise([root]).catch(console.error)});
 document.getElementById('filter').onchange=render;
 document.getElementById('expand').onclick=()=>{const a=[...document.querySelectorAll('.card>details:first-of-type')];const open=a.some(x=>!x.open);a.forEach(x=>x.open=open)};
 render();
