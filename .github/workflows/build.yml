@@ -16,6 +16,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Python for study-deck generation
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate condensed ABC C/D deck only when absent
+        run: |
+          if [ ! -s public/abc_cd_200.html ]; then
+            python -m pip install --quiet requests beautifulsoup4
+            python scripts/build_abc_cd_deck.py
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add public/abc_cd_200.html
+            git commit -m "Generate concise ABC C/D 200 problem deck"
+            git push origin HEAD:main
+          fi
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
