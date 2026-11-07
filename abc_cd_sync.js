@@ -47,13 +47,13 @@ function createUI(){
  p.innerHTML=[
  '<h2>GitHub同期（要約は公開）</h2>',
  '<p>要約を編集すると、入力停止後に自動でGitHubへ保存します。別端末でもページを開けば取得できます。</p>',
- '<p><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Fine-grained PATを作成</a>し、対象リポジトリを <b>mogobon/mogobon.github.io</b> だけに指定して、<b>Contents: Read and write</b> を許可してください。</p>',
+ '<p><a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener noreferrer">既存PATの設定を確認</a>：<b>Resource owner = mogobon</b>／<b>Repository access = Only select repositories → mogobon.github.io</b>／<b>Repository permissions → Contents = Read and write</b>。トークンが期限切れなら新規作成してください。設定変更後は下の欄から再接続します。</p>',
  '<label for="sync-token">GitHubトークン（チャットには貼らない）</label>',
  '<input id="sync-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">',
  '<label><input id="sync-remember" type="checkbox"> このタブのセッション中は接続を保持</label>',
  '<div class="actions"><button type="button" class="primary" id="sync-connect">接続する</button><button type="button" id="sync-disconnect">接続解除</button><button type="button" id="sync-refresh">再取得</button></div>',
  '<section id="sync-conflict" hidden><b id="sync-conflict-title"></b><p>同じ問題を別端末でも編集したため、自動上書きを停止しました。</p><button type="button" id="sync-use-local">自分の変更を採用</button><button type="button" id="sync-use-remote">GitHub側を採用</button></section>',
- '<p class="fine">要約は公開リポジトリに保存されます。個人の考察メモ・理解度は公開しません。トークンはGitHubに送信する認証にのみ使い、GitHubのファイルには書き込みません。通常はメモリだけに保持します。</p>'
+ '<p class="fine">403でも未同期の要約はこのSafariに残ります。Safariのサイトデータを削除しないでください。トークンをチャットに貼らないでください。要約は公開されますが、考察メモ・理解度は公開しません。トークンは通常メモリだけに保持します。</p>'
  ].join('');
  document.querySelector('.topinner').append(p);
  const front=byId('front'),summary=byId('summary');
@@ -115,7 +115,10 @@ async function getRemote(auth){
  const headers={'Accept':'application/vnd.github+json'};
  if(auth && token)headers.Authorization='Bearer '+token;
  const res=await fetch(ENDPOINT+'?nocache='+Date.now(),{headers,cache:'no-store'});
- if(!res.ok)throw new Error('GitHub HTTP '+res.status);
+ if(!res.ok){
+   if(res.status===403)throw new Error('GitHub HTTP 403：トークンのResource owner・対象リポジトリ・Contents権限を確認してください');
+   throw new Error('GitHub HTTP '+res.status);
+ }
  const body=await res.json(),doc=JSON.parse(decodeBase64(body.content));
  if(doc.version!==1||!doc.summaries||Array.isArray(doc.summaries)||typeof doc.summaries!=='object')throw new Error('同期ファイル形式エラー');
  for(const [k,v] of Object.entries(doc.summaries))if(!allowed.has(k)||typeof v!=='string')throw new Error('同期データの検証エラー');
@@ -174,14 +177,24 @@ async function upload(force){
      body:JSON.stringify({message:'Update ABC C/D card summaries',content:encodeBase64(JSON.stringify(next,null,2)+'\n'),sha:r.sha,branch:'main'})
    });
    if(result.status===409)continue;
-   if(!result.ok){const detail=await result.json().catch(()=>({}));throw new Error('GitHub HTTP '+result.status+' '+(detail.message||''))}
+   if(!result.ok){
+     const detail=await result.json().catch(()=>({}));
+     if(result.status===403)throw new Error('GitHub HTTP 403：トークンの書き込み権限を確認してください（Contents: Read and write）');
+     throw new Error('GitHub HTTP '+result.status+' '+(detail.message||''));
+   }
    remote=next;loaded=true;completed=true;
    for(const [k,d] of Object.entries(snapshot))if(dirty[k]?.stamp===d.stamp && dirty[k]?.text===d.text)delete dirty[k];
    saveLocal();applySummaries();originalDraw();repaint();
    break;
  }
  if(!completed && !conflict)throw new Error('競合が続いたため保存を保留しました');
- }catch(e){error=e.message||String(e)}
+ }catch(e){
+   error=e.message||String(e);
+   if(/GitHub HTTP 403/.test(error)){
+     token='';
+     sessionStorage.removeItem(TOKEN_KEY);
+   }
+ }
  finally{
    saving=false;status();
    if(!error&&!conflict&&count()&&revision!==oldRevision&&token)queue(8000);
