@@ -1,0 +1,26 @@
+{
+  "id": "/abc_cd_cards.html",
+  "name": "ABC C・D 200問｜暗記カード",
+  "short_name": "ABC C/D",
+  "description": "AtCoder ABC C・D 200問を、オフラインでも復習できる暗記カード",
+  "lang": "ja",
+  "start_url": "/abc_cd_cards.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#f6f8fc",
+  "icons": [
+    {
+      "src": "/icons/abc-cd-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/abc-cd-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
