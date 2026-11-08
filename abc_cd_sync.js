@@ -4,6 +4,7 @@
 const OWNER='mogobon', REPO='mogobon.github.io';
 const ENDPOINT='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/public/abc_cd_overrides.json';
 const KEY='abc-cd-summary-drafts-v1', TOKEN_KEY='abc-cd-sync-token-session-v1';
+const REMOTE_KEY='abc-cd-summary-remote-cache-v1', PERSIST_TOKEN_KEY='abc-cd-sync-token-device-v1';
 const byId=x=>document.getElementById(x);
 const initial=new Map(data.map(x=>[x.id,x.summary]));
 const allowed=new Set(initial.keys());
@@ -23,10 +24,22 @@ function loadLocal(){
 function saveLocal(){
  try{localStorage.setItem(KEY,JSON.stringify(dirty))}catch(e){error='端末への保存に失敗';console.error(e)}
 }
+function rememberRemote(){
+ try{localStorage.setItem(REMOTE_KEY,JSON.stringify(remote))}catch(e){console.warn('Remote cache write failed',e)}
+}
+function restoreRemote(){
+ try{
+  const doc=JSON.parse(localStorage.getItem(REMOTE_KEY)||'null');
+  if(doc?.version!==1||!doc.summaries||typeof doc.summaries!=='object'||Array.isArray(doc.summaries))return;
+  if(Object.entries(doc.summaries).some(([k,v])=>!allowed.has(k)||typeof v!=='string'))return;
+  remote=doc;loaded=true;
+ }catch(e){console.warn('Remote cache read failed',e)}
+}
 function count(){return Object.keys(dirty).length}
 function status(){
  let message='GitHubデータを読み込み中…',kind='neutral';
  if(conflict){message='別端末との編集競合があります';kind='warn'}
+ else if(navigator.onLine===false){message=count()?'オフライン：端末に保存済み・接続後に同期':'オフライン：保存済みカードを表示中';kind='warn'}
  else if(error){message='同期エラー：'+error;kind='warn'}
  else if(saving){message='GitHubへ保存中…';kind='pending'}
  else if(count()&&!token){message='端末に保存済み・GitHub未同期';kind='warn'}
@@ -34,7 +47,7 @@ function status(){
  else if(loaded){message=token?'GitHubと同期済み':'GitHubの公開データを表示中';kind='ok'}
  byId('sync-state').textContent=message;byId('sync-state').dataset.kind=kind;
  byId('sync-count').textContent=count()+'件未同期';
- byId('sync-now').disabled=!token||!count()||saving;
+ byId('sync-now').disabled=!token||!count()||saving||navigator.onLine===false;
 }
 function createUI(){
  const style=document.createElement('style');
@@ -51,9 +64,10 @@ function createUI(){
  '<label for="sync-token">GitHubトークン（チャットには貼らない）</label>',
  '<input id="sync-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">',
  '<label><input id="sync-remember" type="checkbox"> このタブのセッション中は接続を保持</label>',
+ '<label><input id="sync-persist" type="checkbox"> この端末に接続を保持（アプリを閉じても自動同期。共有端末では選ばない）</label>',
  '<div class="actions"><button type="button" class="primary" id="sync-connect">接続する</button><button type="button" id="sync-disconnect">接続解除</button><button type="button" id="sync-refresh">再取得</button></div>',
  '<section id="sync-conflict" hidden><b id="sync-conflict-title"></b><p>同じ問題を別端末でも編集したため、自動上書きを停止しました。</p><button type="button" id="sync-use-local">自分の変更を採用</button><button type="button" id="sync-use-remote">GitHub側を採用</button></section>',
- '<p class="fine">403でも未同期の要約はこのSafariに残ります。Safariのサイトデータを削除しないでください。トークンをチャットに貼らないでください。要約は公開されますが、考察メモ・理解度は公開しません。トークンは通常メモリだけに保持します。</p>'
+ '<p class="fine">403やオフラインでも未同期の要約はこの端末に残ります。サイトデータを削除しないでください。トークンは公開しないでください。要約は公開されますが、考察メモ・理解度は公開しません。通常はメモリだけに保持します。「この端末に接続を保持」を選ぶとPATをlocalStorageに保存します。端末を共有する場合は使用せず、XSS等で漏れる危険があることを理解した上で選択してください。</p>'
  ].join('');
  document.querySelector('.topinner').append(p);
  const front=byId('front'),summary=byId('summary');
@@ -101,9 +115,9 @@ function onEdit(){
  const previous=dirty[it.id],base=previous?.base ?? (remote.summaries[it.id]??'');
  dirty[it.id]={text:byId('sync-editor').value,base,stamp:Date.now()};
  revision++;error='';saveLocal();applySummaries();status();
- if(token && !conflict)queue(8000);
+ if(token && !conflict && navigator.onLine!==false)queue(8000);
 }
-function queue(ms){clearTimeout(timer);timer=setTimeout(()=>upload(),ms);status()}
+function queue(ms){clearTimeout(timer);if(navigator.onLine===false){status();return}timer=setTimeout(()=>upload(),ms);status()}
 function decodeBase64(encoded){
  return new TextDecoder().decode(Uint8Array.from(atob(encoded.replace(/\s/g,'')),c=>c.charCodeAt(0)));
 }
@@ -126,8 +140,9 @@ async function getRemote(auth){
  return {sha:body.sha,doc};
 }
 async function refresh(notify){
+ if(navigator.onLine===false){status();return}
  try{
- const r=await getRemote(!!token);remote=r.doc;loaded=true;error='';
+ const r=await getRemote(!!token);remote=r.doc;loaded=true;error='';rememberRemote();
  for(const [key,d] of Object.entries(dirty))if(d.text===(remote.summaries[key]??''))delete dirty[key];
  saveLocal();applySummaries();originalDraw();repaint();status();
  if(token&&count()&&!conflict)queue(1500);
@@ -136,22 +151,29 @@ async function refresh(notify){
 async function connect(){
  const entered=byId('sync-token').value.trim();
  if(!entered){error='トークンが未入力です';status();return}
+ if(navigator.onLine===false){error='オフライン中は接続を検証できません';status();return}
  token=entered;byId('sync-token').value='';
  try{
- const r=await getRemote(true);remote=r.doc;loaded=true;error='';
- if(byId('sync-remember').checked)sessionStorage.setItem(TOKEN_KEY,token);
- else sessionStorage.removeItem(TOKEN_KEY);
+ const r=await getRemote(true);remote=r.doc;loaded=true;error='';rememberRemote();
+ if(byId('sync-persist').checked){
+   localStorage.setItem(PERSIST_TOKEN_KEY,token);
+   sessionStorage.removeItem(TOKEN_KEY);
+ }else{
+   localStorage.removeItem(PERSIST_TOKEN_KEY);
+   if(byId('sync-remember').checked)sessionStorage.setItem(TOKEN_KEY,token);
+   else sessionStorage.removeItem(TOKEN_KEY);
+ }
  applySummaries();originalDraw();repaint();status();
  byId('sync-panel').hidden=true;
  if(count())queue(1500);
- }catch(e){token='';sessionStorage.removeItem(TOKEN_KEY);error='接続失敗：'+(e.message||e);status()}
+ }catch(e){token='';sessionStorage.removeItem(TOKEN_KEY);localStorage.removeItem(PERSIST_TOKEN_KEY);error='接続失敗：'+(e.message||e);status()}
 }
 function disconnect(){
- token='';clearTimeout(timer);sessionStorage.removeItem(TOKEN_KEY);
- byId('sync-remember').checked=false;status();
+ token='';clearTimeout(timer);sessionStorage.removeItem(TOKEN_KEY);localStorage.removeItem(PERSIST_TOKEN_KEY);
+ byId('sync-remember').checked=false;byId('sync-persist').checked=false;status();
 }
 async function upload(force){
- clearTimeout(timer);if(!token||saving||!count()||conflict&&!force){status();return}
+ clearTimeout(timer);if(navigator.onLine===false||!token||saving||!count()||conflict&&!force){status();return}
  saving=true;error='';status();
  const snapshot=Object.fromEntries(Object.entries(dirty).map(([k,v])=>[k,{...v}]));
  const oldRevision=revision;
@@ -183,7 +205,7 @@ async function upload(force){
      if(result.status===403)throw new Error('GitHub HTTP 403：トークンの書き込み権限を確認してください（Contents: Read and write）');
      throw new Error('GitHub HTTP '+result.status+' '+(detail.message||''));
    }
-   remote=next;loaded=true;completed=true;
+   remote=next;loaded=true;completed=true;rememberRemote();
    for(const [k,d] of Object.entries(snapshot))if(dirty[k]?.stamp===d.stamp && dirty[k]?.text===d.text)delete dirty[k];
    saveLocal();applySummaries();originalDraw();repaint();
    break;
@@ -194,6 +216,7 @@ async function upload(force){
    if(/GitHub HTTP 403/.test(error)){
      token='';
      sessionStorage.removeItem(TOKEN_KEY);
+     localStorage.removeItem(PERSIST_TOKEN_KEY);
    }
  }
  finally{
@@ -210,15 +233,25 @@ function resolve(useLocal){
    saveLocal();applySummaries();originalDraw();repaint();status();
  }
 }
-loadLocal();createUI();
+loadLocal();restoreRemote();createUI();
 const originalDraw=draw;
 draw=function(){originalDraw();repaint()};
 applySummaries();draw();status();
 try{
- const remembered=sessionStorage.getItem(TOKEN_KEY);
- if(remembered){token=remembered;byId('sync-remember').checked=true;refresh(true)}
- else refresh(false);
+ const persistent=localStorage.getItem(PERSIST_TOKEN_KEY);
+ const remembered=persistent||sessionStorage.getItem(TOKEN_KEY);
+ if(remembered){
+   token=remembered;
+   if(persistent)byId('sync-persist').checked=true;
+   else byId('sync-remember').checked=true;
+   refresh(true);
+ }else refresh(false);
 }catch(e){refresh(false)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!saving)refresh(false)});
-window.addEventListener('online',()=>{refresh(false);if(token&&count())queue(1500)});
+window.addEventListener('online',()=>{
+ error='';status();
+ refresh(false);
+ if(token&&count())queue(1500);
+});
+window.addEventListener('offline',()=>{clearTimeout(timer);status()});
 })();
