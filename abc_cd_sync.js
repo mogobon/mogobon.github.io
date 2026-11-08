@@ -94,6 +94,7 @@ function repaint(){
  lastId=it.id;
  if(!editing)byId('sync-editor').value=currentText(it);
  byId('summary').textContent=format('<p>'+escapeText(currentText(it))+'</p>');
+ if(window.typesetSummary)window.typesetSummary();
 }
 function onEdit(){
  const it=item();if(!it)return;
