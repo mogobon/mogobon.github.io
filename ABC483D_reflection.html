@@ -1,24 +1,206 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"><style>body{margin:0;background:#f7f8fa;color:#222;font-family:Inter,"Noto Sans JP",sans-serif;line-height:1.85}.note{max-width:800px;margin:2em auto;padding:2em 2.5em;background:white;border-radius:12px;box-shadow:0 4px 24px #0001}h1,h2,h3{color:#2b6cb0;line-height:1.45}h1{font-size:1.7rem}h2{margin-top:2em;border-bottom:1px solid #dbe5ee;padding-bottom:.3em}a{color:#3182ce}strong{color:#172f49}blockquote{margin:2em 0;padding:1em 1.5em;background:#eaf5ff;border-left:4px solid #3182ce;font-weight:bold}.displaymath{overflow-x:auto;padding:.5em 0}.step{margin:.4em 0 0 1em}@media(max-width:650px){.note{margin:0;padding:1.4em;border-radius:0}h1{font-size:1.4rem}} .math-inline{display:inline;white-space:nowrap}.math-display{display:block;overflow-x:auto;margin:1.5em 0;text-align:center}.math-inline .katex{display:inline-block;vertical-align:baseline}.note,.note p,.note li,.note h1,.note h2,.note h3,.note blockquote{text-align:left!important}.condition-list{padding-left:1.5em;margin:1em 0}.condition-list li{margin:.35em 0}</style></head><body><main class="note"><h1>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</h1>
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</h1>
 <p><a href="https://atcoder.jp/contests/abc483/tasks/abc483_d">問題：ABC483D - Glitchy Robot</a></p>
 <h2>1. 何が起きたのか</h2>
-<p>ABC483Dでは、ロボットの通過座標数を最大化する問題に取り組んだ。ロボットの位置は配列 <span class="math-inline">\(A\)</span> の累積和で表せるため、求めたい値は累積和の最大値と最小値の差に <span class="math-inline">\(1\)</span> を加えたものだと理解できた。</p>
-<p>また、<span class="math-inline">\(A\)</span> の要素を一つ反転させた場合を調べればよいこともわかっていた。そこで、累積和の最大値・最小値をセグメント木で管理する方針を思いついた。</p>
+<p>ABC483Dでは、ロボットの通過座標数を最大化する問題に取り組んだ。ロボットの位置は配列 $A$ の累積和で表せるため、求めたい値は累積和の最大値と最小値の差に $1$ を加えたものだと理解できた。</p>
+<p>また、$A$ の要素を一つ反転させた場合を調べればよいこともわかっていた。そこで、累積和の最大値・最小値をセグメント木で管理する方針を思いついた。</p>
 <p><strong>しかし、そこで思考を止めてしまった。</strong></p>
-<p>元の配列 <span class="math-inline">\(A\)</span> の一点変更が、累積和の配列では区間更新になるという重要な性質を、検討せず無視してしまった。</p>
+<p>元の配列 $A$ の一点変更が、累積和の配列では区間更新になるという重要な性質を、検討せず無視してしまった。</p>
 <h2>2. 本来確認すべきだったこと</h2>
 <p>累積和を次のように定義する。</p>
-<p>累積和は <span class="math-inline">\(P_0=0\)</span>、<span class="math-inline">\(P_i=\sum_{j=1}^{i}A_j\)</span> とする。</p>
-<p><span class="math-inline">\(A_i\)</span> の符号を反転すると、<span class="math-inline">\(A_i\to -A_i\)</span> であり、変化量は <span class="math-inline">\(-2A_i\)</span> となる。よって</p>
-<ul class="condition-list"><li><span class="math-inline">\(j&lt;i\)</span> のとき：<span class="math-inline">\(P_j\)</span> のまま</li><li><span class="math-inline">\(j\ge i\)</span> のとき：<span class="math-inline">\(P_j-2A_i\)</span> に変化</li></ul>
+<p>累積和は $P_0=0$、$P_i=\sum_{j=1}^{i}A_j$ とする。</p>
+<p>$A_i$ の符号を反転すると、$A_i\to -A_i$ であり、変化量は $-2A_i$ となる。よって</p>
+<ul>
+<li>$j&lt;i$ のとき：$P_j$ のまま</li>
+<li>$j\ge i$ のとき：$P_j-2A_i$ に変化</li>
+</ul>
 <p>つまり、元の配列の一点変更は、累積和では<strong>区間加算</strong>に対応する。</p>
-<p>これを明示できれば、遅延セグ木で区間加算と全体 min/max を管理する <span class="math-inline">\(O(N\log N)\)</span> 解法に到達できる。</p>
-<p>さらに、反転位置より前の累積和は不変、以降は全て同じ量だけ変化する。左右の累積 min/max を前計算すれば、各候補を <span class="math-inline">\(O(1)\)</span>、合計 <span class="math-inline">\(O(N)\)</span> で評価できる。</p>
+<p>これを明示できれば、遅延セグ木で区間加算と全体 min/max を管理する $O(N\log N)$ 解法に到達できる。</p>
+<p>さらに、反転位置より前の累積和は不変、以降は全て同じ量だけ変化する。左右の累積 min/max を前計算すれば、各候補を $O(1)$、合計 $O(N)$ で評価できる。</p>
 <h2>3. 実際の思考の流れ</h2>
-<p class="step">• 累積和の最大値・最小値を求めればよいと気づく。</p>
-<p class="step">• 最大値・最小値の管理にセグ木が使えそうだと考える。</p>
-<p class="step">• なんとなく解法の方向性が見えた気になる。</p>
-<p class="step">• <strong>更新操作が累積和に与える影響を具体的に調べない。</strong></p>
-<p class="step">• 結果として、正確な解法を構築できない。</p>
+<ol>
+<li>累積和の最大値・最小値を求めればよいと気づく。</li>
+<li>最大値・最小値の管理にセグ木が使えそうだと考える。</li>
+<li>なんとなく解法の方向性が見えた気になる。</li>
+<li><strong>更新操作が累積和に与える影響を具体的に調べない。</strong></li>
+<li>結果として、正確な解法を構築できない。</li>
+</ol>
 <p>問題は4番目だ。累積和への変換をした以上、元の配列への操作が変換後に何を引き起こすか確かめる必要があった。だが、それを面倒に感じて省略した。</p>
 <p><strong>「こうすれば解けそう」という直感を、「この方法で解ける」という確認済みの事実のように扱っていた。</strong></p>
 <h2>4. 発見した弱点</h2>
@@ -32,13 +214,17 @@
 <h2>5. 改善方針</h2>
 <p><strong>方針を思いついたら、実現に必要な操作を具体化する。</strong></p>
 <p>データ構造を使う場合は、少なくとも次の三点を明確にする。</p>
-<p class="step">• <strong>管理対象</strong>：何を保持するか。</p>
-<p class="step">• <strong>更新操作</strong>：何が変化し、それが管理対象にどう影響するか。</p>
-<p class="step">• <strong>取得操作</strong>：保持した情報からどう答えを計算するか。</p>
+<ol>
+<li><strong>管理対象</strong>：何を保持するか。</li>
+<li><strong>更新操作</strong>：何が変化し、それが管理対象にどう影響するか。</li>
+<li><strong>取得操作</strong>：保持した情報からどう答えを計算するか。</li>
+</ol>
 <p>今回なら、</p>
-<p class="step">• 管理対象：累積和 <span class="math-inline">\(P\)</span> の最大値・最小値</p>
-<p class="step">• 更新操作：<span class="math-inline">\(A_i\)</span> の反転により、<span class="math-inline">\(P_i,\ldots,P_N\)</span> に <span class="math-inline">\(-2A_i\)</span> を加算</p>
-<p class="step">• 取得操作：全体の最大値 − 最小値 + 1</p>
+<ul>
+<li>管理対象：累積和 $P$ の最大値・最小値</li>
+<li>更新操作：$A_i$ の反転により、$P_i,\ldots,P_N$ に $-2A_i$ を加算</li>
+<li>取得操作：全体の最大値 − 最小値 + 1</li>
+</ul>
 <p>となる。</p>
 <p>重要な関係は頭の中だけに置かず、数式や文章に残す。ただし、チェックリストを埋めること自体を目的にしない。解法の成立に関わる部分に考察を集中させる。</p>
 <h2>6. 結論</h2>
@@ -46,4 +232,80 @@
 <p><strong>抽象的な方針を思いついたところで満足し、その方針が成立するための具体的な検討を省略したことが原因だった。</strong></p>
 <p>「何をすればよさそうか」から一歩踏み込み、「具体的に何が起きるのか」「なぜその方法で実現できるのか」を明らかにする。</p>
 <p>考察を深めるとは、必ずしも難しいことを考えることではない。曖昧な部分を放置せず、必要なところまで具体化することだ。</p>
-<blockquote><strong>「解けそう」と「解ける」の間にある、面倒な思考を省略しない。</strong></blockquote><p><a href="/notes.html">← ノート一覧に戻る</a></p></main><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded", function(){renderMathInElement(document.querySelector(".note"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script></body></html>
+<blockquote>
+<p><strong>「解けそう」と「解ける」の間にある、面倒な思考を省略しない。</strong></p>
+</blockquote>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
