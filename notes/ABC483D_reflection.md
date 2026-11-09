@@ -44,10 +44,13 @@ $$
 
 したがって、累積和の変化は
 
-<div class="piecewise">
-<div>$P_j^{\prime}=P_j$ （$j&lt;i$）</div>
-<div>$P_j^{\prime}=P_j-2A_i$ （$j\ge i$）</div>
-</div>
+<div class="stable-display-math" style="margin:1.5em 0;overflow-x:auto;text-align:left">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="P prime j equals P j if j is less than i, otherwise P j minus 2 A i">
+<mrow><msubsup><mi>P</mi><mi>j</mi><mo>′</mo></msubsup><mo>=</mo><mo fence="true">{</mo>
+<mtable columnalign="left left" rowspacing="0.55em">
+<mtr><mtd><msub><mi>P</mi><mi>j</mi></msub></mtd><mtd><mrow><mo>(</mo><mi>j</mi><mo>&lt;</mo><mi>i</mi><mo>)</mo></mrow></mtd></mtr>
+<mtr><mtd><mrow><msub><mi>P</mi><mi>j</mi></msub><mo>−</mo><mn>2</mn><msub><mi>A</mi><mi>i</mi></msub></mrow></mtd><mtd><mrow><mo>(</mo><mi>j</mi><mo>≥</mo><mi>i</mi><mo>)</mo></mrow></mtd></mtr>
+</mtable></mrow></math></div>
 
 となる。
 
