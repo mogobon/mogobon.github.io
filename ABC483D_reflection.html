@@ -187,29 +187,13 @@
 <p>元の配列 $A$ の一点更新が、累積和の配列では区間更新になるという重要な性質を、検討せずに無視してしまった。</p>
 <h2>2. 本来考えるべきだったこと</h2>
 <p>累積和を</p>
-<div class="math-block">
-$$
-P_0=0,\quad P_i=\sum_{j=1}^{i}A_j
-$$
-</div>
-<p>と定義する。</p>
-<p>ここで、$A_i$ の符号を反転させると、</p>
-<div class="math-block">
-$$
-A_i\rightarrow -A_i
-$$
-</div>
-<p>となり、変化量は $-2A_i$ である。</p>
-<p>したがって、累積和の変化は</p>
-<div class="math-block">
-$$
-P_j^{\prime}=
-\begin{cases}
-P_j & (j<i)\\
-P_j-2A_i & (j\ge i)
-\end{cases}
-$$
-</div>
+<div class="stable-display-math" style="margin:1.5em 0;overflow-x:auto;text-align:left">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="P prime j equals P j if j is less than i, otherwise P j minus 2 A i">
+<mrow><msubsup><mi>P</mi><mi>j</mi><mo>′</mo></msubsup><mo>=</mo><mo fence="true">{</mo>
+<mtable columnalign="left left" rowspacing="0.55em">
+<mtr><mtd><msub><mi>P</mi><mi>j</mi></msub></mtd><mtd><mrow><mo>(</mo><mi>j</mi><mo>&lt;</mo><mi>i</mi><mo>)</mo></mrow></mtd></mtr>
+<mtr><mtd><mrow><msub><mi>P</mi><mi>j</mi></msub><mo>−</mo><mn>2</mn><msub><mi>A</mi><mi>i</mi></msub></mrow></mtd><mtd><mrow><mo>(</mo><mi>j</mi><mo>≥</mo><mi>i</mi><mo>)</mo></mrow></mtd></mtr>
+</mtable></mrow></math></div>
 <p>となる。</p>
 <p>つまり、元の配列の一点変更は、累積和では区間加算に対応する。</p>
 <p>この関係を明確にすれば、遅延セグメント木で解けることがわかる。</p>
