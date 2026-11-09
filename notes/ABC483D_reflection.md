@@ -25,9 +25,9 @@ ABC483Dでは、ロボットが通過する整数座標の個数を最大化す�
 累積和を
 
 <div class="math-block">
-$
+$$
 P_0=0,\quad P_i=\sum_{j=1}^{i}A_j
-$
+$$
 </div>
 
 と定義する。
@@ -35,9 +35,9 @@ $
 ここで、$A_i$ の符号を反転させると、
 
 <div class="math-block">
-$
+$$
 A_i\rightarrow -A_i
-$
+$$
 </div>
 
 となり、変化量は $-2A_i$ である。
@@ -45,13 +45,13 @@ $
 したがって、累積和の変化は
 
 <div class="math-block">
-$
+$$
 P_j^{\prime}=
 \begin{cases}
 P_j & (j<i)\\
 P_j-2A_i & (j\ge i)
 \end{cases}
-$
+$$
 </div>
 
 となる。
