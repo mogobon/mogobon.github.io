@@ -122,6 +122,7 @@ const notesHtml = `
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ノート一覧</title>
   <style>
     body { font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif; background: #f7f8fa; color: #222; }
@@ -251,6 +252,7 @@ files.forEach(file => {
   <html lang="ja">
   <head>
     <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
