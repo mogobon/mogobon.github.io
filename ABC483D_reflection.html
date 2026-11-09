@@ -1,22 +1,22 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"><style>body{margin:0;background:#f7f8fa;color:#222;font-family:Inter,"Noto Sans JP",sans-serif;line-height:1.85}.note{max-width:800px;margin:2em auto;padding:2em 2.5em;background:white;border-radius:12px;box-shadow:0 4px 24px #0001}h1,h2,h3{color:#2b6cb0;line-height:1.45}h1{font-size:1.7rem}h2{margin-top:2em;border-bottom:1px solid #dbe5ee;padding-bottom:.3em}a{color:#3182ce}strong{color:#172f49}blockquote{margin:2em 0;padding:1em 1.5em;background:#eaf5ff;border-left:4px solid #3182ce;font-weight:bold}.displaymath{overflow-x:auto;padding:.5em 0}.step{margin:.4em 0 0 1em}@media(max-width:650px){.note{margin:0;padding:1.4em;border-radius:0}h1{font-size:1.4rem}}</style></head><body><main class="note"><h1>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</h1>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"><style>body{margin:0;background:#f7f8fa;color:#222;font-family:Inter,"Noto Sans JP",sans-serif;line-height:1.85}.note{max-width:800px;margin:2em auto;padding:2em 2.5em;background:white;border-radius:12px;box-shadow:0 4px 24px #0001}h1,h2,h3{color:#2b6cb0;line-height:1.45}h1{font-size:1.7rem}h2{margin-top:2em;border-bottom:1px solid #dbe5ee;padding-bottom:.3em}a{color:#3182ce}strong{color:#172f49}blockquote{margin:2em 0;padding:1em 1.5em;background:#eaf5ff;border-left:4px solid #3182ce;font-weight:bold}.displaymath{overflow-x:auto;padding:.5em 0}.step{margin:.4em 0 0 1em}@media(max-width:650px){.note{margin:0;padding:1.4em;border-radius:0}h1{font-size:1.4rem}} .math-inline{display:inline;white-space:nowrap}.math-display{display:block;overflow-x:auto;margin:1.5em 0;text-align:center}.math-inline .katex{display:inline-block;vertical-align:baseline}</style></head><body><main class="note"><h1>ABC483D 振り返り — 「解けそう」と「解ける」の間にある思考</h1>
 <p><a href="https://atcoder.jp/contests/abc483/tasks/abc483_d">問題：ABC483D - Glitchy Robot</a></p>
 <h2>1. 何が起きたのか</h2>
-<p>ABC483Dでは、ロボットの通過座標数を最大化する問題に取り組んだ。ロボットの位置は配列 $A$ の累積和で表せるため、求めたい値は累積和の最大値と最小値の差に $1$ を加えたものだと理解できた。</p>
-<p>また、$A$ の要素を一つ反転させた場合を調べればよいこともわかっていた。そこで、累積和の最大値・最小値をセグメント木で管理する方針を思いついた。</p>
+<p>ABC483Dでは、ロボットの通過座標数を最大化する問題に取り組んだ。ロボットの位置は配列 <span class="math-inline">\(A\)</span> の累積和で表せるため、求めたい値は累積和の最大値と最小値の差に <span class="math-inline">\(1\)</span> を加えたものだと理解できた。</p>
+<p>また、<span class="math-inline">\(A\)</span> の要素を一つ反転させた場合を調べればよいこともわかっていた。そこで、累積和の最大値・最小値をセグメント木で管理する方針を思いついた。</p>
 <p><strong>しかし、そこで思考を止めてしまった。</strong></p>
-<p>元の配列 $A$ の一点変更が、累積和の配列では区間更新になるという重要な性質を、検討せず無視してしまった。</p>
+<p>元の配列 <span class="math-inline">\(A\)</span> の一点変更が、累積和の配列では区間更新になるという重要な性質を、検討せず無視してしまった。</p>
 <h2>2. 本来確認すべきだったこと</h2>
 <p>累積和を次のように定義する。</p>
-<div class="displaymath">$$P_0=0,\qquad P_i=\sum_{j=1}^{i}A_j$$</div>
-<p>$A_i$ の符号を反転すると、$A_i\to -A_i$ であり、変化量は $-2A_i$ となる。よって</p>
-<div class="displaymath">$$P_j'=
+<div class="math-display">\[P_0=0,\qquad P_i=\sum_{j=1}^{i}A_j\]</div>
+<p><span class="math-inline">\(A_i\)</span> の符号を反転すると、<span class="math-inline">\(A_i\to -A_i\)</span> であり、変化量は <span class="math-inline">\(-2A_i\)</span> となる。よって</p>
+<div class="math-display">\[P_j'=
 \begin{cases}
 P_j & (j<i)\\
 P_j-2A_i & (j\ge i)
-\end{cases}$$</div>
+\end{cases}\]</div>
 <p>つまり、元の配列の一点変更は、累積和では<strong>区間加算</strong>に対応する。</p>
-<p>これを明示できれば、遅延セグ木で区間加算と全体 min/max を管理する $O(N\log N)$ 解法に到達できる。</p>
-<p>さらに、反転位置より前の累積和は不変、以降は全て同じ量だけ変化する。左右の累積 min/max を前計算すれば、各候補を $O(1)$、合計 $O(N)$ で評価できる。</p>
+<p>これを明示できれば、遅延セグ木で区間加算と全体 min/max を管理する <span class="math-inline">\(O(N\log N)\)</span> 解法に到達できる。</p>
+<p>さらに、反転位置より前の累積和は不変、以降は全て同じ量だけ変化する。左右の累積 min/max を前計算すれば、各候補を <span class="math-inline">\(O(1)\)</span>、合計 <span class="math-inline">\(O(N)\)</span> で評価できる。</p>
 <h2>3. 実際の思考の流れ</h2>
 <p class="step">• 累積和の最大値・最小値を求めればよいと気づく。</p>
 <p class="step">• 最大値・最小値の管理にセグ木が使えそうだと考える。</p>
@@ -40,8 +40,8 @@ P_j-2A_i & (j\ge i)
 <p class="step">• <strong>更新操作</strong>：何が変化し、それが管理対象にどう影響するか。</p>
 <p class="step">• <strong>取得操作</strong>：保持した情報からどう答えを計算するか。</p>
 <p>今回なら、</p>
-<p class="step">• 管理対象：累積和 $P$ の最大値・最小値</p>
-<p class="step">• 更新操作：$A_i$ の反転により、$P_i,\ldots,P_N$ に $-2A_i$ を加算</p>
+<p class="step">• 管理対象：累積和 <span class="math-inline">\(P\)</span> の最大値・最小値</p>
+<p class="step">• 更新操作：<span class="math-inline">\(A_i\)</span> の反転により、<span class="math-inline">\(P_i,\ldots,P_N\)</span> に <span class="math-inline">\(-2A_i\)</span> を加算</p>
 <p class="step">• 取得操作：全体の最大値 − 最小値 + 1</p>
 <p>となる。</p>
 <p>重要な関係は頭の中だけに置かず、数式や文章に残す。ただし、チェックリストを埋めること自体を目的にしない。解法の成立に関わる部分に考察を集中させる。</p>
@@ -50,4 +50,4 @@ P_j-2A_i & (j\ge i)
 <p><strong>抽象的な方針を思いついたところで満足し、その方針が成立するための具体的な検討を省略したことが原因だった。</strong></p>
 <p>「何をすればよさそうか」から一歩踏み込み、「具体的に何が起きるのか」「なぜその方法で実現できるのか」を明らかにする。</p>
 <p>考察を深めるとは、必ずしも難しいことを考えることではない。曖昧な部分を放置せず、必要なところまで具体化することだ。</p>
-<blockquote><strong>「解けそう」と「解ける」の間にある、面倒な思考を省略しない。</strong></blockquote><p><a href="/notes.html">← ノート一覧に戻る</a></p></main><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$",right:"$",display:true},{left:"$",right:"$",display:false}],throwOnError:false});});</script></body></html>
+<blockquote><strong>「解けそう」と「解ける」の間にある、面倒な思考を省略しない。</strong></blockquote><p><a href="/notes.html">← ノート一覧に戻る</a></p></main><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded", function(){renderMathInElement(document.querySelector(".note"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script></body></html>
