@@ -41,11 +41,13 @@ $$
 したがって、累積和の変化は
 
 $$
+\begin{*align}
 P_j^{\prime}=
 \begin{cases}
 P_j & (j<i)\\
 P_j-2A_i & (j\ge i)
 \end{cases}
+\end{*align}
 $$
 
 となる。
