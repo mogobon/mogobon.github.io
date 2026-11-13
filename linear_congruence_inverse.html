@@ -1,0 +1,440 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>一次合同式と乗法逆元 — 解の存在条件・周期・符号の考察</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>一次合同式と乗法逆元 — 解の存在条件・周期・符号の考察</h1>
+<p>整数の一次合同式を、元の試行錯誤（誤った変形を含む）を残しながら整理する。特に、<strong>解の存在条件は最大公約数で決まり、解がある場合は約分後の乗法逆元で求められる</strong>ことを確かめる。</p>
+<p>以下、法 $m,N$ は正整数とし、逆元 $u^{-1}$ は<strong>指定した法での乗法逆元</strong>を意味する。$\bmod$ は $0$ 以上の代表元を返す演算とする。</p>
+<h2>1. $S+Kx\equiv0\pmod N$ を解く</h2>
+<p>はじめの発想は、次のように $K$ で割ることだった。</p>
+<p><div>$$
+\begin{aligned}
+S+Kx&\equiv0\pmod N\\
+Kx&\equiv-S\pmod N\\
+x&\equiv-SK^{-1}\pmod N
+\end{aligned}
+$$</div></p>
+<p>最後の行は <strong>$\gcd(K,N)=1$ のときに限り</strong>正しい。互いに素でない場合は、整数の等式に戻す。</p>
+<p><div>$$
+\begin{aligned}
+S+Kx&=Ny\quad(y\in\mathbb Z)\\
+Kx-Ny&=-S\\
+d&=\gcd(K,N)
+\end{aligned}
+$$</div></p>
+<h3>解の存在条件</h3>
+<ul>
+<li><strong>$d\nmid S$</strong>：左辺 $Kx-Ny$ は $d$ の倍数だが右辺 $-S$ は違うので、<strong>解なし</strong>。</li>
+<li><strong>$d\mid S$</strong>：両辺を $d$ で割れる。$\gcd(K/d,N/d)=1$ なので、ベズーの等式から<strong>整数解が存在する</strong>。</li>
+</ul>
+<p><div>$$
+\begin{aligned}
+\frac Kd x-\frac Nd y&=-\frac Sd\\
+\gcd\left(\frac Kd,\frac Nd\right)&=1\\
+\frac Kd x&\equiv-\frac Sd\pmod{N/d}\\
+x&\equiv-\frac Sd\left(\frac Kd\right)^{-1}\pmod{N/d}\\
+x_{\min}&=\left(-\frac Sd\left(\frac Kd\right)^{-1}\right)\bmod(N/d)
+\end{aligned}
+$$</div></p>
+<p>逆元は <strong>mod $N/d$</strong> で取る。整数解全体は $x=x_{\min}+(N/d)t$（$t\in\mathbb Z$）で、<strong>周期は $N/d$</strong>。元の mod $N$ の範囲には、相異なる解がちょうど $d$ 個ある。</p>
+<h2>2. 合同式と整除の定義を確認する</h2>
+<p><div>$$
+\begin{aligned}
+a\equiv0\pmod m
+&\iff\exists k\in\mathbb Z,\ a=mk\\
+&\iff m\mid a\\[4pt]
+ax\equiv0\pmod m
+&\iff\exists k\in\mathbb Z,\ ax=mk\\
+&\iff m\mid ax
+\end{aligned}
+$$</div></p>
+<h3>$ax\equiv0\pmod m$ の場合分け</h3>
+<p><strong>場合A：$\gcd(a,m)=1$</strong></p>
+<p>$a$ の乗法逆元が存在する。</p>
+<p>元のメモでは $a^{-1}ax\equiv a^{-1}x$ と書いていたが、これは右辺の $0$ を正しく掛けていない。正しくは次の通り。</p>
+<p><div>$$
+\begin{aligned}
+ax&\equiv0\pmod m\\
+a^{-1}ax&\equiv a^{-1}\cdot0\pmod m\\
+x&\equiv0\pmod m\\
+x&=ml\qquad(l\in\mathbb Z)
+\end{aligned}
+$$</div></p>
+<p>$a&gt;0$ は不要。$a&lt;0$ でも互いに素なら逆元は存在する。また $a=0$ の場合、$m&gt;1$ では $\gcd(0,m)=m$ なので次の一般式で扱える。</p>
+<p><strong>場合B：$\gcd(a,m)&gt;1$</strong></p>
+<p><div>$$
+\begin{aligned}
+d&=\gcd(a,m)\\
+ax&=mk\\
+\frac adx&=\frac md k\\
+\gcd\left(\frac ad,\frac md\right)&=1\qquad(1)\\
+b&=\frac ad,\quad n=\frac md\\
+bx&=nk\\
+bx&\equiv0\pmod n\\
+n&\mid bx\\
+\frac md&\mid\frac ad x\\
+\frac adx&\equiv0\pmod{m/d}\\
+(1)&\implies x\equiv0\pmod{m/d}\\
+x&=\frac md l\qquad(l\in\mathbb Z)
+\end{aligned}
+$$</div></p>
+<p>つまり、両場合をまとめて</p>
+<p><div>$$
+\boxed{ax\equiv0\pmod m\iff x\equiv0\pmod{\frac{m}{\gcd(a,m)}}}
+$$</div></p>
+<p>と書ける。$m=1$ の場合も両辺はすべての整数 $x$ について成り立つ。</p>
+<h3>「素数なら積のどちらかが割り切れる」は役に立つのか？</h3>
+<p>$m$ が素数なら、ユークリッドの補題より</p>
+<p><div>$$
+\begin{aligned}
+m\mid ax&\iff m\mid a\ \lor\ m\mid x
+\end{aligned}
+$$</div></p>
+<p>これは役に立つ。特に $m\nmid a$ なら $m\mid ax$ から $m\mid x$ が導けて、<strong>合同式で約分できる理由</strong>になっている。</p>
+<h2>3. $ax+b\equiv0\pmod m$ と符号の考察</h2>
+<p><div>$$
+\begin{aligned}
+ax+b&\equiv0\pmod m\\
+ax&\equiv-b\pmod m\\
+ax&\equiv b\pmod m\quad\text{（誤った変形）}
+\end{aligned}
+$$</div></p>
+<p>$-b$ を $b$ に置き換えられるのは、両者が合同な場合だけ。</p>
+<p><div>$$
+\begin{aligned}
+-b\equiv b\pmod m
+&\iff-2b\equiv0\pmod m\\
+&\iff2b\equiv0\pmod m\\
+&\iff m\mid2b
+\end{aligned}
+$$</div></p>
+<p>したがって、$m\nmid2b$ なら $b$ と $-b$ は異なる剰余類である。</p>
+<p>一方で、<strong>整除の記号</strong>では符号を変えてもよい。</p>
+<p><div>$$
+\begin{aligned}
+m\mid a
+&\iff a=mk\quad(\exists k\in\mathbb Z)\\
+-m\mid a
+&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=mk\quad(\exists k\in\mathbb Z)
+\quad(\because\mathbb Z=-\mathbb Z)\\
+m\mid-a
+&\iff-a=mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff-m\mid a\\
+-m\mid-a
+&\iff-a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=mk\quad(\exists k\in\mathbb Z)
+\end{aligned}
+$$</div></p>
+<p>ここで $-1$ を両辺に掛けた等式は元の等式と同値。また $k$ は全整数を動くので、$-k$ と書き直しても範囲が変わらない。</p>
+<p><div>$$
+\boxed{m\mid a\iff-m\mid a\iff m\mid-a\iff-m\mid-a}
+$$</div></p>
+<p><strong>合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。</strong></p>
+<h2>4. 一般の一次合同式の解</h2>
+<p>元の考察を残して、修正箇所を確かめる。</p>
+<p><div>$$
+\begin{aligned}
+ax&\equiv-b\pmod m\\
+&\iff\exists k\in\mathbb Z,\ ax=mk-b\\
+&\iff\exists k\in\mathbb Z,\ ax+b=mk
+\end{aligned}
+$$</div></p>
+<p><strong>元の誤り①：$d=\gcd(a,b)$ と置き、$d\nmid m$ なら解なし、とした。</strong></p>
+<p>反例：$a=2,b=2,m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ は $2x+2=6$ となり解である。</p>
+<p><strong>修正：$d=\gcd(a,m)$ とする。</strong></p>
+<p><div>$$
+\begin{aligned}
+ax+b&=mk\\
+ax-mk&=-b\\
+d&=\gcd(a,m)
+\end{aligned}
+$$</div></p>
+<ul>
+<li><strong>$d\nmid b$</strong>：左辺は $d$ の倍数なのに右辺はそうでないため、解なし。</li>
+<li><strong>$d\mid b$</strong>：割って互いに素な係数の合同式にする。</li>
+</ul>
+<p>元のメモでは $u=a/d,\ v=b/d,\ n=m/d$ として $\gcd(u,v)=1$ と書いていたが、これは一般には成立しない。正しいのは $\gcd(u,n)=1$。</p>
+<p><div>$$
+\begin{aligned}
+u&=\frac ad,\quad v=\frac bd,\quad n=\frac md\\
+ux+v&=kn\\
+\gcd(u,v)&=1\quad\text{（元の誤り）}\\
+\gcd(u,n)&=1\quad\text{（修正）}\\
+ux&\equiv-v\pmod n\\
+x&\equiv-vu^{-1}\pmod n\\
+&\equiv-\frac bd\left(\frac ad\right)^{-1}\pmod{m/d}\\
+x_{\min}&=\left(-\frac bd\left(\frac ad\right)^{-1}\right)\bmod(m/d)
+\end{aligned}
+$$</div></p>
+<p><strong>元の誤り②：$(ux+v)\mid n$ とした。</strong> 正しくは</p>
+<p><div>$$
+\begin{aligned}
+ux+v&=kn\\
+n&\mid(ux+v)
+\end{aligned}
+$$</div></p>
+<p>である。$u$ と $n$ は互いに素なので、mod $n$ において $u^{-1}$ が存在する。</p>
+<h2>5. まとめ</h2>
+<p><div>$$
+\boxed{\begin{gathered}
+ax+b\equiv0\pmod m,\qquad d=\gcd(a,m)\\
+d\nmid b\ \Rightarrow\ \text{解なし}\\
+d\mid b\ \Rightarrow\
+x\equiv-\frac bd\left(\frac ad\right)^{-1}\pmod{m/d}
+\end{gathered}}
+$$</div></p>
+<p>最小の非負整数解は</p>
+<p><div>$$
+\boxed{x_{\min}=\left(-\frac bd\left(\frac ad\right)^{-1}\right)\bmod(m/d)}
+$$</div></p>
+<p><strong>持ち帰り：一次合同式は、まず最大公約数で解の存在を判定し、解があれば約分して乗法逆元を使う。</strong> なお法が1なら合同式はすべて成立し、代表元は0とする。</p>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
