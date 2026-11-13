@@ -211,6 +211,10 @@ x_{\min}&=\left(-\frac Sd\left(\frac Kd\right)^{-1}\right)\bmod(N/d)
 \end{aligned}
 $$</div></p>
 <p>逆元は <strong>mod $N/d$</strong> で取る。整数解全体は $x=x_{\min}+(N/d)t$（$t\in\mathbb Z$）で、<strong>周期は $N/d$</strong>。元の mod $N$ の範囲には、相異なる解がちょうど $d$ 個ある。</p>
+<h3>よくある誤り：最大公約数を取る相手</h3>
+<p>同じ問題を $ax+b\equiv0\pmod m$ と書いたときは、$K=a,\ S=b,\ N=m$ と対応する。したがって <strong>$d=\gcd(a,m)$</strong> を使う。</p>
+<p>元の考察では $d=\gcd(a,b)$ とし、$d\nmid m$ なら解なしと考えたが、これは誤り。例えば $a=2,\ b=2,\ m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ なら $2x+2=6$ で解がある。</p>
+<p>元のメモで $u=a/d,\ v=b/d,\ n=m/d$ とおいた場合、$\gcd(u,v)=1$ とするのも誤りで、正しくは <strong>$\gcd(u,n)=1$</strong>。また $(ux+v)\mid n$ ではなく、$ux+v=kn$ より <strong>$n\mid(ux+v)$</strong>。</p>
 <h2>2. 合同式と整除の定義を確認する</h2>
 <p><div>$$
 \begin{aligned}
@@ -252,6 +256,20 @@ n&\mid bx\\
 x&=\frac md l\qquad(l\in\mathbb Z)
 \end{aligned}
 $$</div></p>
+<h3>具体例：なぜ法を最大公約数で割るのか？</h3>
+<p>$6x\equiv0\pmod{15}$ を考える。これは $15\mid6x$ という意味。$\gcd(6,15)=3$ なので、同じ整数の等式を3で割れば</p>
+<p>$
+\begin{aligned}
+15\mid6x
+&amp;\iff \exists k\in\mathbb Z,\ 6x=15k\
+&amp;\iff \exists k\in\mathbb Z,\ 2x=5k\
+&amp;\iff 5\mid2x\
+&amp;\iff 5\mid x\
+&amp;\iff x\equiv0\pmod5
+\end{aligned}
+$</p>
+<p>となる。最後は、2と5が互いに素だから。例えば $x=5,10,15,\dots$ は解である。</p>
+<p><strong>「$6x$ が15の倍数になるために必要な3の因数は、6がすでに持っている」</strong> と考えるとよい。一般にも、$a$ と $m$ に共通する因数を除いたあと、$x$ が残りの $m/\gcd(a,m)$ の倍数になる必要がある。</p>
 <p>つまり、両場合をまとめて</p>
 <p><div>$$
 \boxed{ax\equiv0\pmod m\iff x\equiv0\pmod{\frac{m}{\gcd(a,m)}}}
@@ -306,51 +324,7 @@ $$</div></p>
 \boxed{m\mid a\iff-m\mid a\iff m\mid-a\iff-m\mid-a}
 $$</div></p>
 <p><strong>合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。</strong></p>
-<h2>4. 一般の一次合同式の解</h2>
-<p>元の考察を残して、修正箇所を確かめる。</p>
-<p><div>$$
-\begin{aligned}
-ax&\equiv-b\pmod m\\
-&\iff\exists k\in\mathbb Z,\ ax=mk-b\\
-&\iff\exists k\in\mathbb Z,\ ax+b=mk
-\end{aligned}
-$$</div></p>
-<p><strong>元の誤り①：$d=\gcd(a,b)$ と置き、$d\nmid m$ なら解なし、とした。</strong></p>
-<p>反例：$a=2,b=2,m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ は $2x+2=6$ となり解である。</p>
-<p><strong>修正：$d=\gcd(a,m)$ とする。</strong></p>
-<p><div>$$
-\begin{aligned}
-ax+b&=mk\\
-ax-mk&=-b\\
-d&=\gcd(a,m)
-\end{aligned}
-$$</div></p>
-<ul>
-<li><strong>$d\nmid b$</strong>：左辺は $d$ の倍数なのに右辺はそうでないため、解なし。</li>
-<li><strong>$d\mid b$</strong>：割って互いに素な係数の合同式にする。</li>
-</ul>
-<p>元のメモでは $u=a/d,\ v=b/d,\ n=m/d$ として $\gcd(u,v)=1$ と書いていたが、これは一般には成立しない。正しいのは $\gcd(u,n)=1$。</p>
-<p><div>$$
-\begin{aligned}
-u&=\frac ad,\quad v=\frac bd,\quad n=\frac md\\
-ux+v&=kn\\
-\gcd(u,v)&=1\quad\text{（元の誤り）}\\
-\gcd(u,n)&=1\quad\text{（修正）}\\
-ux&\equiv-v\pmod n\\
-x&\equiv-vu^{-1}\pmod n\\
-&\equiv-\frac bd\left(\frac ad\right)^{-1}\pmod{m/d}\\
-x_{\min}&=\left(-\frac bd\left(\frac ad\right)^{-1}\right)\bmod(m/d)
-\end{aligned}
-$$</div></p>
-<p><strong>元の誤り②：$(ux+v)\mid n$ とした。</strong> 正しくは</p>
-<p><div>$$
-\begin{aligned}
-ux+v&=kn\\
-n&\mid(ux+v)
-\end{aligned}
-$$</div></p>
-<p>である。$u$ と $n$ は互いに素なので、mod $n$ において $u^{-1}$ が存在する。</p>
-<h2>5. まとめ</h2>
+<h2>4. まとめ</h2>
 <p><div>$$
 \boxed{\begin{gathered}
 ax+b\equiv0\pmod m,\qquad d=\gcd(a,m)\\
