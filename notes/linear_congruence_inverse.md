@@ -45,6 +45,14 @@ $$
 
 逆元は **mod $N/d$** で取る。整数解全体は $x=x_{\min}+(N/d)t$（$t\in\mathbb Z$）で、**周期は $N/d$**。元の mod $N$ の範囲には、相異なる解がちょうど $d$ 個ある。
 
+### よくある誤り：最大公約数を取る相手
+
+同じ問題を $ax+b\equiv0\pmod m$ と書いたときは、$K=a,\ S=b,\ N=m$ と対応する。したがって **$d=\gcd(a,m)$** を使う。
+
+元の考察では $d=\gcd(a,b)$ とし、$d\nmid m$ なら解なしと考えたが、これは誤り。例えば $a=2,\ b=2,\ m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ なら $2x+2=6$ で解がある。
+
+元のメモで $u=a/d,\ v=b/d,\ n=m/d$ とおいた場合、$\gcd(u,v)=1$ とするのも誤りで、正しくは **$\gcd(u,n)=1$**。また $(ux+v)\mid n$ ではなく、$ux+v=kn$ より **$n\mid(ux+v)$**。
+
 ## 2. 合同式と整除の定義を確認する
 
 $$
@@ -95,6 +103,25 @@ n&\mid bx\\
 x&=\frac md l\qquad(l\in\mathbb Z)
 \end{aligned}
 $$
+
+### 具体例：なぜ法を最大公約数で割るのか？
+
+$6x\equiv0\pmod{15}$ を考える。これは $15\mid6x$ という意味。$\gcd(6,15)=3$ なので、同じ整数の等式を3で割れば
+
+$
+\begin{aligned}
+15\mid6x
+&\iff \exists k\in\mathbb Z,\ 6x=15k\\
+&\iff \exists k\in\mathbb Z,\ 2x=5k\\
+&\iff 5\mid2x\\
+&\iff 5\mid x\\
+&\iff x\equiv0\pmod5
+\end{aligned}
+$
+
+となる。最後は、2と5が互いに素だから。例えば $x=5,10,15,\dots$ は解である。
+
+**「$6x$ が15の倍数になるために必要な3の因数は、6がすでに持っている」** と考えるとよい。一般にも、$a$ と $m$ に共通する因数を除いたあと、$x$ が残りの $m/\gcd(a,m)$ の倍数になる必要がある。
 
 つまり、両場合をまとめて
 
@@ -167,62 +194,7 @@ $$
 
 **合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。**
 
-## 4. 一般の一次合同式の解
-
-元の考察を残して、修正箇所を確かめる。
-
-$$
-\begin{aligned}
-ax&\equiv-b\pmod m\\
-&\iff\exists k\in\mathbb Z,\ ax=mk-b\\
-&\iff\exists k\in\mathbb Z,\ ax+b=mk
-\end{aligned}
-$$
-
-**元の誤り①：$d=\gcd(a,b)$ と置き、$d\nmid m$ なら解なし、とした。**
-
-反例：$a=2,b=2,m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ は $2x+2=6$ となり解である。
-
-**修正：$d=\gcd(a,m)$ とする。**
-
-$$
-\begin{aligned}
-ax+b&=mk\\
-ax-mk&=-b\\
-d&=\gcd(a,m)
-\end{aligned}
-$$
-
-- **$d\nmid b$**：左辺は $d$ の倍数なのに右辺はそうでないため、解なし。
-- **$d\mid b$**：割って互いに素な係数の合同式にする。
-
-元のメモでは $u=a/d,\ v=b/d,\ n=m/d$ として $\gcd(u,v)=1$ と書いていたが、これは一般には成立しない。正しいのは $\gcd(u,n)=1$。
-
-$$
-\begin{aligned}
-u&=\frac ad,\quad v=\frac bd,\quad n=\frac md\\
-ux+v&=kn\\
-\gcd(u,v)&=1\quad\text{（元の誤り）}\\
-\gcd(u,n)&=1\quad\text{（修正）}\\
-ux&\equiv-v\pmod n\\
-x&\equiv-vu^{-1}\pmod n\\
-&\equiv-\frac bd\left(\frac ad\right)^{-1}\pmod{m/d}\\
-x_{\min}&=\left(-\frac bd\left(\frac ad\right)^{-1}\right)\bmod(m/d)
-\end{aligned}
-$$
-
-**元の誤り②：$(ux+v)\mid n$ とした。** 正しくは
-
-$$
-\begin{aligned}
-ux+v&=kn\\
-n&\mid(ux+v)
-\end{aligned}
-$$
-
-である。$u$ と $n$ は互いに素なので、mod $n$ において $u^{-1}$ が存在する。
-
-## 5. まとめ
+## 4. まとめ
 
 $$
 \boxed{\begin{gathered}
