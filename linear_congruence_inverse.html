@@ -215,6 +215,36 @@ $$</div></p>
 <p>同じ問題を $ax+b\equiv0\pmod m$ と書いたときは、$K=a,\ S=b,\ N=m$ と対応する。したがって <strong>$d=\gcd(a,m)$</strong> を使う。</p>
 <p>元の考察では $d=\gcd(a,b)$ とし、$d\nmid m$ なら解なしと考えたが、これは誤り。例えば $a=2,\ b=2,\ m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ なら $2x+2=6$ で解がある。</p>
 <p>元のメモで $u=a/d,\ v=b/d,\ n=m/d$ とおいた場合、$\gcd(u,v)=1$ とするのも誤りで、正しくは <strong>$\gcd(u,n)=1$</strong>。また $(ux+v)\mid n$ ではなく、$ux+v=kn$ より <strong>$n\mid(ux+v)$</strong>。</p>
+<h3>係数はどれ？ — gcd(a,b) と gcd(a,m) の区別</h3>
+<p><strong>gcd を取るのは、整数の等式に直したときの「未知数の係数」同士。</strong> 定数項は gcd の対象ではなく、その gcd で割り切れるかを調べる。</p>
+<table>
+<thead>
+<tr>
+<th>元の式</th>
+<th>整数の等式（未知数）</th>
+<th>解の存在条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$ax+b\equiv0\pmod m$</td>
+<td>$ax-my=-b$（$x,y$）</td>
+<td>$\gcd(a,m)\mid b$</td>
+</tr>
+<tr>
+<td>$ax\equiv c\pmod m$</td>
+<td>$ax-my=c$（$x,y$）</td>
+<td>$\gcd(a,m)\mid c$</td>
+</tr>
+<tr>
+<td>$ax+by=c$</td>
+<td>そのまま（$x,y$）</td>
+<td>$\gcd(a,b)\mid c$</td>
+</tr>
+</tbody>
+</table>
+<p>見た目に $a,b$ が登場するから $\gcd(a,b)$、ではない。例えば $ax+b\equiv0\pmod m$ に出てくる $b$ は<strong>定数</strong>であり、係数は $a$ と $-m$。したがって $\gcd(a,m)$ を使う。</p>
+<p>さらに、$\gcd(a,m)=1$ なら $a^{-1}\pmod m$ が存在する。互いに素でなくても $d=\gcd(a,m)$ が右辺を割り切れば、式全体を $d$ で割ったあとに逆元が存在する。</p>
 <h2>3つの見方を図でつなぐ（操作できる例）</h2>
 <p>同じ合同式を、<strong>① mod の円周・② 2つの数列・③ 整数格子上の直線</strong>として見比べる。問題を選び、$x$ を動かしてみよう。3枚の図は連動する。スマートフォンでは図のエリアを左右にスワイプできる。</p>
 <div id="congruence-views" class="congruence-widget">
@@ -450,7 +480,68 @@ $$</div></p>
 \boxed{m\mid a\iff-m\mid a\iff m\mid-a\iff-m\mid-a}
 $$</div></p>
 <p><strong>合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。</strong></p>
-<h2>4. まとめ</h2>
+<h2>4. 応用：AWC0206 C — 円環のすごろく</h2>
+<p><a href="https://atcoder.jp/contests/awc0206/tasks/awc0206_c">問題：AWC0206 C</a></p>
+<p>$N$ マスの円環上で、ボタン $i$ を押すと $A_i$ マス進む。初期位置は $0$、目標は $G$。どのボタンも何回でも押せる（$0$ 回も可）。$N\le10^9,\ M\le10^6$ なので、各マスを直接探索するのは難しい。</p>
+<h3>① 目標 $G$ を含む合同式にする</h3>
+<p>ボタン $i$ を押す回数を $x_i\ge0$ とすると、到達条件は</p>
+<p>$
+\begin{aligned}
+\sum_{i=1}^{M}A_ix_i&amp;\equiv G\pmod N
+\end{aligned}
+$</p>
+<p><strong>ここは $\equiv0$ ではなく $\equiv G$。</strong> $G$ は別に処理する情報ではなく、到達したい剰余そのもの。「何回押すか」と「どこに行くか」を、この式で一つにつなげる。</p>
+<h3>② 合同式を整数の等式にする</h3>
+<p>$
+\begin{aligned}
+\sum_{i=1}^{M}A_ix_i&amp;=G+Ny\
+\sum_{i=1}^{M}A_ix_i-Ny&amp;=G
+\qquad(y\in\mathbb Z)
+\end{aligned}
+$</p>
+<p>この等式で<strong>未知数の係数</strong>は $A_1,\ldots,A_M,-N$、右辺の $G$ は定数。よって</p>
+<p>$
+\begin{aligned}
+d&amp;=\gcd(N,A_1,\ldots,A_M)
+\end{aligned}
+$</p>
+<p>とすれば、整数解の存在条件は $d\mid G$ である。$N$ を gcd に入れる理由は、円環の「一周したら同じ位置」を整数の式に戻すと、$-Ny$ が現れるから。</p>
+<h3>③ 押す回数が非負でも十分なのか？</h3>
+<p>ベズーの等式により、$d\mid G$ なら整数 $x_1,\ldots,x_M,y$ が存在し、上の等式を満たす。ただし、この時点では $x_i$ が負かもしれない。</p>
+<p><strong>円環上では負の回数を非負に置き換えられる。</strong> 各 $x_i$ に $N$ の倍数を十分足しても、</p>
+<p>$
+\begin{aligned}
+A_i(x_i+kN)&amp;\equiv A_ix_i\pmod N
+\end{aligned}
+$</p>
+<p>だから到達位置は変わらない。こうして全ての $x_i$ を非負にできるので、$d\mid G$ は必要条件であるだけでなく<strong>十分条件</strong>にもなる。</p>
+<p>例：$N=10,\ A=[6],\ G=2$。ボタンを2回押すと $6+6=12\equiv2\pmod{10}$。$\gcd(10,6)=2$ は $G=2$ を割り切る。一方、$G=3$ には到達できない。</p>
+<h3>④ 判定と実装</h3>
+<p>$
+\boxed{\text{到達可能}\iff \gcd(N,A_1,\ldots,A_M)\mid G}
+$</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">from</span> math <span class="token keyword">import</span> gcd
+
+N<span class="token punctuation">,</span> M<span class="token punctuation">,</span> G <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+A <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+d <span class="token operator">=</span> N
+<span class="token keyword">for</span> a <span class="token keyword">in</span> A<span class="token punctuation">:</span>
+    d <span class="token operator">=</span> gcd<span class="token punctuation">(</span>d<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Yes"</span> <span class="token keyword">if</span> G <span class="token operator">%</span> d <span class="token operator">==</span> <span class="token number">0</span> <span class="token keyword">else</span> <span class="token string">"No"</span><span class="token punctuation">)</span>
+</code></pre>
+<p>時間計算量は $O(M\log(\max(N,A_1,\ldots,A_M)))$ 程度。到達回数の最小値や具体的な操作列は求めず、<strong>到達できるかだけ</strong>を最大公約数で判定する。</p>
+<h3>今回の発想の再現手順</h3>
+<ol>
+<li>操作回数を未知数 $x_i$ とする。</li>
+<li>$G$ を右辺に置いて、$\sum A_ix_i\equiv G\pmod N$ と書く。</li>
+<li>$\sum A_ix_i-Ny=G$ に戻す。</li>
+<li>以前学んだ一次不定方程式の条件を使う。</li>
+<li>最後に、$x_i\ge0$ という元の制約を円環の性質で確認する。</li>
+</ol>
+<p><strong>「新しい gcd の典型を暗記する」より、「操作を式にして既知の数学につなぐ」。</strong></p>
+<h2>5. まとめ</h2>
 <p><div>$$
 \boxed{\begin{gathered}
 ax+b\equiv0\pmod m,\qquad d=\gcd(a,m)\\
