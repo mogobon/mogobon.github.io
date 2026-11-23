@@ -6,54 +6,125 @@ tags: [数学, 整数論, 合同式]
 
 以下、法 $m,N$ は正整数とし、逆元 $u^{-1}$ は**指定した法での乗法逆元**を意味する。$\bmod$ は $0$ 以上の代表元を返す演算とする。
 
-## 1. $S+Kx\equiv0\pmod N$ を解く
-
-はじめの発想は、次のように $K$ で割ることだった。
+## 1. 合同式と整除の定義を確認する
 
 $$
 \begin{aligned}
-S+Kx&\equiv0\pmod N\\
-Kx&\equiv-S\pmod N\\
-x&\equiv-SK^{-1}\pmod N
+a\equiv0\pmod m
+&\iff\exists k\in\mathbb Z,\ a=mk\\
+&\iff m\mid a\\[4pt]
+ax\equiv0\pmod m
+&\iff\exists k\in\mathbb Z,\ ax=mk\\
+&\iff m\mid ax
 \end{aligned}
 $$
 
-最後の行は **$\gcd(K,N)=1$ のときに限り**正しい。互いに素でない場合は、整数の等式に戻す。
+### 整除の記号で符号を変える
+
+一方で、**整除の記号**では符号を変えてもよい。
 
 $$
 \begin{aligned}
-S+Kx&=Ny\quad(y\in\mathbb Z)\\
-Kx-Ny&=-S\\
-d&=\gcd(K,N)
+m\mid a
+&\iff a=mk\quad(\exists k\in\mathbb Z)\\
+-m\mid a
+&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=mk\quad(\exists k\in\mathbb Z)
+\quad(\because\mathbb Z=-\mathbb Z)\\
+m\mid-a
+&\iff-a=mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff-m\mid a\\
+-m\mid-a
+&\iff-a=-mk\quad(\exists k\in\mathbb Z)\\
+&\iff a=mk\quad(\exists k\in\mathbb Z)
 \end{aligned}
 $$
 
-### 解の存在条件
+ここで $-1$ を両辺に掛けた等式は元の等式と同値。また $k$ は全整数を動くので、$-k$ と書き直しても範囲が変わらない。
 
-- **$d\nmid S$**：左辺 $Kx-Ny$ は $d$ の倍数だが右辺 $-S$ は違うので、**解なし**。
-- **$d\mid S$**：両辺を $d$ で割れる。$\gcd(K/d,N/d)=1$ なので、ベズーの等式から**整数解が存在する**。
+$$
+\boxed{m\mid a\iff-m\mid a\iff m\mid-a\iff-m\mid-a}
+$$
+
+**合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。**
+
+### $ax\equiv0\pmod m$ の場合分け
+
+**場合A：$\gcd(a,m)=1$**
+
+$a$ の乗法逆元が存在する。
+
+元のメモでは $a^{-1}ax\equiv a^{-1}x$ と書いていたが、これは右辺の $0$ を正しく掛けていない。正しくは次の通り。
 
 $$
 \begin{aligned}
-\frac Kd x-\frac Nd y&=-\frac Sd\\
-\gcd\left(\frac Kd,\frac Nd\right)&=1\\
-\frac Kd x&\equiv-\frac Sd\pmod{N/d}\\
-x&\equiv-\frac Sd\left(\frac Kd\right)^{-1}\pmod{N/d}\\
-x_{\min}&=\left(-\frac Sd\left(\frac Kd\right)^{-1}\right)\bmod(N/d)
+ax&\equiv0\pmod m\\
+a^{-1}ax&\equiv a^{-1}\cdot0\pmod m\\
+x&\equiv0\pmod m\\
+x&=ml\qquad(l\in\mathbb Z)
 \end{aligned}
 $$
 
-逆元は **mod $N/d$** で取る。整数解全体は $x=x_{\min}+(N/d)t$（$t\in\mathbb Z$）で、**周期は $N/d$**。元の mod $N$ の範囲には、相異なる解がちょうど $d$ 個ある。
+$a>0$ は不要。$a<0$ でも互いに素なら逆元は存在する。また $a=0$ の場合、$m>1$ では $\gcd(0,m)=m$ なので次の一般式で扱える。
 
-### よくある誤り：最大公約数を取る相手
+**場合B：$\gcd(a,m)>1$**
 
-同じ問題を $ax+b\equiv0\pmod m$ と書いたときは、$K=a,\ S=b,\ N=m$ と対応する。したがって **$d=\gcd(a,m)$** を使う。
+$$
+\begin{aligned}
+d&=\gcd(a,m)\\
+ax&=mk\\
+\frac adx&=\frac md k\\
+\gcd\left(\frac ad,\frac md\right)&=1\qquad(1)\\
+b&=\frac ad,\quad n=\frac md\\
+bx&=nk\\
+bx&\equiv0\pmod n\\
+n&\mid bx\\
+\frac md&\mid\frac ad x\\
+\frac adx&\equiv0\pmod{m/d}\\
+(1)&\implies x\equiv0\pmod{m/d}\\
+x&=\frac md l\qquad(l\in\mathbb Z)
+\end{aligned}
+$$
 
-元の考察では $d=\gcd(a,b)$ とし、$d\nmid m$ なら解なしと考えたが、これは誤り。例えば $a=2,\ b=2,\ m=3$ では $\gcd(a,b)=2\nmid3$ だが、$x=2$ なら $2x+2=6$ で解がある。
+### 「素数なら積のどちらかが割り切れる」は役に立つのか？
 
-元のメモで $u=a/d,\ v=b/d,\ n=m/d$ とおいた場合、$\gcd(u,v)=1$ とするのも誤りで、正しくは **$\gcd(u,n)=1$**。また $(ux+v)\mid n$ ではなく、$ux+v=kn$ より **$n\mid(ux+v)$**。
+$m$ が素数なら、ユークリッドの補題より
 
+$$
+\begin{aligned}
+m\mid ax&\iff m\mid a\ \lor\ m\mid x
+\end{aligned}
+$$
 
+これは役に立つ。特に $m\nmid a$ なら $m\mid ax$ から $m\mid x$ が導けて、**合同式で約分できる理由**になっている。
+
+## 2. 一次合同式の解の存在条件と逆元
+
+$ax+b\equiv0\pmod m$ を整数の等式に戻すと
+
+$$
+\begin{aligned}
+ax+b&=my\\
+ax-my&=-b\qquad(y\in\mathbb Z)
+\end{aligned}
+$$
+
+となる。$x,y$ の係数は $a,-m$、$-b$ は定数項なので、$d=\gcd(a,m)$ とおく。
+
+- $d\nmid b$ なら解なし。
+- $d\mid b$ なら $d$ で割った係数 $a/d,m/d$ は互いに素。ベズーの等式から整数解が存在する。
+
+$m/d>1$ なら、法 $m/d$ における $a/d$ の逆元が存在するため、
+
+$$
+\begin{aligned}
+\frac adx&\equiv-\frac bd\pmod{m/d}\\
+x&\equiv-\frac bd\left(\frac ad\right)^{-1}\pmod{m/d}
+\end{aligned}
+$$
+
+と解ける。$m/d=1$ なら、条件 $d\mid b$ が成立すればすべての整数 $x$ が解であり、最小の非負整数解は $0$。法 $1$ の逆元を計算する必要はない。
 
 ### 係数はどれ？ — gcd(a,b) と gcd(a,m) の区別
 
@@ -69,7 +140,32 @@ $$
 
 さらに、$\gcd(a,m)=1$ なら $a^{-1}\pmod m$ が存在する。互いに素でなくても $d=\gcd(a,m)$ が右辺を割り切れば、式全体を $d$ で割ったあとに逆元が存在する。
 
-## 3つの見方を図でつなぐ（操作できる例）
+## 3. $ax+b\equiv0\pmod m$ と符号の考察
+
+$$
+\begin{aligned}
+ax+b&\equiv0\pmod m\\
+ax&\equiv-b\pmod m\\
+ax&\equiv b\pmod m\quad\text{（誤った変形）}
+\end{aligned}
+$$
+
+$-b$ を $b$ に置き換えられるのは、両者が合同な場合だけ。
+
+$$
+\begin{aligned}
+-b\equiv b\pmod m
+&\iff-2b\equiv0\pmod m\\
+&\iff2b\equiv0\pmod m\\
+&\iff m\mid2b
+\end{aligned}
+$$
+
+したがって、$m\nmid2b$ なら $b$ と $-b$ は異なる剰余類である。
+
+**合同式の右辺で $b$ と $-b$ は一般に交換できない。一方、整除の関係では符号を変えてもよい（§1）。**
+
+## 4. 3つの見方を図でつなぐ（操作できる例）
 
 同じ合同式を、**① mod の円周・② 2つの数列・③ 整数格子上の直線**として見比べる。問題を選び、$x$ を動かしてみよう。3枚の図は連動する。スマートフォンでは図のエリアを左右にスワイプできる。
 
@@ -200,155 +296,60 @@ $$
 })();
 </script>
 
-## 2. 合同式と整除の定義を確認する
+## 5. 応用問題
+
+### 5.1 ABC186 E — Throne
+
+[問題：ABC186 E - Throne](https://atcoder.jp/contests/abc186/tasks/abc186_e) ／ [公式解説](https://atcoder.jp/contests/abc186/editorial/401?lang=ja)
+
+$N$ 個の椅子が円環状に並び、開始位置は玉座から時計回りに $S$、一度の移動は $K$。玉座へ移動する最小回数 $x$ を求める問題。この条件は $S+Kx\equiv0\pmod N$ となる。
+
+#### $S+Kx\equiv0\pmod N$ を解く
+
+はじめの発想は、次のように $K$ で割ることだった。
 
 $$
 \begin{aligned}
-a\equiv0\pmod m
-&\iff\exists k\in\mathbb Z,\ a=mk\\
-&\iff m\mid a\\[4pt]
-ax\equiv0\pmod m
-&\iff\exists k\in\mathbb Z,\ ax=mk\\
-&\iff m\mid ax
+S+Kx&\equiv0\pmod N\\
+Kx&\equiv-S\pmod N\\
+x&\equiv-SK^{-1}\pmod N
 \end{aligned}
 $$
 
-### $ax\equiv0\pmod m$ の場合分け
-
-**場合A：$\gcd(a,m)=1$**
-
-$a$ の乗法逆元が存在する。
-
-元のメモでは $a^{-1}ax\equiv a^{-1}x$ と書いていたが、これは右辺の $0$ を正しく掛けていない。正しくは次の通り。
+最後の行は **$\gcd(K,N)=1$ のときに限り**正しい。互いに素でない場合は、整数の等式に戻す。
 
 $$
 \begin{aligned}
-ax&\equiv0\pmod m\\
-a^{-1}ax&\equiv a^{-1}\cdot0\pmod m\\
-x&\equiv0\pmod m\\
-x&=ml\qquad(l\in\mathbb Z)
+S+Kx&=Ny\quad(y\in\mathbb Z)\\
+Kx-Ny&=-S\\
+d&=\gcd(K,N)
 \end{aligned}
 $$
 
-$a>0$ は不要。$a<0$ でも互いに素なら逆元は存在する。また $a=0$ の場合、$m>1$ では $\gcd(0,m)=m$ なので次の一般式で扱える。
+##### 解の存在条件
 
-**場合B：$\gcd(a,m)>1$**
+- **$d\nmid S$**：左辺 $Kx-Ny$ は $d$ の倍数だが右辺 $-S$ は違うので、**解なし**。
+- **$d\mid S$**：両辺を $d$ で割れる。$\gcd(K/d,N/d)=1$ なので、ベズーの等式から**整数解が存在する**。
 
 $$
 \begin{aligned}
-d&=\gcd(a,m)\\
-ax&=mk\\
-\frac adx&=\frac md k\\
-\gcd\left(\frac ad,\frac md\right)&=1\qquad(1)\\
-b&=\frac ad,\quad n=\frac md\\
-bx&=nk\\
-bx&\equiv0\pmod n\\
-n&\mid bx\\
-\frac md&\mid\frac ad x\\
-\frac adx&\equiv0\pmod{m/d}\\
-(1)&\implies x\equiv0\pmod{m/d}\\
-x&=\frac md l\qquad(l\in\mathbb Z)
+\frac Kd x-\frac Nd y&=-\frac Sd\\
+\gcd\left(\frac Kd,\frac Nd\right)&=1\\
+\frac Kd x&\equiv-\frac Sd\pmod{N/d}\\
+x&\equiv-\frac Sd\left(\frac Kd\right)^{-1}\pmod{N/d}\\
+x_{\min}&=\left(-\frac Sd\left(\frac Kd\right)^{-1}\right)\bmod(N/d)
 \end{aligned}
 $$
 
-### 具体例：なぜ法を最大公約数で割るのか？
+逆元は **mod $N/d$** で取る。整数解全体は $x=x_{\min}+(N/d)t$（$t\in\mathbb Z$）で、**周期は $N/d$**。元の mod $N$ の範囲には、相異なる解がちょうど $d$ 個ある。
 
-$6x\equiv0\pmod{15}$ を考える。これは $15\mid6x$ という意味。$\gcd(6,15)=3$ なので、同じ整数の等式を3で割れば
-
-$
-\begin{aligned}
-15\mid6x
-&\iff \exists k\in\mathbb Z,\ 6x=15k\\
-&\iff \exists k\in\mathbb Z,\ 2x=5k\\
-&\iff 5\mid2x\\
-&\iff 5\mid x\\
-&\iff x\equiv0\pmod5
-\end{aligned}
-$
-
-となる。最後は、2と5が互いに素だから。例えば $x=5,10,15,\dots$ は解である。
-
-**「$6x$ が15の倍数になるために必要な3の因数は、6がすでに持っている」** と考えるとよい。一般にも、$a$ と $m$ に共通する因数を除いたあと、$x$ が残りの $m/\gcd(a,m)$ の倍数になる必要がある。
-
-つまり、両場合をまとめて
-
-$$
-\boxed{ax\equiv0\pmod m\iff x\equiv0\pmod{\frac{m}{\gcd(a,m)}}}
-$$
-
-と書ける。$m=1$ の場合も両辺はすべての整数 $x$ について成り立つ。
-
-### 「素数なら積のどちらかが割り切れる」は役に立つのか？
-
-$m$ が素数なら、ユークリッドの補題より
-
-$$
-\begin{aligned}
-m\mid ax&\iff m\mid a\ \lor\ m\mid x
-\end{aligned}
-$$
-
-これは役に立つ。特に $m\nmid a$ なら $m\mid ax$ から $m\mid x$ が導けて、**合同式で約分できる理由**になっている。
-
-## 3. $ax+b\equiv0\pmod m$ と符号の考察
-
-$$
-\begin{aligned}
-ax+b&\equiv0\pmod m\\
-ax&\equiv-b\pmod m\\
-ax&\equiv b\pmod m\quad\text{（誤った変形）}
-\end{aligned}
-$$
-
-$-b$ を $b$ に置き換えられるのは、両者が合同な場合だけ。
-
-$$
-\begin{aligned}
--b\equiv b\pmod m
-&\iff-2b\equiv0\pmod m\\
-&\iff2b\equiv0\pmod m\\
-&\iff m\mid2b
-\end{aligned}
-$$
-
-したがって、$m\nmid2b$ なら $b$ と $-b$ は異なる剰余類である。
-
-一方で、**整除の記号**では符号を変えてもよい。
-
-$$
-\begin{aligned}
-m\mid a
-&\iff a=mk\quad(\exists k\in\mathbb Z)\\
--m\mid a
-&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
-&\iff a=mk\quad(\exists k\in\mathbb Z)
-\quad(\because\mathbb Z=-\mathbb Z)\\
-m\mid-a
-&\iff-a=mk\quad(\exists k\in\mathbb Z)\\
-&\iff a=-mk\quad(\exists k\in\mathbb Z)\\
-&\iff-m\mid a\\
--m\mid-a
-&\iff-a=-mk\quad(\exists k\in\mathbb Z)\\
-&\iff a=mk\quad(\exists k\in\mathbb Z)
-\end{aligned}
-$$
-
-ここで $-1$ を両辺に掛けた等式は元の等式と同値。また $k$ は全整数を動くので、$-k$ と書き直しても範囲が変わらない。
-
-$$
-\boxed{m\mid a\iff-m\mid a\iff m\mid-a\iff-m\mid-a}
-$$
-
-**合同式で $b$ と $-b$ が同じとは限らないことと、整除関係で符号を変えられることは別の話。**
-
-
-## 4. 応用：AWC0206 C — 円環のすごろく
+### 5.2 AWC0206 C — 円環のすごろく
 
 [問題：AWC0206 C](https://atcoder.jp/contests/awc0206/tasks/awc0206_c)
 
 $N$ マスの円環上で、ボタン $i$ を押すと $A_i$ マス進む。初期位置は $0$、目標は $G$。どのボタンも何回でも押せる（$0$ 回も可）。$N\le10^9,\ M\le10^6$ なので、各マスを直接探索するのは難しい。
 
-### ① 目標 $G$ を含む合同式にする
+#### ① 目標 $G$ を含む合同式にする
 
 ボタン $i$ を押す回数を $x_i\ge0$ とすると、到達条件は
 
@@ -360,7 +361,7 @@ $
 
 **ここは $\equiv0$ ではなく $\equiv G$。** $G$ は別に処理する情報ではなく、到達したい剰余そのもの。「何回押すか」と「どこに行くか」を、この式で一つにつなげる。
 
-### ② 合同式を整数の等式にする
+#### ② 合同式を整数の等式にする
 
 $
 \begin{aligned}
@@ -380,7 +381,7 @@ $
 
 とすれば、整数解の存在条件は $d\mid G$ である。$N$ を gcd に入れる理由は、円環の「一周したら同じ位置」を整数の式に戻すと、$-Ny$ が現れるから。
 
-### ③ 押す回数が非負でも十分なのか？
+#### ③ 押す回数が非負でも十分なのか？
 
 ベズーの等式により、$d\mid G$ なら整数 $x_1,\ldots,x_M,y$ が存在し、上の等式を満たす。ただし、この時点では $x_i$ が負かもしれない。
 
@@ -396,7 +397,7 @@ $
 
 例：$N=10,\ A=[6],\ G=2$。ボタンを2回押すと $6+6=12\equiv2\pmod{10}$。$\gcd(10,6)=2$ は $G=2$ を割り切る。一方、$G=3$ には到達できない。
 
-### ④ 判定と実装
+#### ④ 判定と実装
 
 $
 \boxed{\text{到達可能}\iff \gcd(N,A_1,\ldots,A_M)\mid G}
@@ -417,7 +418,7 @@ print("Yes" if G % d == 0 else "No")
 
 時間計算量は $O(M\log(\max(N,A_1,\ldots,A_M)))$ 程度。到達回数の最小値や具体的な操作列は求めず、**到達できるかだけ**を最大公約数で判定する。
 
-### 今回の発想の再現手順
+#### 今回の発想の再現手順
 
 1. 操作回数を未知数 $x_i$ とする。
 2. $G$ を右辺に置いて、$\sum A_ix_i\equiv G\pmod N$ と書く。
@@ -427,7 +428,7 @@ print("Yes" if G % d == 0 else "No")
 
 **「新しい gcd の典型を暗記する」より、「操作を式にして既知の数学につなぐ」。**
 
-## 5. まとめ
+## 6. まとめ
 
 $$
 \boxed{\begin{gathered}
