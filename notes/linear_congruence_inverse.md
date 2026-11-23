@@ -70,22 +70,26 @@ $a>0$ は不要。$a<0$ でも互いに素なら逆元は存在する。また $
 
 **場合B：$\gcd(a,m)>1$**
 
+Let $d=\gcd(a,m)$, $b=a/d$, $n=m/d$ とおく。このとき $\gcd(b,n)=1$ である。
+
+まず、合同式 $ax\equiv0\pmod m$ を整数の等式に直す。ある $k\in\mathbb Z$ が存在して $ax=mk$ なので、$a=db,\ m=dn$ を代入すると
+
 $$
 \begin{aligned}
-d&=\gcd(a,m)\\
-ax&=mk\\
-\frac adx&=\frac md k\\
-\gcd\left(\frac ad,\frac md\right)&=1\qquad(1)\\
-b&=\frac ad,\quad n=\frac md\\
-bx&=nk\\
-bx&\equiv0\pmod n\\
-n&\mid bx\\
-\frac md&\mid\frac ad x\\
-\frac adx&\equiv0\pmod{m/d}\\
-(1)&\implies x\equiv0\pmod{m/d}\\
-x&=\frac md l\qquad(l\in\mathbb Z)
+dbx&=dnk\\
+bx&=nk
 \end{aligned}
 $$
+
+となる。つまり $n\mid bx$ である。
+
+ここで **$b$ と $n$ は互いに素** なので、ユークリッドの補題より $n\mid x$ が従う。よって
+
+$$
+\boxed{x\equiv0\pmod n\iff x=\frac md\,l\quad(l\in\mathbb Z)}
+$$
+
+を得る。ポイントは、**元の法 $m$ ではなく、共通因数 $d$ を除いた法 $m/d$ で $x$ を考える**こと。
 
 ### 「素数なら積のどちらかが割り切れる」は役に立つのか？
 
