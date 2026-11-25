@@ -1,0 +1,346 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>保冷庫を運び出す順番</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>保冷庫を運び出す順番</h1>
+<p><a href="https://atcoder.jp/contests/awc0208/tasks/awc0208_d">AWC0208 D</a></p>
+<h2>誤考察</h2>
+<p>搬出時間を $T_i$、1分あたりの消費電力量を $P_i$ とする。本番では、P も T も小さい方が嬉しいと考え、PT の昇順でソートすることを考えた。</p>
+<p>今回の本質は、順序の最適化なのに、順序を比較せず、要素単体の性質から最適な順序を決めようとしていたことにある。</p>
+<p>最初は、</p>
+<p><div>$$\begin{aligned}
+(T_i,P_i)&\longmapsto T_iP_i
+\end{aligned}$$</div></p>
+<p>と、保冷庫単体から評価値を作ろうとしていた。しかし、本来比較すべきなのは保冷庫の性能ではなく、保冷庫を並べた結果の消費電力量だった。</p>
+<p>P, T は変更できない。変更できるのは順序である。値が小さい方が嬉しいことと、値が小さいものを先に配置する方が嬉しいことは別の命題である。</p>
+<h2>一方の変数を固定して反例を作る</h2>
+<p>いきなり反例をひらめこうとするのではなく、N=2 とし、一方の変数 T を 1 に固定する。</p>
+<table>
+<thead>
+<tr>
+<th>保冷庫</th>
+<th style="text-align:right">T</th>
+<th style="text-align:right">P</th>
+<th style="text-align:right">PT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">2</td>
+</tr>
+</tbody>
+</table>
+<p>PT の昇順なら A → B だが、実際の総消費電力量は</p>
+<p><div>$$\begin{aligned}
+E_{AB}&=1\cdot1+2\cdot2=5\\
+E_{BA}&=1\cdot2+2\cdot1=4
+\end{aligned}$$</div></p>
+<p>となり、B → A の方がよい。よって PT の昇順は誤り。</p>
+<p>T が等しければ P の大きい方を先に、P が等しければ T の小さい方を先に搬出したい。</p>
+<p>反例を作る際は、要素数を減らし、一方の変数を固定して、もう一方だけを動かす。</p>
+<h2>隣接交換法（Exchange Argument）</h2>
+<p>隣接する x, y を入れ替え、二つの順序の目的関数を比較する。</p>
+<p>それまでの経過時間を s とする。交換前後で、それより前の保冷庫の完了時刻は変わらず、それより後の保冷庫も x, y の搬出時間の和が変わらないため、完了時刻は変わらない。</p>
+<p>x, y の消費電力量だけを比較すればよい。</p>
+<p><div>$$\begin{aligned}
+E_{xy}&=P_x(s+T_x)\\
+&\quad+P_y(s+T_x+T_y)\\
+E_{yx}&=P_y(s+T_y)\\
+&\quad+P_x(s+T_y+T_x)
+\end{aligned}$$</div></p>
+<p>差を取ると、</p>
+<p><div>$$\begin{aligned}
+E_{xy}-E_{yx}
+&=P_yT_x-P_xT_y
+\end{aligned}$$</div></p>
+<p>経過時間 s が消え、x, y の情報だけで順序が決まる。</p>
+<p><div>$$\begin{aligned}
+E_{xy}\leq E_{yx}
+&\iff T_xP_y\leq T_yP_x\\
+&\iff \frac{T_x}{P_x}\leq\frac{T_y}{P_y}
+\end{aligned}$$</div></p>
+<p>この比の逆順になっている隣接項を交換すれば、総消費電力量は減少する。交換を繰り返すと T/P の昇順にできるため、この順序が最適である。</p>
+<h2>実装</h2>
+<p>分数を直接計算せず、交差積で大小比較できる。</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> cmp_to_key
+
+N <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+A <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">tuple</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>N<span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">cmp</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t1<span class="token punctuation">,</span> p1 <span class="token operator">=</span> a
+    t2<span class="token punctuation">,</span> p2 <span class="token operator">=</span> b
+    <span class="token keyword">return</span> t1 <span class="token operator">*</span> p2 <span class="token operator">-</span> t2 <span class="token operator">*</span> p1
+
+A<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span>cmp_to_key<span class="token punctuation">(</span><span class="token builtin">cmp</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+ans <span class="token operator">=</span> s <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> t<span class="token punctuation">,</span> p <span class="token keyword">in</span> A<span class="token punctuation">:</span>
+    s <span class="token operator">+=</span> t
+    ans <span class="token operator">+=</span> s <span class="token operator">*</span> p
+<span class="token keyword">print</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span>
+</code></pre>
+<p>時間計算量は O(N log N)。</p>
+<h2>学び</h2>
+<p>最適性は他の候補との比較によって決まる。順序を最適化する問題では、要素単体から評価基準を推測するのではなく、異なる順序の目的関数を比較して、評価基準を導出する。</p>
+<ul>
+<li>仮説の検証：要素数を減らし、一方の変数を固定して反例を作る。</li>
+<li>順序の最適化：隣接する2要素の順序を交換し、目的関数の差を取る。</li>
+</ul>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
