@@ -177,7 +177,7 @@
   
   <div class="note">
     <h1>SparseTableの実装</h1>
-<p><a href="https://judge.yosupo.jp/problem/staticrmq">Library Checker：Static RMQ</a> を使って、<strong>Sparse Tableを自力で導出して実装した記録</strong>。数式そのものは比較的早く導けた一方、DPの計算順序・添字の意味・半開区間の境界で何度もWA/REになった。最後には、CPythonではTLEした純Python実装がPyPy3では2秒未満でACした。NumPy版との違いも含め、何を理解して、どこで実装が止まったのかを整理する。</p>
+<p><a href="https://judge.yosupo.jp/problem/staticrmq">Library Checker：Static RMQ</a> を使って、<strong>Sparse Tableを導出して実装した記録</strong>。数式そのものは比較的早く導けた一方、DPの計算順序・添字の意味・半開区間の境界で何度もWA/REになった。最後には、CPythonではTLEした純Python実装がPyPy3では2秒未満でACした。NumPy版との違いも含め、何を理解して、どこで実装が止まったのかを整理する。</p>
 <blockquote>
 <p>先に結論：<strong>状態の定義 → 漸化式 → 状態が存在する範囲 → 依存関係を満たす計算順序 → クエリ</strong>の順に決める。漸化式だけ正しくても、DPの実装は完成しない。</p>
 </blockquote>
@@ -242,7 +242,51 @@ $$
 st <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>INF<span class="token punctuation">]</span> <span class="token operator">*</span> K <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
 </code></pre>
 <p><code>K</code> は「最大の指数」ではなく<strong>列数</strong>であり、列番号は <code>0</code> から <code>K-1</code> まで。</p>
-<h2>3. 漸化式を自力で導出する</h2>
+<h3>10進数の桁数と2進数の桁数</h3>
+<p>高校数学で扱う常用対数による桁数の計算は、2進数にもそのまま適用できる。正の整数 $n$ の桁数を $k$ とする。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>10進数</th>
+<th>2進数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>底</td>
+<td>10</td>
+<td>2</td>
+</tr>
+<tr>
+<td>桁数の条件</td>
+<td>$10^{k-1}\leq n&lt;10^k$</td>
+<td>$2^{k-1}\leq n&lt;2^k$</td>
+</tr>
+<tr>
+<td>対数を取る</td>
+<td>$k-1\leq\log_{10}n&lt;k$</td>
+<td>$k-1\leq\log_2n&lt;k$</td>
+</tr>
+<tr>
+<td>桁数</td>
+<td>$\lfloor\log_{10}n\rfloor+1$</td>
+<td>$\lfloor\log_2n\rfloor+1$</td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>len(str(n))</code></td>
+<td><code>n.bit_length()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="math-block">
+$
+\operatorname{bit\_length}(n)=\lfloor\log_2n\rfloor+1
+$
+</div>
+<p>対数の切り捨ては最大の位の指数を表し、桁数は指数が0から始まるため、それに1を足したものになる。構築時の列数は <code>n.bit_length()</code>、クエリ時の最大の指数は <code>d.bit_length() - 1</code> で求められる。</p>
+<h2>3. 漸化式を導出する</h2>
 <p>区間 $[i,i+2^{k+1})$ を半分に分ける。</p>
 <div class="math-block">
 $$
@@ -412,7 +456,7 @@ $$
 </code></pre>
 <p>と書ける。<code>d=1</code> でも <code>k=0</code> なので特別扱いは不要。<code>d</code> が2冪なら2区間が完全に一致するが、冪等性により問題ない。</p>
 <p><strong>構築には結合律、重複を許した2区間クエリには結合律・可換性・冪等律</strong>という役割の違いに注意したい。一般の「結合的かつ冪等」な非可換演算で、この重複クエリが常に成立するわけではない。一方、重複しない2冪区間に分割して <code>O(\log N)</code> で集約する方法なら、結合律を使える。</p>
-<h2>7. 完成コード：自分で書いた形を残す</h2>
+<h2>7. 完成コード：降順版と昇順版</h2>
 <p>以下は、開始位置を降順に処理する純Python版。<strong>PyPy3での提出でACした方針</strong>である。</p>
 <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> sys
 <span class="token builtin">input</span> <span class="token operator">=</span> sys<span class="token punctuation">.</span>stdin<span class="token punctuation">.</span><span class="token builtin">buffer</span><span class="token punctuation">.</span>readline
@@ -435,6 +479,48 @@ INF <span class="token operator">=</span> <span class="token number">10</span><s
                 <span class="token comment"># 左辺 st[i][j+1] が表す区間が存在するか</span>
                 <span class="token keyword">if</span> i <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> n<span class="token punctuation">:</span>
                     <span class="token keyword">break</span>
+                self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>
+                    self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> j<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+                <span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">prod</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> l<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># min(a[l:r]); 0 &lt;= l &lt; r &lt;= n</span>
+        k <span class="token operator">=</span> <span class="token punctuation">(</span>r <span class="token operator">-</span> l<span class="token punctuation">)</span><span class="token punctuation">.</span>bit_length<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
+        w <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> k
+        <span class="token keyword">return</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>l<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>r <span class="token operator">-</span> w<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+N<span class="token punctuation">,</span> Q <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+A <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+st <span class="token operator">=</span> SparseTable<span class="token punctuation">(</span>A<span class="token punctuation">)</span>
+
+ans <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>Q<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    l<span class="token punctuation">,</span> r <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>st<span class="token punctuation">.</span>prod<span class="token punctuation">(</span>l<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>ans<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h3>開始位置 i を昇順に回す実装</h3>
+<p>指数 <code>j</code> を外側に回すことで、開始位置 <code>i</code> を昇順にしても依存先が計算済みになる。状態の定義とクエリは降順版と同じ。</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">import</span> sys
+<span class="token builtin">input</span> <span class="token operator">=</span> sys<span class="token punctuation">.</span>stdin<span class="token punctuation">.</span><span class="token builtin">buffer</span><span class="token punctuation">.</span>readline
+
+INF <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">**</span><span class="token number">20</span>
+
+<span class="token keyword">class</span> <span class="token class-name">SparseTable</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+        K <span class="token operator">=</span> n<span class="token punctuation">.</span>bit_length<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>st <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>INF<span class="token punctuation">]</span> <span class="token operator">*</span> K <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+        <span class="token comment"># 長さ1の区間の値を初期化</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+        <span class="token comment"># 指数を外側に回し、開始位置 i を昇順に処理</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>K <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
                 self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>
                     self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span>
                     self<span class="token punctuation">.</span>st<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> j<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
@@ -517,7 +603,7 @@ nxt <span class="token operator">=</span> np<span class="token punctuation">.</s
 <p>これはNumPyのスライスによる実装と同じ構造が見えやすい。<code>zip(prev, prev[w:])</code> が、「位置 <code>i</code> の区間」と「位置 <code>i+w</code> の区間」を対応させている。</p>
 <p>ただし、<strong>学習の過程では、最初に自分で定義した <code>st[i][k]</code> を保持したまま書けることにも意味があった</strong>。高速化は、状態・依存関係・区間端点の正しさを確かめた後で考える。</p>
 <h2>10. 振り返り：今回、本当に詰まっていた場所</h2>
-<p>数学的な着想は早かった。ダブリングとの共通構造に気づき、「各開始位置について2冪長の区間積を保持する」と定義し、漸化式も自力で導出できた。</p>
+<p>数学的な着想は早かった。ダブリングとの共通構造に気づき、「各開始位置について2冪長の区間積を保持する」と定義し、漸化式も導出できた。</p>
 <p>一方、実装では次の混乱を繰り返した。</p>
 <ol>
 <li><strong>状態の意味と添字の取り違え</strong>：<code>st[i][k]</code> の <code>k</code> は指数なのに、長さ <code>1&lt;&lt;k</code> を列番号として使いかけた。</li>
