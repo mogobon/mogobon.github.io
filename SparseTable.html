@@ -1,0 +1,500 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SparseTableの実装</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  <style>.sparse-article{overflow-wrap:anywhere}.sparse-article .table-scroll{overflow-x:auto;margin:1.3em 0}.sparse-article table{border-collapse:collapse;width:100%;font-size:.94em}.sparse-article th,.sparse-article td{border:1px solid #cbd5e1;padding:.5em .65em;text-align:left}.sparse-article th{background:#eff6ff}.sparse-article blockquote{border-left:4px solid #3182ce;padding:.5em 1.1em;margin:1.4em 0;background:#f0f8ff}.sparse-article p,.sparse-article li{line-height:1.8}.sparse-article .math-block{overflow-x:auto;overflow-y:hidden;margin:1.4em 0}.sparse-article pre{overflow-x:auto}</style></head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note sparse-article">
+<h1>SparseTableの実装</h1>
+<p><a href="https://judge.yosupo.jp/problem/staticrmq" target="_blank" rel="noopener noreferrer">Library Checker：Static RMQ</a> を使って、<strong>Sparse Tableを自力で導出して実装した記録</strong>。数式そのものは比較的早く導けた一方、DPの計算順序・添字の意味・半開区間の境界で何度もWA/REになった。最後には、CPythonではTLEした純Python実装がPyPy3では2秒未満でACした。NumPy版との違いも含め、何を理解して、どこで実装が止まったのかを整理する。</p>
+<blockquote><p>先に結論：<strong>状態の定義 → 漸化式 → 状態が存在する範囲 → 依存関係を満たす計算順序 → クエリ</strong>の順に決める。漸化式だけ正しくても、DPの実装は完成しない。</p></blockquote>
+<h2>1. 出発点：累積minでは区間minを復元できない</h2>
+<p>累積和なら、$S[r]-S[l]$ で区間 $[l,r)$ の和を取得できる。一方、累積最小値では、$[0,r)$ の最小値から $[0,l)$ の最小値を「引く」ことができない。最小値に差分を取り出す逆演算がないからだ。</p>
+<p>区間最小値を求めるには、<strong>その区間を覆う、あらかじめ計算済みの情報</strong>を結合する方法を考えたい。</p>
+<p>そこで、以前考えた<a href="https://note.com/mogobon/n/n43a442d628c1" target="_blank" rel="noopener noreferrer">ダブリング</a>の発想に戻る。長さ $2^{k+1}$ は、長さ $2^k$ のもの2つに分けられる。</p>
+<div class="math-block">$$
+2^{k+1}=2^k+2^k
+$$</div>
+<p><strong>各開始位置ごとに、長さが2冪の区間の集約値を保持すればよさそうだ。</strong></p>
+<h2>2. 状態の定義：位置 i と指数 k</h2>
+<p>配列 $A$ の長さを $N$ とし、次のように定義する。</p>
+<div class="math-block">$$
+T[i][k]=\min\{A_j\mid i\le j&lt;i+2^k\}
+$$</div>
+<p>つまり、<code>T[i][k]</code> は <strong>半開区間 $[i,i+2^k)$ の最小値</strong>。2番目の添字は「区間長」ではなく「長さの指数」である。</p>
+<p>例えば $A=[2,10,1,100]$ の場合は次のようになる。</p>
+<div class="table-scroll"><table><thead><tr><th>開始位置</th><th>$k=0$（長さ1）</th><th>$k=1$（長さ2）</th><th>$k=2$（長さ4）</th></tr></thead><tbody><tr><td>$i=0$</td><td>2</td><td>2</td><td>1</td></tr><tr><td>$i=1$</td><td>10</td><td>1</td><td>—</td></tr><tr><td>$i=2$</td><td>1</td><td>1</td><td>—</td></tr><tr><td>$i=3$</td><td>100</td><td>—</td><td>—</td></tr></tbody></table></div>
+<p>「—」は、有効な区間が配列内に存在しないことを表す。値が未計算なだけではなく、<strong>数学的な状態そのものが存在しない</strong>。</p>
+<p>$N\ge1$ として、保持する指数は $k=0,\dots,\lfloor\log_2N\rfloor$。Pythonでは次のように列数を確保できる。</p>
+<pre class="language-python"><code class="language-python">K = n.bit_length()
+st = [[INF] * K for _ in range(n)]</code></pre>
+<p><code>K</code> は「最大の指数」ではなく<strong>列数</strong>であり、列番号は <code>0</code> から <code>K-1</code> まで。</p>
+<h2>3. 漸化式を自力で導出する</h2>
+<p>区間 $[i,i+2^{k+1})$ を半分に分ける。</p>
+<div class="math-block">$$
+[i,i+2^{k+1})
+=
+[i,i+2^k)\ \cup\ [i+2^k,i+2^{k+1})
+$$</div>
+<p>2区間は隣接していて重複しない。したがって、</p>
+<div class="math-block">$$
+T[i][k+1]
+=
+\min\bigl(T[i][k],T[i+2^k][k]\bigr)
+$$</div>
+<p>一般の二項演算 $\otimes$ に書き換えれば、</p>
+<div class="math-block">$$
+T[i][k+1]=T[i][k]\otimes T[i+2^k][k]
+$$</div>
+<p>という形になる。<strong>この構築に必要なのは結合律</strong>。区間を連結した順序で集約できればよく、ここでは冪等律はまだ使っていない。<code>min</code> 以外にも、<code>max</code>・<code>gcd</code>・区間和などを同様に前計算できる。</p>
+<p>初期状態は長さ1なので、</p>
+<div class="math-block">$$
+T[i][0]=A[i]
+$$</div>
+<p>だけ。ここまでで、数学上の定義と遷移はできた。</p>
+<h2>4. 漸化式が書けても、for文が書けなかった</h2>
+<p>最初に考えたのは、<code>i</code> を昇順、その内側で <code>k</code> を昇順にするループだった。</p>
+<pre class="language-python"><code class="language-python"># 間違った実装例
+for i in range(n):
+    for j in range(K - 1):
+        st[i][j + 1] = min(
+            st[i][j],
+            st[i + (1 &lt;&lt; j)][j]
+        )</code></pre>
+<p>しかし、<code>st[0][2]</code> を計算するときには、<code>st[2][1]</code> が必要になる。</p>
+<div class="math-block">$$
+T[0][2]=\min(T[0][1],T[2][1])
+$$</div>
+<p><code>i=0</code> を処理中なので、<code>i=2</code> 側の <code>T[2][1]</code> はまだ計算されていない。<code>INF</code> を見てしまい、誤答になる。</p>
+<p><strong>ループ順序は添字を何となく昇順にするのではなく、右辺で参照する状態が計算済みかどうかから決める。</strong></p>
+<h3>方法A：指数 k を外側に回す</h3>
+<pre class="language-python"><code class="language-python">for k in range(1, K):
+    for i in range(n - (1 &lt;&lt; k) + 1):
+        st[i][k] = min(
+            st[i][k - 1],
+            st[i + (1 &lt;&lt; (k - 1))][k - 1]
+        )</code></pre>
+<p>これなら、<code>k-1</code> 列全体を計算してから <code>k</code> 列へ進める。</p>
+<h3>方法B：開始位置 i を降順に回す</h3>
+<p>右辺の開始位置は <code>i</code> または <code>i+2^j</code>。後者は必ず <code>i</code> より大きいので、<code>i</code> を降順に回せば参照先が先に完成する。</p>
+<pre class="language-python"><code class="language-python">for i in range(n - 1, -1, -1):
+    for j in range(K - 1):
+        if i + (1 &lt;&lt; (j + 1)) &gt; n:
+            break
+        st[i][j + 1] = min(
+            st[i][j],
+            st[i + (1 &lt;&lt; j)][j]
+        )</code></pre>
+<p><strong>指数昇順を外側にする方法も、開始位置降順を外側にする方法も正しい。</strong> これは依存関係の異なる二つのトポロジカル順序と考えられる。</p>
+<p>以前のダブリングで扱った「遷移先」は任意の頂点に飛び得るので、一般には開始頂点の降順で依存関係を解決できない。Sparse Tableでは参照先の開始位置が常に右に進むため、降順を使える。</p>
+<h2>5. WAとRE：境界条件は「左辺の状態が存在するか」で決める</h2>
+<p>ここで最も苦戦した。次の式を計算しているとする。</p>
+<div class="math-block">$$
+T[i][j+1]=\min(T[i][j],T[i+2^j][j])
+$$</div>
+<h3>誤り①：<code>i+2^j&lt;n</code> と判定する</h3>
+<pre class="language-python"><code class="language-python"># 誤り
+if i + (1 &lt;&lt; j) &lt; n:
+    st[i][j + 1] = min(st[i][j], st[i + (1 &lt;&lt; j)][j])</code></pre>
+<p>これは、後半の区間の<strong>開始位置</strong> <code>i+2^j</code> が配列内かどうかしか確かめていない。しかし、左辺 <code>st[i][j+1]</code> が管理するのは<strong>長さ $2^{j+1}$ の区間全体</strong>。</p>
+<p>たとえば <code>n=5, i=2, j=1</code> では <code>2+2&lt;5</code> が成立するが、作ろうとしている区間は <code>[2,6)</code> で、配列の右端を超える。<code>st[4][1]</code> というセルが存在しても、それが有効な長さ2の区間積とは限らない。</p>
+<p>左辺が定義できる必要十分条件は、</p>
+<div class="math-block">$$
+i+2^{j+1}\le n
+$$</div>
+<p>である。</p>
+<h3>誤り②：<code>&lt; n</code> にして、等号のケースを落とす</h3>
+<pre class="language-python"><code class="language-python"># 誤り
+if i + (1 &lt;&lt; (j + 1)) &lt; n:
+    ...</code></pre>
+<p>半開区間 <code>[l,r)</code> では、<code>r=n</code> でも正しい。したがって <strong><code>&lt;</code> ではなく <code>&lt;=</code></strong> が必要。</p>
+<p>例えば <code>n=4,i=0,j=1</code> で、区間 <code>[0,4)</code> の計算は当然必要。しかし <code>4&lt;4</code> は偽になり、<code>st[0][2]</code> が未計算のまま残る。これがWAにつながった。</p>
+<h3>誤り③：<code>range(K)</code> のまま <code>j+1</code> に代入する</h3>
+<p>列番号は <code>0,\dots,K-1</code> なので、<code>j=K-1</code> で <code>st[i][K]</code> を書き込むとREになり得る。<code>range(K-1)</code> にする。</p>
+<h3>ここでの整理</h3>
+<div class="table-scroll"><table><thead><tr><th>確認</th><th>今回の意味</th><th>条件・工夫</th></tr></thead><tbody><tr><td>状態が存在するか</td><td><code>st[i][j+1]</code> が表す全区間が収まるか</td><td>$i+2^{j+1}\le n$</td></tr><tr><td>配列添字が有効か</td><td><code>j+1</code> が列数を超えないか</td><td><code>j in range(K-1)</code></td></tr><tr><td>依存先が計算済みか</td><td>必要な右辺の値が完成しているか</td><td><code>j</code> 外側、または <code>i</code> 降順</td></tr><tr><td>等号を含むか</td><td><code>[i,n)</code> も有効か</td><td><code>&lt;= n</code></td></tr></tbody></table></div>
+<p>単に配列外参照を防ぐだけなら、右辺の添字を検査したくなる。しかし<strong>数式の左辺が表す状態の定義域</strong>を先に決めれば、添字の安全性も同時に見通せる。</p>
+<h2>6. クエリ：長さが2冪でない区間をどうするか</h2>
+<p><code>prod(l,r)</code> で <code>[l,r)</code> の最小値を求めたい。長さを <code>d=r-l</code> とおく。</p>
+<div class="math-block">$$
+k=\lfloor\log_2d\rfloor,\qquad 2^k\le d&lt;2^{k+1}
+$$</div>
+<p><code>d</code> がちょうど2冪なら、前計算した1区間で取得できる。それ以外では、<strong>左端から長さ $2^k$ の区間</strong>と、<strong>右端から長さ $2^k$ の区間</strong>を選ぶ。</p>
+<div class="math-block">$$
+[l,l+2^k),\qquad [r-2^k,r)
+$$</div>
+<p>この2区間の和集合は <code>[l,r)</code> に一致し、中央が重複する場合がある。しかし、<code>min</code> には</p>
+<div class="math-block">$$
+\min(x,x)=x
+$$</div>
+<p>という<strong>冪等律</strong>がある。さらに <code>min</code> は結合的・可換なので、同じ要素が重なっても区間全体の最小値は変わらない。</p>
+<div class="math-block">$$
+\min(A[l:r])
+=
+\min\bigl(T[l][k],T[r-2^k][k]\bigr)
+$$</div>
+<p>Pythonでは、</p>
+<pre class="language-python"><code class="language-python">def prod(self, l, r):
+    # 前提: 0 &lt;= l &lt; r &lt;= n
+    k = (r - l).bit_length() - 1
+    w = 1 &lt;&lt; k
+    return min(self.st[l][k], self.st[r - w][k])</code></pre>
+<p>と書ける。<code>d=1</code> でも <code>k=0</code> なので特別扱いは不要。<code>d</code> が2冪なら2区間が完全に一致するが、冪等性により問題ない。</p>
+<p><strong>構築には結合律、重複を許した2区間クエリには結合律・可換性・冪等律</strong>という役割の違いに注意したい。一般の「結合的かつ冪等」な非可換演算で、この重複クエリが常に成立するわけではない。一方、重複しない2冪区間に分割して <code>O(\log N)</code> で集約する方法なら、結合律を使える。</p>
+<h2>7. 完成コード：自分で書いた形を残す</h2>
+<p>以下は、開始位置を降順に処理する純Python版。<strong>PyPy3での提出でACした方針</strong>である。</p>
+<pre class="language-python"><code class="language-python">import sys
+input = sys.stdin.buffer.readline
+
+INF = 10**20
+
+class SparseTable:
+    def __init__(self, a):
+        n = len(a)
+        K = n.bit_length()
+        self.st = [[INF] * K for _ in range(n)]
+
+        # 長さ1の区間の値を初期化
+        for i in range(n):
+            self.st[i][0] = a[i]
+
+        # 右側の開始位置から計算し、依存先を確定させる
+        for i in range(n - 1, -1, -1):
+            for j in range(K - 1):
+                # 左辺 st[i][j+1] が表す区間が存在するか
+                if i + (1 &lt;&lt; (j + 1)) &gt; n:
+                    break
+                self.st[i][j + 1] = min(
+                    self.st[i][j],
+                    self.st[i + (1 &lt;&lt; j)][j]
+                )
+
+    def prod(self, l, r):
+        # min(a[l:r]); 0 &lt;= l &lt; r &lt;= n
+        k = (r - l).bit_length() - 1
+        w = 1 &lt;&lt; k
+        return min(self.st[l][k], self.st[r - w][k])
+
+N, Q = map(int, input().split())
+A = list(map(int, input().split()))
+st = SparseTable(A)
+
+ans = []
+for _ in range(Q):
+    l, r = map(int, input().split())
+    ans.append(str(st.prod(l, r)))
+
+print(&quot;\n&quot;.join(ans))</code></pre>
+<p>構築は $O(N\log N)$、クエリは $O(1)$、メモリは $O(N\log N)$。</p>
+<h3>小さな全区間テスト</h3>
+<pre class="language-text"><code class="language-text">4 10
+2 10 1 100
+0 1
+0 2
+0 3
+0 4
+1 2
+1 3
+1 4
+2 3
+2 4
+3 4</code></pre>
+<p>期待出力：</p>
+<pre class="language-text"><code class="language-text">2
+2
+1
+1
+10
+1
+1
+1
+1
+100</code></pre>
+<p><code>N=1</code>、<code>r=N</code>、<code>r-l=1</code>、<code>r-l=2^k</code>、<code>r-l=2^k+1</code> のような端点も確認したい。</p>
+<h2>8. NumPy・CPython・PyPy3：同じ計算量でも実行時間は違う</h2>
+<p>今回、最初に見た<a href="https://ikatakos.com/pot/programming_algorithm/data_structure/sparse_table" target="_blank" rel="noopener noreferrer">NumPyを使うSparse Tableの実装記事</a>では、各段の構築を配列演算にまとめていた。</p>
+<pre class="language-python"><code class="language-python"># ある段の情報 prev から次の段を構築
+w = 1 &lt;&lt; (k - 1)
+nxt = np.minimum(prev[:-w], prev[w:])</code></pre>
+<p>配列同士の対応を一度に計算できるので、Pythonの内側ループを省ける。一方、通常の二重for実装はCPythonでTLEになった。</p>
+<p>しかし、<strong>同じ純PythonコードをPyPy3で提出したところACし、実行時間は2秒未満で、今回のNumPy版よりも速かった。</strong> 同じ計算量でも、言語処理系・ループの最適化・ライブラリ呼び出しなどの定数倍が結果を変える。</p>
+<p>PyPyはJITコンパイルで繰り返し実行するPythonのループを最適化できる。NumPyは配列演算を主にコンパイル済みの実装でまとめて処理する。方向性は異なるが、<strong>Pythonレベルの反復処理のコストを減らす</strong>という点でつながっている。</p>
+<p>また、実際のLibrary Checkerの提出環境ではNumPyのimport可否が言語選択によって変わった。NumPyを採用するときは、アルゴリズムの正しさだけでなく、そのジャッジの言語環境も確認したい。</p>
+<h2>9. さらに簡潔にするなら：段を行として持つ</h2>
+<p>元の表は <code>st[i][k]</code> という配置だった。これを <code>st[k][i]</code> にすると、同じ長さの区間積を1行にまとめられる。</p>
+<pre class="language-python"><code class="language-python">class SparseTable:
+    def __init__(self, a):
+        n = len(a)
+        self.st = [a[:]]
+        for k in range(1, n.bit_length()):
+            prev = self.st[-1]
+            w = 1 &lt;&lt; (k - 1)
+            self.st.append([
+                min(x, y)
+                for x, y in zip(prev, prev[w:])
+            ])
+
+    def prod(self, l, r):
+        k = (r - l).bit_length() - 1
+        w = 1 &lt;&lt; k
+        return min(self.st[k][l], self.st[k][r - w])</code></pre>
+<p>これはNumPyのスライスによる実装と同じ構造が見えやすい。<code>zip(prev, prev[w:])</code> が、「位置 <code>i</code> の区間」と「位置 <code>i+w</code> の区間」を対応させている。</p>
+<p>ただし、<strong>学習の過程では、最初に自分で定義した <code>st[i][k]</code> を保持したまま書けることにも意味があった</strong>。高速化は、状態・依存関係・区間端点の正しさを確かめた後で考える。</p>
+<h2>10. 振り返り：今回、本当に詰まっていた場所</h2>
+<p>数学的な着想は早かった。ダブリングとの共通構造に気づき、「各開始位置について2冪長の区間積を保持する」と定義し、漸化式も自力で導出できた。</p>
+<p>一方、実装では次の混乱を繰り返した。</p>
+<ol>
+<li><strong>状態の意味と添字の取り違え</strong>：<code>st[i][k]</code> の <code>k</code> は指数なのに、長さ <code>1&lt;&lt;k</code> を列番号として使いかけた。</li>
+<li><strong>未計算状態の参照</strong>：<code>i</code> を昇順に回すと、右側にある <code>st[i+2^j][j]</code> が完成していなかった。</li>
+<li><strong>定義域と配列外参照の混同</strong>：<code>i+2^j&lt;n</code> は配列の添字しか見ておらず、長さ <code>2^{j+1}</code> の区間が存在することを保証しなかった。</li>
+<li><strong>半開区間の等号</strong>：<code>[i,n)</code> は有効なので、<code>&lt;n</code> ではなく <code>&lt;=n</code> が必要だった。</li>
+<li><strong>列数と最大添字の混同</strong>：<code>K=n.bit_length()</code> は列数で、代入先 <code>j+1</code> を作る場合は <code>j&lt;K-1</code> が必要だった。</li>
+<li><strong>TLEとアルゴリズムの誤りの切り分け</strong>：計算量が正しくても、CPythonの二重ループは実行時間が厳しかった。PyPyではACできた。</li>
+</ol>
+<p>今後DPを実装するときは、漸化式を書いた後、以下を順に確認する。</p>
+<p><strong>① 左辺の状態の意味 → ② その状態が存在する必要十分条件 → ③ 右辺が計算済みとなる順序 → ④ Pythonのrangeと境界の等号 → ⑤ 小さい全区間テスト</strong></p>
+<p>今回の学びは「Sparse Tableのテンプレートを覚えた」ということ以上に、<strong>数学的に定義した状態を、正しいループ順序と添字範囲に落とし込むための考え方</strong>を掴み直したことだと思う。</p>
+<div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
