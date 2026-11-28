@@ -59,21 +59,22 @@ st = [[INF] * K for _ in range(n)]
 
 高校数学で扱う常用対数による桁数の計算は、2進数にもそのまま適用できる。正の整数 $n$ の桁数を $k$ とする。
 
-| | 10進数 | 2進数 |
-|---|---|---|
-| 底 | 10 | 2 |
-| 桁数の条件 | $10^{k-1}\leq n<10^k$ | $2^{k-1}\leq n<2^k$ |
-| 対数を取る | $k-1\leq\log_{10}n<k$ | $k-1\leq\log_2n<k$ |
-| 桁数 | $\lfloor\log_{10}n\rfloor+1$ | $\lfloor\log_2n\rfloor+1$ |
-| Python | `len(str(n))` | `n.bit_length()` |
-
-<div class="math-block">
-$
-\operatorname{bit\_length}(n)=\lfloor\log_2n\rfloor+1
-$
+<div style="overflow-x:auto; margin:1rem 0;">
+<table style="border-collapse:collapse; width:100%; min-width:620px; font-variant-numeric:tabular-nums;">
+<thead style="border-top:2px solid #999; border-bottom:1px solid #999;">
+<tr><th scope="col" style="padding:10px 14px; text-align:left; width:24%;">項目</th><th scope="col" style="padding:10px 14px; text-align:center; width:38%;">10進数</th><th scope="col" style="padding:10px 14px; text-align:center; width:38%;">2進数</th></tr>
+</thead>
+<tbody style="border-bottom:2px solid #999;">
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">底</th><td style="text-align:center; padding:10px 14px;">10</td><td style="text-align:center; padding:10px 14px;">2</td></tr>
+<tr style="background:rgba(128,128,128,.07);"><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">桁数の条件</th><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$10^{k-1}\leq n&lt;10^k$</td><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$2^{k-1}\leq n&lt;2^k$</td></tr>
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">対数を取る</th><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$k-1\leq\log_{10}n&lt;k$</td><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$k-1\leq\log_2n&lt;k$</td></tr>
+<tr style="background:rgba(128,128,128,.07);"><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px;">桁数</th><td style="text-align:center; padding:10px 14px;">$\lfloor\log_{10}n\rfloor+1$</td><td style="text-align:center; padding:10px 14px;">$\lfloor\log_2n\rfloor+1$</td></tr>
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px;">Python</th><td style="text-align:center; padding:10px 14px;"><code>len(str(n))</code></td><td style="text-align:center; padding:10px 14px;"><code>n.bit_length()</code></td></tr>
+</tbody>
+</table>
 </div>
 
-対数の切り捨ては最大の位の指数を表し、桁数は指数が0から始まるため、それに1を足したものになる。構築時の列数は `n.bit_length()`、クエリ時の最大の指数は `d.bit_length() - 1` で求められる。
+表の2進数の列より、`n.bit_length()` は2進数の桁数、すなわち $\lfloor\log_2n\rfloor+1$ を返す。Sparse Tableでは、構築時には指数0から最大の指数までの列数が必要なので `n.bit_length()` を使う。一方、クエリ時には区間長 `d` 以下の最大の2冪の指数が必要なので `d.bit_length() - 1` を使う。
 
 ## 3. 漸化式を導出する
 
