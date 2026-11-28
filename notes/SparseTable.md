@@ -14,9 +14,11 @@ tags: [データ構造]
 
 そこで、以前考えた[ダブリング](https://note.com/mogobon/n/n43a442d628c1)の発想に戻る。長さ $2^{k+1}$ は、長さ $2^k$ のもの2つに分けられる。
 
+<div class="math-block">
 $$
 2^{k+1}=2^k+2^k
 $$
+</div>
 
 **各開始位置ごとに、長さが2冪の区間の集約値を保持すればよさそうだ。**
 
@@ -24,9 +26,11 @@ $$
 
 配列 $A$ の長さを $N$ とし、次のように定義する。
 
+<div class="math-block">
 $$
 T[i][k]=\min\{A_j\mid i\le j<i+2^k\}
 $$
+</div>
 
 つまり、`T[i][k]` は **半開区間 $[i,i+2^k)$ の最小値**。2番目の添字は「区間長」ではなく「長さの指数」である。
 
@@ -54,33 +58,41 @@ st = [[INF] * K for _ in range(n)]
 
 区間 $[i,i+2^{k+1})$ を半分に分ける。
 
+<div class="math-block">
 $$
 [i,i+2^{k+1})
 =
 [i,i+2^k)\ \cup\ [i+2^k,i+2^{k+1})
 $$
+</div>
 
 2区間は隣接していて重複しない。したがって、
 
+<div class="math-block">
 $$
 T[i][k+1]
 =
 \min\bigl(T[i][k],T[i+2^k][k]\bigr)
 $$
+</div>
 
 一般の二項演算 $\otimes$ に書き換えれば、
 
+<div class="math-block">
 $$
 T[i][k+1]=T[i][k]\otimes T[i+2^k][k]
 $$
+</div>
 
 という形になる。**この構築に必要なのは結合律**。区間を連結した順序で集約できればよく、ここでは冪等律はまだ使っていない。`min` 以外にも、`max`・`gcd`・区間和などを同様に前計算できる。
 
 初期状態は長さ1なので、
 
+<div class="math-block">
 $$
 T[i][0]=A[i]
 $$
+</div>
 
 だけ。ここまでで、数学上の定義と遷移はできた。
 
@@ -100,9 +112,11 @@ for i in range(n):
 
 しかし、`st[0][2]` を計算するときには、`st[2][1]` が必要になる。
 
+<div class="math-block">
 $$
 T[0][2]=\min(T[0][1],T[2][1])
 $$
+</div>
 
 `i=0` を処理中なので、`i=2` 側の `T[2][1]` はまだ計算されていない。`INF` を見てしまい、誤答になる。
 
@@ -144,9 +158,11 @@ for i in range(n - 1, -1, -1):
 
 ここで最も苦戦した。次の式を計算しているとする。
 
+<div class="math-block">
 $$
 T[i][j+1]=\min(T[i][j],T[i+2^j][j])
 $$
+</div>
 
 ### 誤り①：`i+2^j<n` と判定する
 
@@ -162,9 +178,11 @@ if i + (1 << j) < n:
 
 左辺が定義できる必要十分条件は、
 
+<div class="math-block">
 $$
 i+2^{j+1}\le n
 $$
+</div>
 
 である。
 
@@ -199,29 +217,37 @@ if i + (1 << (j + 1)) < n:
 
 `prod(l,r)` で `[l,r)` の最小値を求めたい。長さを `d=r-l` とおく。
 
+<div class="math-block">
 $$
 k=\lfloor\log_2d\rfloor,\qquad 2^k\le d<2^{k+1}
 $$
+</div>
 
 `d` がちょうど2冪なら、前計算した1区間で取得できる。それ以外では、**左端から長さ $2^k$ の区間**と、**右端から長さ $2^k$ の区間**を選ぶ。
 
+<div class="math-block">
 $$
 [l,l+2^k),\qquad [r-2^k,r)
 $$
+</div>
 
 この2区間の和集合は `[l,r)` に一致し、中央が重複する場合がある。しかし、`min` には
 
+<div class="math-block">
 $$
 \min(x,x)=x
 $$
+</div>
 
 という**冪等律**がある。さらに `min` は結合的・可換なので、同じ要素が重なっても区間全体の最小値は変わらない。
 
+<div class="math-block">
 $$
 \min(A[l:r])
 =
 \min\bigl(T[l][k],T[r-2^k][k]\bigr)
 $$
+</div>
 
 Pythonでは、
 
