@@ -545,8 +545,7 @@ ans <span class="token operator">=</span> <span class="token punctuation">[</spa
 </code></pre>
 <p><code>N=1</code>、<code>r=N</code>、<code>r-l=1</code>、<code>r-l=2^k</code>、<code>r-l=2^k+1</code> のような端点も確認したい。</p>
 <h2>8. NumPy・CPython・PyPy3：同じ計算量でも実行時間は違う</h2>
-<p>今回、NumPyによる前計算の高速化について、ikatakos（いかたこ）氏の「<a href="https://ikatakos.com/pot/programming_algorithm/data_structure/sparse_table">Sparse Table</a>」（いかたこのたこつぼ、2023年10月13日最終更新）の「実装」節を参考にした。</p>
-<p>以下は、同記事の配列演算による構築方法を、前段を1次元配列 <code>prev</code> として持つ形に変更した説明用コードである。原文・原コードの逐語引用ではない。出典サイトのトップページには <a href="https://creativecommons.org/licenses/by/4.0/deed.ja">CC BY 4.0（クリエイティブ・コモンズ 表示4.0国際）</a> の表示があるが、対象記事のコードに個別のライセンス指定は確認できなかった。</p>
+<p>NumPyによる前計算の高速化は、ikatakos（いかたこ）氏の「<a href="https://ikatakos.com/pot/programming_algorithm/data_structure/sparse_table">Sparse Table</a>」（いかたこのたこつぼ）を参考にした。以下は、その配列演算による構築方法を説明用に書き換えたコードである。</p>
 <pre class="language-python"><code class="language-python"><span class="token comment"># ある段の情報 prev から次の段を構築</span>
 w <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>k <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
 nxt <span class="token operator">=</span> np<span class="token punctuation">.</span>minimum<span class="token punctuation">(</span>prev<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span>w<span class="token punctuation">]</span><span class="token punctuation">,</span> prev<span class="token punctuation">[</span>w<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
