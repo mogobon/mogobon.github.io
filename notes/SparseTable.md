@@ -28,7 +28,7 @@ $$
 
 <div class="math-block">
 $$
-T[i][k]=\min\{A_j\mid i\le j<i+2^k\}
+T[i][k]=\min\{A_j\mid i\le j\lt i+2^k\}
 $$
 </div>
 
@@ -418,7 +418,9 @@ print("\n".join(ans))
 
 ## 8. NumPy・CPython・PyPy3：同じ計算量でも実行時間は違う
 
-今回、最初に見た[NumPyを使うSparse Tableの実装記事](https://ikatakos.com/pot/programming_algorithm/data_structure/sparse_table)では、各段の構築を配列演算にまとめていた。
+今回、NumPyによる前計算の高速化について、ikatakos（いかたこ）氏の「[Sparse Table](https://ikatakos.com/pot/programming_algorithm/data_structure/sparse_table)」（いかたこのたこつぼ、2023年10月13日最終更新）の「実装」節を参考にした。
+
+以下は、同記事の配列演算による構築方法を、前段を1次元配列 `prev` として持つ形に変更した説明用コードである。原文・原コードの逐語引用ではない。出典サイトのトップページには [CC BY 4.0（クリエイティブ・コモンズ 表示4.0国際）](https://creativecommons.org/licenses/by/4.0/deed.ja) の表示があるが、対象記事のコードに個別のライセンス指定は確認できなかった。
 
 ~~~python
 # ある段の情報 prev から次の段を構築
