@@ -253,6 +253,42 @@ $$
 $$
 </div>
 
+数学的には、2つの区間
+
+<div class="math-block">
+$$
+[l,l+2^k)
+$$
+</div>
+
+<div class="math-block">
+$$
+[r-2^k,r)
+$$
+</div>
+
+について、
+
+<div class="math-block">
+$$
+d\lt 2^{k+1}
+$$
+</div>
+
+<div class="math-block">
+$$
+r-l\lt 2\cdot 2^k
+$$
+</div>
+
+<div class="math-block">
+$$
+r-2^k\lt l+2^k
+$$
+</div>
+
+となるため、2つの区間は必ず重なる。
+
 この2区間の和集合は `[l,r)` に一致し、中央が重複する場合がある。しかし、`min` には
 
 <div class="math-block">
