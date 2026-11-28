@@ -270,7 +270,7 @@ M&amp;=4k\
 \text{歩道の個数}&amp;=2^k
 \end{aligned}$</p>
 <p>頂点数と辺数は線形にしか増加していないのに、歩道の個数は指数的に増加する。</p>
-<p><strong>一つの歩道の中で同じ辺を再利用できない場合でも、歩道を一つずつ列挙する探索の回数は、グラフの辺数を大きく上回ることがある。</strong></p>
+<p><strong>一つの歩道の中で同じ辺を再利用できない場合でも、歩道を一つずつ列挙する探索の回数は、グラフの辺数に対して指数関数的に爆発することがある。</strong></p>
 <h3>なぜ DP を選択肢から除外してしまったのか</h3>
 <ul>
 <li>グラフ上の DP といえば木 DP。</li>
@@ -280,7 +280,67 @@ M&amp;=4k\
 </ul>
 <p>単に DP が思いつかなかったのではなく、グラフの構造や頂点の再訪を理由に DP を候補から外していた。</p>
 <h2>5. 全探索から DP への発想</h2>
-<p>（考察中）</p>
+<h3>探索経路を統合できないか？</h3>
+<p>異なる2つの歩道 A, B で頂点 u に到達したとする。</p>
+<table>
+<thead>
+<tr>
+<th>歩道</th>
+<th>現在の頂点</th>
+<th style="text-align:right">直前の辺の重み</th>
+<th style="text-align:right">総和</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>u</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">6</td>
+</tr>
+<tr>
+<td>B</td>
+<td>u</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">11</td>
+</tr>
+</tbody>
+</table>
+<p>過去に通った頂点や辺は異なるが、現在の頂点と直前の辺の重みは一致している。</p>
+<p><strong>歩道 A と B の両方について、この先の探索を行う必要はあるだろうか？</strong></p>
+<p>ない。ナップサック DP と同じで、今後選択できる辺の集合が同じなので、総和が大きい歩道 B だけを残せばよい。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ナップサック DP（価値最大化）</th>
+<th>今回の問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>状態</td>
+<td>処理済み品物数・重量</td>
+<td>現在の頂点・直前の辺の重み</td>
+</tr>
+<tr>
+<td>最大化する値</td>
+<td>価値の総和</td>
+<td>辺の重みの総和</td>
+</tr>
+<tr>
+<td>統合できる条件</td>
+<td>状態が一致する</td>
+<td>状態が一致する</td>
+</tr>
+<tr>
+<td>残す情報</td>
+<td>価値の最大値</td>
+<td>重みの総和の最大値</td>
+</tr>
+</tbody>
+</table>
+<p><strong>過去の選択が異なっていても、今後の選択肢が同じであれば、スコアが大きい方だけを残せばよい。</strong></p>
 <h2>6. 今回の学び</h2>
 <p>（考察中）</p>
 
