@@ -244,48 +244,21 @@ st <span class="token operator">=</span> <span class="token punctuation">[</span
 <p><code>K</code> は「最大の指数」ではなく<strong>列数</strong>であり、列番号は <code>0</code> から <code>K-1</code> まで。</p>
 <h3>10進数の桁数と2進数の桁数</h3>
 <p>高校数学で扱う常用対数による桁数の計算は、2進数にもそのまま適用できる。正の整数 $n$ の桁数を $k$ とする。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>10進数</th>
-<th>2進数</th>
-</tr>
+<div style="overflow-x:auto; margin:1rem 0;">
+<table style="border-collapse:collapse; width:100%; min-width:620px; font-variant-numeric:tabular-nums;">
+<thead style="border-top:2px solid #999; border-bottom:1px solid #999;">
+<tr><th scope="col" style="padding:10px 14px; text-align:left; width:24%;">項目</th><th scope="col" style="padding:10px 14px; text-align:center; width:38%;">10進数</th><th scope="col" style="padding:10px 14px; text-align:center; width:38%;">2進数</th></tr>
 </thead>
-<tbody>
-<tr>
-<td>底</td>
-<td>10</td>
-<td>2</td>
-</tr>
-<tr>
-<td>桁数の条件</td>
-<td>$10^{k-1}\leq n&lt;10^k$</td>
-<td>$2^{k-1}\leq n&lt;2^k$</td>
-</tr>
-<tr>
-<td>対数を取る</td>
-<td>$k-1\leq\log_{10}n&lt;k$</td>
-<td>$k-1\leq\log_2n&lt;k$</td>
-</tr>
-<tr>
-<td>桁数</td>
-<td>$\lfloor\log_{10}n\rfloor+1$</td>
-<td>$\lfloor\log_2n\rfloor+1$</td>
-</tr>
-<tr>
-<td>Python</td>
-<td><code>len(str(n))</code></td>
-<td><code>n.bit_length()</code></td>
-</tr>
+<tbody style="border-bottom:2px solid #999;">
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">底</th><td style="text-align:center; padding:10px 14px;">10</td><td style="text-align:center; padding:10px 14px;">2</td></tr>
+<tr style="background:rgba(128,128,128,.07);"><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">桁数の条件</th><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$10^{k-1}\leq n&lt;10^k$</td><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$2^{k-1}\leq n&lt;2^k$</td></tr>
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px; white-space:nowrap;">対数を取る</th><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$k-1\leq\log_{10}n&lt;k$</td><td style="text-align:center; padding:10px 14px; white-space:nowrap;">$k-1\leq\log_2n&lt;k$</td></tr>
+<tr style="background:rgba(128,128,128,.07);"><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px;">桁数</th><td style="text-align:center; padding:10px 14px;">$\lfloor\log_{10}n\rfloor+1$</td><td style="text-align:center; padding:10px 14px;">$\lfloor\log_2n\rfloor+1$</td></tr>
+<tr><th scope="row" style="text-align:left; font-weight:normal; padding:10px 14px;">Python</th><td style="text-align:center; padding:10px 14px;"><code>len(str(n))</code></td><td style="text-align:center; padding:10px 14px;"><code>n.bit_length()</code></td></tr>
 </tbody>
 </table>
-<div class="math-block">
-$
-\operatorname{bit\_length}(n)=\lfloor\log_2n\rfloor+1
-$
 </div>
-<p>対数の切り捨ては最大の位の指数を表し、桁数は指数が0から始まるため、それに1を足したものになる。構築時の列数は <code>n.bit_length()</code>、クエリ時の最大の指数は <code>d.bit_length() - 1</code> で求められる。</p>
+<p>表の2進数の列より、<code>n.bit_length()</code> は2進数の桁数、すなわち $\lfloor\log_2n\rfloor+1$ を返す。Sparse Tableでは、構築時には指数0から最大の指数までの列数が必要なので <code>n.bit_length()</code> を使う。一方、クエリ時には区間長 <code>d</code> 以下の最大の2冪の指数が必要なので <code>d.bit_length() - 1</code> を使う。</p>
 <h2>3. 漸化式を導出する</h2>
 <p>区間 $[i,i+2^{k+1})$ を半分に分ける。</p>
 <div class="math-block">
