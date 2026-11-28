@@ -185,15 +185,19 @@
 <p>累積和なら、$S[r]-S[l]$ で区間 $[l,r)$ の和を取得できる。一方、累積最小値では、$[0,r)$ の最小値から $[0,l)$ の最小値を「引く」ことができない。最小値に差分を取り出す逆演算がないからだ。</p>
 <p>区間最小値を求めるには、<strong>その区間を覆う、あらかじめ計算済みの情報</strong>を結合する方法を考えたい。</p>
 <p>そこで、以前考えた<a href="https://note.com/mogobon/n/n43a442d628c1">ダブリング</a>の発想に戻る。長さ $2^{k+1}$ は、長さ $2^k$ のもの2つに分けられる。</p>
-<p><div>$$
+<div class="math-block">
+$$
 2^{k+1}=2^k+2^k
-$$</div></p>
+$$
+</div>
 <p><strong>各開始位置ごとに、長さが2冪の区間の集約値を保持すればよさそうだ。</strong></p>
 <h2>2. 状態の定義：位置 i と指数 k</h2>
 <p>配列 $A$ の長さを $N$ とし、次のように定義する。</p>
-<p><div>$$
+<div class="math-block">
+$$
 T[i][k]=\min\{A_j\mid i\le j<i+2^k\}
-$$</div></p>
+$$
+</div>
 <p>つまり、<code>T[i][k]</code> は <strong>半開区間 $[i,i+2^k)$ の最小値</strong>。2番目の添字は「区間長」ではなく「長さの指数」である。</p>
 <p>例えば $A=[2,10,1,100]$ の場合は次のようになる。</p>
 <table>
@@ -240,24 +244,34 @@ st <span class="token operator">=</span> <span class="token punctuation">[</span
 <p><code>K</code> は「最大の指数」ではなく<strong>列数</strong>であり、列番号は <code>0</code> から <code>K-1</code> まで。</p>
 <h2>3. 漸化式を自力で導出する</h2>
 <p>区間 $[i,i+2^{k+1})$ を半分に分ける。</p>
-<h1>$$
-[i,i+2^{k+1})</h1>
-<p>[i,i+2^k)\ \cup\ [i+2^k,i+2^{k+1})
-$$</p>
+<div class="math-block">
+$$
+[i,i+2^{k+1})
+=
+[i,i+2^k)\ \cup\ [i+2^k,i+2^{k+1})
+$$
+</div>
 <p>2区間は隣接していて重複しない。したがって、</p>
-<h1>$$
-T[i][k+1]</h1>
-<p>\min\bigl(T[i][k],T[i+2^k][k]\bigr)
-$$</p>
+<div class="math-block">
+$$
+T[i][k+1]
+=
+\min\bigl(T[i][k],T[i+2^k][k]\bigr)
+$$
+</div>
 <p>一般の二項演算 $\otimes$ に書き換えれば、</p>
-<p><div>$$
+<div class="math-block">
+$$
 T[i][k+1]=T[i][k]\otimes T[i+2^k][k]
-$$</div></p>
+$$
+</div>
 <p>という形になる。<strong>この構築に必要なのは結合律</strong>。区間を連結した順序で集約できればよく、ここでは冪等律はまだ使っていない。<code>min</code> 以外にも、<code>max</code>・<code>gcd</code>・区間和などを同様に前計算できる。</p>
 <p>初期状態は長さ1なので、</p>
-<p><div>$$
+<div class="math-block">
+$$
 T[i][0]=A[i]
-$$</div></p>
+$$
+</div>
 <p>だけ。ここまでで、数学上の定義と遷移はできた。</p>
 <h2>4. 漸化式が書けても、for文が書けなかった</h2>
 <p>最初に考えたのは、<code>i</code> を昇順、その内側で <code>k</code> を昇順にするループだった。</p>
@@ -270,9 +284,11 @@ $$</div></p>
         <span class="token punctuation">)</span>
 </code></pre>
 <p>しかし、<code>st[0][2]</code> を計算するときには、<code>st[2][1]</code> が必要になる。</p>
-<p><div>$$
+<div class="math-block">
+$$
 T[0][2]=\min(T[0][1],T[2][1])
-$$</div></p>
+$$
+</div>
 <p><code>i=0</code> を処理中なので、<code>i=2</code> 側の <code>T[2][1]</code> はまだ計算されていない。<code>INF</code> を見てしまい、誤答になる。</p>
 <p><strong>ループ順序は添字を何となく昇順にするのではなく、右辺で参照する状態が計算済みかどうかから決める。</strong></p>
 <h3>方法A：指数 k を外側に回す</h3>
@@ -299,9 +315,11 @@ $$</div></p>
 <p>以前のダブリングで扱った「遷移先」は任意の頂点に飛び得るので、一般には開始頂点の降順で依存関係を解決できない。Sparse Tableでは参照先の開始位置が常に右に進むため、降順を使える。</p>
 <h2>5. WAとRE：境界条件は「左辺の状態が存在するか」で決める</h2>
 <p>ここで最も苦戦した。次の式を計算しているとする。</p>
-<p><div>$$
+<div class="math-block">
+$$
 T[i][j+1]=\min(T[i][j],T[i+2^j][j])
-$$</div></p>
+$$
+</div>
 <h3>誤り①：<code>i+2^j&lt;n</code> と判定する</h3>
 <pre class="language-python"><code class="language-python"><span class="token comment"># 誤り</span>
 <span class="token keyword">if</span> i <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> j<span class="token punctuation">)</span> <span class="token operator">&lt;</span> n<span class="token punctuation">:</span>
@@ -310,9 +328,11 @@ $$</div></p>
 <p>これは、後半の区間の<strong>開始位置</strong> <code>i+2^j</code> が配列内かどうかしか確かめていない。しかし、左辺 <code>st[i][j+1]</code> が管理するのは<strong>長さ $2^{j+1}$ の区間全体</strong>。</p>
 <p>たとえば <code>n=5, i=2, j=1</code> では <code>2+2&lt;5</code> が成立するが、作ろうとしている区間は <code>[2,6)</code> で、配列の右端を超える。<code>st[4][1]</code> というセルが存在しても、それが有効な長さ2の区間積とは限らない。</p>
 <p>左辺が定義できる必要十分条件は、</p>
-<p><div>$$
+<div class="math-block">
+$$
 i+2^{j+1}\le n
-$$</div></p>
+$$
+</div>
 <p>である。</p>
 <h3>誤り②：<code>&lt; n</code> にして、等号のケースを落とす</h3>
 <pre class="language-python"><code class="language-python"><span class="token comment"># 誤り</span>
@@ -358,22 +378,31 @@ $$</div></p>
 <p>単に配列外参照を防ぐだけなら、右辺の添字を検査したくなる。しかし<strong>数式の左辺が表す状態の定義域</strong>を先に決めれば、添字の安全性も同時に見通せる。</p>
 <h2>6. クエリ：長さが2冪でない区間をどうするか</h2>
 <p><code>prod(l,r)</code> で <code>[l,r)</code> の最小値を求めたい。長さを <code>d=r-l</code> とおく。</p>
-<p><div>$$
+<div class="math-block">
+$$
 k=\lfloor\log_2d\rfloor,\qquad 2^k\le d<2^{k+1}
-$$</div></p>
+$$
+</div>
 <p><code>d</code> がちょうど2冪なら、前計算した1区間で取得できる。それ以外では、<strong>左端から長さ $2^k$ の区間</strong>と、<strong>右端から長さ $2^k$ の区間</strong>を選ぶ。</p>
-<p><div>$$
+<div class="math-block">
+$$
 [l,l+2^k),\qquad [r-2^k,r)
-$$</div></p>
+$$
+</div>
 <p>この2区間の和集合は <code>[l,r)</code> に一致し、中央が重複する場合がある。しかし、<code>min</code> には</p>
-<p><div>$$
+<div class="math-block">
+$$
 \min(x,x)=x
-$$</div></p>
+$$
+</div>
 <p>という<strong>冪等律</strong>がある。さらに <code>min</code> は結合的・可換なので、同じ要素が重なっても区間全体の最小値は変わらない。</p>
-<h1>$$
-\min(A[l:r])</h1>
-<p>\min\bigl(T[l][k],T[r-2^k][k]\bigr)
-$$</p>
+<div class="math-block">
+$$
+\min(A[l:r])
+=
+\min\bigl(T[l][k],T[r-2^k][k]\bigr)
+$$
+</div>
 <p>Pythonでは、</p>
 <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">prod</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> l<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 前提: 0 &lt;= l &lt; r &lt;= n</span>
