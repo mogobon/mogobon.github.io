@@ -133,10 +133,21 @@ M&=4k\\
 
 異なる2つの歩道 A, B で頂点 u に到達したとする。
 
-| 歩道 | 現在の頂点 | 直前の辺の重み | 総和 |
-|---|---|---:|---:|
-| A | u | 5 | 6 |
-| B | u | 5 | 11 |
+<div class="abc486-merge-figure" style="max-width:520px;margin:1.2em auto;border:1px solid #94a3b8;border-radius:10px;padding:12px">
+<svg viewBox="0 0 340 210" role="img" aria-label="重み1、5の歩道Aと、重み2、4、5の歩道Bが頂点uで合流し、重み8の辺に続く" style="display:block;width:100%;height:auto">
+<g fill="none" stroke-width="2.4"><path d="M30 40 L90 40 L160 105" stroke="#2563eb"/><path d="M30 170 L75 170 L115 170 L160 105" stroke="#b45309"/><path d="M160 105 H290" stroke="currentColor"/></g>
+<g fill="#94a3b8"><circle cx="30" cy="40" r="8"/><circle cx="90" cy="40" r="8"/><circle cx="30" cy="170" r="8"/><circle cx="75" cy="170" r="8"/><circle cx="115" cy="170" r="8"/><circle cx="290" cy="105" r="8"/></g>
+<circle cx="160" cy="105" r="17" fill="#64748b"/>
+<g text-anchor="middle" font-size="13"><text x="160" y="110" fill="white">u</text><g fill="#2563eb"><text x="80" y="16">歩道 A</text><text x="60" y="31">1</text><text x="135" y="60">5</text></g><g fill="#b45309"><text x="80" y="198">歩道 B</text><text x="52" y="158">2</text><text x="95" y="158">4</text><text x="149" y="154">5</text></g><text x="225" y="95" fill="currentColor">8</text></g>
+</svg>
+</div>
+
+<div class="abc486-tibble-wrap">
+<table class="abc486-tibble">
+<thead><tr><th>歩道</th><th>現在の頂点</th><th class="num">直前の辺の重み</th><th class="num">総和</th></tr></thead>
+<tbody><tr><td>A</td><td>u</td><td class="num">5</td><td class="num">6</td></tr><tr><td>B</td><td>u</td><td class="num">5</td><td class="num">11</td></tr></tbody>
+</table>
+</div>
 
 過去に通った頂点や辺は異なるが、現在の頂点と直前の辺の重みは一致している。
 
@@ -144,14 +155,108 @@ M&=4k\\
 
 ない。ナップサック DP と同じで、今後選択できる辺の集合が同じなので、総和が大きい歩道 B だけを残せばよい。
 
-| | ナップサック DP（価値最大化） | 今回の問題 |
-|---|---|---|
-| 状態 | 処理済み品物数・重量 | 現在の頂点・直前の辺の重み |
-| 最大化する値 | 価値の総和 | 辺の重みの総和 |
-| 統合できる条件 | 状態が一致する | 状態が一致する |
-| 残す情報 | 価値の最大値 | 重みの総和の最大値 |
+<div class="abc486-tibble-wrap">
+<table class="abc486-tibble">
+<thead><tr><th scope="col"></th><th scope="col">ナップサック DP（価値最大化）</th><th scope="col">今回の問題</th></tr></thead>
+<tbody><tr><th scope="row">状態</th><td>処理済み品物数・重量</td><td>現在の頂点・直前の辺の重み</td></tr><tr><th scope="row">最大化する値</th><td>価値の総和</td><td>辺の重みの総和</td></tr><tr><th scope="row">統合できる条件</th><td>状態が一致する</td><td>状態が一致する</td></tr><tr><th scope="row">残す情報</th><td>価値の最大値</td><td>重みの総和の最大値</td></tr></tbody>
+</table>
+</div>
+
+<style>
+.abc486-tibble-wrap{overflow-x:auto;margin:1.2em 0}
+.abc486-tibble{border-collapse:collapse;width:100%;min-width:320px;font-size:.94em;line-height:1.65;border-top:2px solid #64748b;border-bottom:2px solid #64748b}
+.abc486-tibble th,.abc486-tibble td{border:0;border-bottom:1px solid rgba(148,163,184,.35);text-align:left;padding:9px 12px;vertical-align:top}
+.abc486-tibble thead th{font-weight:700;background:rgba(148,163,184,.09);border-bottom:1px solid #94a3b8}
+.abc486-tibble tbody th{white-space:nowrap;font-weight:600}
+.abc486-tibble tbody tr:nth-child(even){background:rgba(148,163,184,.07)}
+.abc486-tibble tbody tr:last-child>*{border-bottom:0}
+.abc486-tibble .num{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:480px){.abc486-tibble th,.abc486-tibble td{padding:8px 7px}}
+</style>
 
 **過去の選択が異なっていても、今後の選択肢が同じであれば、スコアが大きい方だけを残せばよい。**
+
+### DP の状態を定義する
+
+dp[u][c] を、頂点 u を終点とし、最後に通った辺の重みが c である狭義単調増加歩道の重みの総和の最大値とする。
+
+重み w の無向辺 (u, v) に対し、c < w なら遷移できる。
+
+<div class="math-block">
+$$
+dp[v][w]\leftarrow\max(dp[v][w],\,dp[u][c]+w)
+$$
+</div>
+
+逆方向についても同様である。どの頂点からも出発できるため、重み 0 の初期状態を各頂点に用意する。それ以外の到達不能な状態は負の無限大とする。
+
+元のグラフに閉路があっても、状態 (u, c) から (v, w) に移るたびに重みは厳密に増加する。同じ頂点を再訪しても状態は異なるため、この状態遷移には閉路がない。
+
+**元のグラフが木かどうかではなく、状態間の依存関係に注目する。**
+
+### 辺の重みを昇順に処理する
+
+辺の重みは最大 10^9 なので、重みをそのまま添字とする密な二次元配列は現実的ではない。
+
+ナップサック DP で品物の処理順序を固定するように、今回は辺の重みの昇順に処理する。
+
+重み w の辺を処理する直前には、w より小さい重みの辺をすべて処理済みである。その時点で dp[u] を、処理済みの辺だけを使って頂点 u に到達する歩道の重みの総和の最大値とすれば、どの候補も重み w の辺へ遷移できる。
+
+したがって、最後の辺の重みごとに値を保存する必要はなく、頂点ごとの最大値だけを保持すればよい。
+
+<div class="math-block">
+$$
+\begin{aligned}
+dp'[u]&=\max(dp[u],\,dp[v]+w)\\
+dp'[v]&=\max(dp[v],\,dp[u]+w)
+\end{aligned}
+$$
+</div>
+
+ただし、同じ重みの辺を連続して通ることはできない。重みが等しい辺は、すべて更新前の dp を参照して遷移候補を求め、その後にまとめて反映する。
+
+<div style="max-width:340px;margin:1.2em auto">
+<svg viewBox="0 0 340 95" role="img" aria-label="重み10の辺が2本並ぶグラフ。同じ重みを連続して使うことはできない" style="width:100%;height:auto">
+<path d="M35 37 H305" stroke="currentColor" stroke-width="2"/>
+<g fill="#64748b"><circle cx="35" cy="37" r="15"/><circle cx="170" cy="37" r="15"/><circle cx="305" cy="37" r="15"/></g>
+<g text-anchor="middle" font-size="13" fill="white"><text x="35" y="42">1</text><text x="170" y="42">2</text><text x="305" y="42">3</text></g>
+<g text-anchor="middle" font-size="13" fill="currentColor"><text x="102" y="27">10</text><text x="237" y="27">10</text></g>
+<text x="170" y="81" text-anchor="middle" font-size="13" fill="#b91c1c">10 → 10 は不可</text>
+</svg>
+</div>
+
+### 実装
+
+~~~python
+from itertools import groupby
+
+def solve():
+    N, M = map(int, input().split())
+    edges = []
+    for _ in range(M):
+        u, v, c = map(int, input().split())
+        edges.append((c, u - 1, v - 1))
+
+    edges.sort()
+    dp = [0] * N
+
+    for c, group in groupby(edges, key=lambda e: e[0]):
+        updates = []
+        for _, u, v in group:
+            updates.append((u, dp[v] + c))
+            updates.append((v, dp[u] + c))
+
+        for u, val in updates:
+            dp[u] = max(dp[u], val)
+
+    print(max(dp))
+
+T = int(input())
+for _ in range(T):
+    solve()
+~~~
+
+辺のソートに O(M log M)、DP の遷移に O(M)、初期化と最大値の取得に O(N) かかる。全体の時間計算量は O(N + M log M)、空間計算量は O(N + M) である。
 
 ## 6. 今回の学び
 
