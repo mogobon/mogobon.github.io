@@ -345,13 +345,19 @@ $$
 </table>
 <p>位置4まで移動でき、その親が LCA となる。</p>
 <h3>なぜ降順なのか</h3>
-<p>条件を満たす最大の移動距離の2進数表現を決めている。上位ビット1個の価値は、それより下位の全ビットの価値の総和より大きい。</p>
+<p>今回やっていることは、条件を満たす最大の整数の2進数表現を求めること。</p>
 <div class="math-block">
 $$
-2^k\gt\sum_{j=0}^{k-1}2^j=2^k-1
+4=(0100)_2
 $$
 </div>
-<p>したがって、上位ビットから決める。</p>
+<p>昇順では下位ビットから確定してしまう。</p>
+<div class="math-block">
+$$
+(0011)_2=3
+$$
+</div>
+<p>しかし、下位ビットを1にすることよりも、上位ビットを1にすることの方が、値を最大化するうえでは重要。</p>
 <pre class="language-python"><code class="language-python"><span class="token comment"># 深さが等しく、u != v であることが前提</span>
 <span class="token keyword">for</span> k <span class="token keyword">in</span> <span class="token builtin">reversed</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>K<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">!=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
