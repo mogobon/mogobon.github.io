@@ -2,7 +2,7 @@ tags: [データ構造]
 ---
 # SparseTableの実装
 
-[Library Checker：Static RMQ](https://judge.yosupo.jp/problem/staticrmq) を使って、**Sparse Tableを自力で導出して実装した記録**。数式そのものは比較的早く導けた一方、DPの計算順序・添字の意味・半開区間の境界で何度もWA/REになった。最後には、CPythonではTLEした純Python実装がPyPy3では2秒未満でACした。NumPy版との違いも含め、何を理解して、どこで実装が止まったのかを整理する。
+[Library Checker：Static RMQ](https://judge.yosupo.jp/problem/staticrmq) を使って、**Sparse Tableを導出して実装した記録**。数式そのものは比較的早く導けた一方、DPの計算順序・添字の意味・半開区間の境界で何度もWA/REになった。最後には、CPythonではTLEした純Python実装がPyPy3では2秒未満でACした。NumPy版との違いも含め、何を理解して、どこで実装が止まったのかを整理する。
 
 > 先に結論：**状態の定義 → 漸化式 → 状態が存在する範囲 → 依存関係を満たす計算順序 → クエリ**の順に決める。漸化式だけ正しくても、DPの実装は完成しない。
 
@@ -54,7 +54,28 @@ st = [[INF] * K for _ in range(n)]
 
 `K` は「最大の指数」ではなく**列数**であり、列番号は `0` から `K-1` まで。
 
-## 3. 漸化式を自力で導出する
+
+### 10進数の桁数と2進数の桁数
+
+高校数学で扱う常用対数による桁数の計算は、2進数にもそのまま適用できる。正の整数 $n$ の桁数を $k$ とする。
+
+| | 10進数 | 2進数 |
+|---|---|---|
+| 底 | 10 | 2 |
+| 桁数の条件 | $10^{k-1}\leq n<10^k$ | $2^{k-1}\leq n<2^k$ |
+| 対数を取る | $k-1\leq\log_{10}n<k$ | $k-1\leq\log_2n<k$ |
+| 桁数 | $\lfloor\log_{10}n\rfloor+1$ | $\lfloor\log_2n\rfloor+1$ |
+| Python | `len(str(n))` | `n.bit_length()` |
+
+<div class="math-block">
+$
+\operatorname{bit\_length}(n)=\lfloor\log_2n\rfloor+1
+$
+</div>
+
+対数の切り捨ては最大の位の指数を表し、桁数は指数が0から始まるため、それに1を足したものになる。構築時の列数は `n.bit_length()`、クエリ時の最大の指数は `d.bit_length() - 1` で求められる。
+
+## 3. 漸化式を導出する
 
 区間 $[i,i+2^{k+1})$ を半分に分ける。
 
@@ -263,7 +284,7 @@ def prod(self, l, r):
 
 **構築には結合律、重複を許した2区間クエリには結合律・可換性・冪等律**という役割の違いに注意したい。一般の「結合的かつ冪等」な非可換演算で、この重複クエリが常に成立するわけではない。一方、重複しない2冪区間に分割して `O(\log N)` で集約する方法なら、結合律を使える。
 
-## 7. 完成コード：自分で書いた形を残す
+## 7. 完成コード：降順版と昇順版
 
 以下は、開始位置を降順に処理する純Python版。**PyPy3での提出でACした方針**である。
 
@@ -289,6 +310,52 @@ class SparseTable:
                 # 左辺 st[i][j+1] が表す区間が存在するか
                 if i + (1 << (j + 1)) > n:
                     break
+                self.st[i][j + 1] = min(
+                    self.st[i][j],
+                    self.st[i + (1 << j)][j]
+                )
+
+    def prod(self, l, r):
+        # min(a[l:r]); 0 <= l < r <= n
+        k = (r - l).bit_length() - 1
+        w = 1 << k
+        return min(self.st[l][k], self.st[r - w][k])
+
+N, Q = map(int, input().split())
+A = list(map(int, input().split()))
+st = SparseTable(A)
+
+ans = []
+for _ in range(Q):
+    l, r = map(int, input().split())
+    ans.append(str(st.prod(l, r)))
+
+print("\n".join(ans))
+~~~
+
+### 開始位置 i を昇順に回す実装
+
+指数 `j` を外側に回すことで、開始位置 `i` を昇順にしても依存先が計算済みになる。状態の定義とクエリは降順版と同じ。
+
+~~~python
+import sys
+input = sys.stdin.buffer.readline
+
+INF = 10**20
+
+class SparseTable:
+    def __init__(self, a):
+        n = len(a)
+        K = n.bit_length()
+        self.st = [[INF] * K for _ in range(n)]
+
+        # 長さ1の区間の値を初期化
+        for i in range(n):
+            self.st[i][0] = a[i]
+
+        # 指数を外側に回し、開始位置 i を昇順に処理
+        for j in range(K - 1):
+            for i in range(n - (1 << (j + 1)) + 1):
                 self.st[i][j + 1] = min(
                     self.st[i][j],
                     self.st[i + (1 << j)][j]
@@ -395,7 +462,7 @@ class SparseTable:
 
 ## 10. 振り返り：今回、本当に詰まっていた場所
 
-数学的な着想は早かった。ダブリングとの共通構造に気づき、「各開始位置について2冪長の区間積を保持する」と定義し、漸化式も自力で導出できた。
+数学的な着想は早かった。ダブリングとの共通構造に気づき、「各開始位置について2冪長の区間積を保持する」と定義し、漸化式も導出できた。
 
 一方、実装では次の混乱を繰り返した。
 
