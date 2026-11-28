@@ -1,0 +1,459 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>反例集</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.css">-->
+    <style>
+        body {
+        background: #f7f8fa;
+        color: #222;
+        font-family: 'Inter', 'Noto Sans JP', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        }
+        .note {
+        max-width: 800px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em 2.5em;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px #0001;
+        }
+        h1, h2, h3 {
+        color: #2b6cb0;
+        margin-top: 1.5em;
+        }
+        a { color: #3182ce; text-decoration: underline; transition: color 0.2s; }
+        a:hover { color: #2c5282; }
+
+        /* コード用 */
+        pre[class*="language-"] {
+        border-radius: 6px;
+        margin: 1.5em 0;
+        }
+        pre {
+          position: relative;
+          max-height: 38em; /* 1行1.28em×30行=38em程度で調整 */
+          overflow-y: auto;
+          padding-top: 2.2em; /* ボタン分の余白 */
+        }
+        code[class*="language-"], pre[class*="language-"] {
+        font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        font-size: 94%;
+        }
+        <!--pre.line-numbers > code {
+            padding-top: 0.1em; /* お好みで調整 */
+            position: relative;
+        }-->
+        code:not([class*="language-"]) {
+          background: #f5f2f0;
+          color: #c7254e;
+          padding: 0.2em 0.4em;
+          border-radius: 4px;
+          font-size: 0.95em;
+          font-family: 'Cascadia Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+        }
+
+        /* 行番号 */
+        /*
+        .line-numbers .line-numbers-rows { border-right: 1px solid #ddd; }
+        .line-numbers .line-numbers-rows > span {
+          padding-top: 0.2em;
+          padding-bottom: 0.1065em;
+        }*/
+
+        /*.line-numbers-rows > span:before { color: #999; }*/
+        
+        /* KaTeX 改善版 */
+        /*.katex {
+        font-size: 1.1em;
+        }*/
+        
+        /* ディスプレイ数式の修正 */
+        .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        text-align: center !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        }
+        
+        /* 段落内のディスプレイ数式も確実にブロック表示 */
+        p .katex-display {
+        display: block !important;
+        margin: 1.5em 0 !important;
+        }
+        
+        /* インライン数式 */
+        .katex:not(.katex-display) {
+        display: inline-block;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        }
+
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 2em 0; }
+        ul { padding-left: 1.2em; }
+
+  /* コードブロックが50行以上の場合スクロール（preに直接適用） */
+
+        aside {
+          display: block;
+          background: #f0f8ff;
+          padding: 1em 1.2em;
+          margin: 1.5em 0;
+          border-radius: 12px;
+          color: #222;
+        }
+
+        #backToNotesBtn {
+          position: fixed;
+          top: 1.2em;
+          left: 1.2em;
+          z-index: 1000;
+          padding: 0.6em 1.2em;
+          border-radius: 32px;
+          background: #7ed957; /* 黄緑色 */
+          color: #fff;
+          font-size: 1em;
+          font-weight: 500;
+          border: none;
+          box-shadow: 0 2px 8px #2193b022;
+          cursor: pointer;
+          opacity: 0.92;
+          transition: opacity 0.2s, background 0.2s;
+          text-decoration: none;
+          display: inline-block;
+        }
+        #backToNotesBtn:hover {
+          opacity: 1;
+          background: #5bbf2b; /* 濃い黄緑色 */
+        }
+
+        #scrollTopBtn {
+          /* インラインで青色指定されていても、CSSで色とホバーを上書き */
+          background: #3182ce !important; /* 青色 */
+          color: #fff;
+          text-decoration: none;
+          box-shadow: 0 2px 8px #0002;
+          font-size: 1.1em;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: opacity 0.2s, background 0.2s;
+          display: inline-block;
+          position: fixed;
+          right: 2.2em;
+          bottom: 2.2em;
+          z-index: 999;
+          padding: 0.7em 1.2em;
+          border-radius: 50px;
+        }
+        #scrollTopBtn:hover {
+          opacity: 1;
+          background: #205493 !important; /* 濃い青色 */
+        }
+
+        @media (max-width: 600px) {
+          .katex, .katex-display {
+            font-size: 1.15em !important;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="scrollTopBtn">
+  ↑ トップへ戻る
+</div> -->
+<script>
+  document.getElementById('scrollTopBtn').onclick = function() {
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+</script>
+  
+  <div class="note">
+    <h1>反例集</h1>
+<p>競技プログラミングで立てた仮説と、その反例を集める。反例そのものだけでなく、どうすれば反例を作れたのかも記録する。</p>
+<h2>1. 保冷庫を運び出す順番（2026/11/25）</h2>
+<p>出典：<a href="https://atcoder.jp/contests/awc0208/tasks/awc0208_d">AWC0208 D</a> ／ <a href="AWC0208D.html">考察の記録</a></p>
+<h3>仮説</h3>
+<p>保冷庫の消費電力を P、搬出時間を T とする。P も T も小さい方が嬉しいので、PT の昇順にソートすればよいのではないか。</p>
+<h3>反例の作り方</h3>
+<p>N = 2 とし、T = 1 に固定して P だけを変える。</p>
+<table>
+<thead>
+<tr>
+<th>保冷庫</th>
+<th style="text-align:right">T</th>
+<th style="text-align:right">P</th>
+<th style="text-align:right">PT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">2</td>
+</tr>
+</tbody>
+</table>
+<p>PT 昇順では A → B となる。しかし、総消費電力量は次の通り。</p>
+<div class="math-block">
+$$
+\begin{aligned}
+E_{AB}&=1\cdot 1+2\cdot 2=5\\
+E_{BA}&=2\cdot 1+1\cdot 2=4
+\end{aligned}
+$$
+</div>
+<p>B → A の方がよいので、PT 昇順は誤り。</p>
+<h3>学び</h3>
+<ul>
+<li>2変数が絡む仮説は、要素数を減らし、一方の変数を固定して、もう一方だけを動かす。</li>
+<li>順序を最適化する問題では、要素単体の評価値ではなく、異なる順序の目的関数を比較する。</li>
+</ul>
+<h2>2. LCAのダブリングにおける探索順序（2026/11/28）</h2>
+<p>参考：<a href="https://atcoder.jp/contests/awc0143/editorial/24839">AWC0143 E 解説</a></p>
+<h3>仮説</h3>
+<p>深さを揃えた異なる頂点 u, v に対して、2冪個上の祖先が一致しない場合に移動する。指数 k を降順で回す必要はあるのか。昇順でもいいのではないか。</p>
+<pre class="language-python"><code class="language-python"><span class="token comment"># 昇順で探索する誤った実装</span>
+<span class="token keyword">for</span> k <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>K<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">!=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        u <span class="token operator">=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span>
+        v <span class="token operator">=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span>
+
+<span class="token keyword">return</span> dp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span>
+</code></pre>
+<p>ここで dp[k][i] は頂点 i の2のk乗個上の祖先とする。根の親は根自身とする。</p>
+<h3>反例の作り方</h3>
+<p>先に行った小さいジャンプが、後から行う大きいジャンプを妨げるケースを考える。</p>
+<p>f(u,x) を u から根方向に x 個上がった頂点とする。LCA が5個上にある場合、最後に不一致となる移動距離は4である。</p>
+<table>
+<thead>
+<tr>
+<th>移動距離 x</th>
+<th style="text-align:right">0</th>
+<th style="text-align:right">1</th>
+<th style="text-align:right">2</th>
+<th style="text-align:right">3</th>
+<th style="text-align:right">4</th>
+<th style="text-align:right">5</th>
+<th style="text-align:right">6</th>
+<th style="text-align:right">7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一致判定</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+</tbody>
+</table>
+<p>0 は不一致、1 は一致を表す。</p>
+<p>昇順の場合：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">現在位置</th>
+<th style="text-align:right">試す距離</th>
+<th style="text-align:right">移動先</th>
+<th style="text-align:right">更新後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">3</td>
+</tr>
+</tbody>
+</table>
+<p>先に1と2を使ってしまったため、4を使えなくなり、位置3で止まる。その親は位置4であり、LCA（位置5）ではない。</p>
+<p>降順の場合：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">現在位置</th>
+<th style="text-align:right">試す距離</th>
+<th style="text-align:right">移動先</th>
+<th style="text-align:right">更新後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">0</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">4</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">4</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">4</td>
+</tr>
+</tbody>
+</table>
+<p>位置4まで移動でき、その親が LCA となる。</p>
+<h3>なぜ降順なのか</h3>
+<p>条件を満たす最大の移動距離の2進数表現を決めている。上位ビット1個の価値は、それより下位の全ビットの価値の総和より大きい。</p>
+<div class="math-block">
+$$
+2^k\gt\sum_{j=0}^{k-1}2^j=2^k-1
+$$
+</div>
+<p>したがって、上位ビットから決める。</p>
+<pre class="language-python"><code class="language-python"><span class="token comment"># 深さが等しく、u != v であることが前提</span>
+<span class="token keyword">for</span> k <span class="token keyword">in</span> <span class="token builtin">reversed</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>K<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span> <span class="token operator">!=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        u <span class="token operator">=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span>
+        v <span class="token operator">=</span> dp<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>v<span class="token punctuation">]</span>
+
+<span class="token keyword">return</span> dp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>u<span class="token punctuation">]</span>
+</code></pre>
+<h3>学び</h3>
+<p>「昇順でいいのでは？」と思ったとき、昇順でうまくいかない反例を作ることを疎かにした。</p>
+<p>順序に関する仮説を検証するときは、先に行った操作が、後の操作を妨げるケースを考える。</p>
+<h2>反例を作るための方針</h2>
+<table>
+<thead>
+<tr>
+<th>仮説の種類</th>
+<th>検証方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>複数の変数が絡む評価基準</td>
+<td>要素数を減らし、一方の変数を固定する</td>
+</tr>
+<tr>
+<td>操作の順序</td>
+<td>先の操作が後の操作を妨げるケースを考える</td>
+</tr>
+</tbody>
+</table>
+<p>「この方法でもよいのでは？」と思ったら、その方法が成立しないケースを自分から探す。</p>
+
+    <div style="margin-bottom:1em;"><a href="/notes.html">ノート一覧に戻る</a></div>
+  </div>
+
+    <!-- Prism.js & 言語 & line-numbers -->
+    <style>
+      pre {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.18em;
+        right: 0.18em;
+        background: #222;
+        color: #fff;
+        border: 1.5px solid #888;
+        border-radius: 5px;
+        padding: 0.13em 0.6em;
+        font-size: 0.92em;
+        cursor: pointer;
+        opacity: 0.85;
+        z-index: 10;
+        transition: opacity 0.2s, background 0.2s, border 0.2s;
+        box-shadow: 0 2px 6px #0002;
+      }
+      .copy-btn:hover {
+        opacity: 1;
+        background: #000;
+        border-color: #222;
+        box-shadow: 0 2px 8px #0004;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-cpp.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/line-numbers/prism-line-numbers.min.js"></script>-->
+    <script>
+      Prism.highlightAll();
+      // コードブロックにコピーボタン追加
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre > code').forEach(function(codeBlock) {
+          var pre = codeBlock.parentElement;
+          if (pre.querySelector('.copy-btn')) return;
+          var btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.onclick = function() {
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'copied!';
+            setTimeout(function(){ btn.textContent = 'copy'; }, 1200);
+          };
+          pre.appendChild(btn);
+        });
+      });
+    </script>
+    <!-- KaTeX本体とauto-render拡張 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            ],
+            throwOnError: false
+        });
+        });
+    </script>
+  </body>
+  </html>
+    
